@@ -66,7 +66,7 @@ public class CustomerServiceUnmarshaller {
 
           Node nameNode = (Node) xpath.evaluate(NAME, currentCompanyNode, XPathConstants.NODE);
           if (nameNode != null) {
-            company.setShortName(nameNode.getTextContent());
+            company.setName(nameNode.getTextContent());
           }
           Node shortName = (Node) xpath.evaluate(SHORT_NAME, currentCompanyNode, XPathConstants.NODE);
           if (shortName != null) {
