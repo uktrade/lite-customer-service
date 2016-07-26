@@ -24,6 +24,6 @@ public class CustomerService {
 
   public List<Company> getCustomerInformation(String name) {
     final SOAPMessage soapMessage = client.executeRequest(name);
-    return unmarshaller.execute(soapMessage);
+    return unmarshaller.execute(soapMessage, name);
   }
 }
