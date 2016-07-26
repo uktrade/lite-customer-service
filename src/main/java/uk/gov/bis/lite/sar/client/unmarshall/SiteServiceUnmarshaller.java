@@ -12,15 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
-public class SiteServiceUnmarshaller {
+public class SiteServiceUnmarshaller extends ServiceUnmarshaller {
   private static final Logger LOGGER = LoggerFactory.getLogger(SiteServiceUnmarshaller.class);
   private static final String SAR_REF = "SAR_REF";
   private static final String SITE_REF = "SITE_REF";
@@ -32,23 +29,10 @@ public class SiteServiceUnmarshaller {
   private static final String ERROR = "ERROR";
 
   public List<Site> execute(SOAPMessage message, String companyName) {
-
-    final SOAPBody soapBody;
-    NodeList nodeList;
-    try {
-      soapBody = message.getSOAPBody();
-      XPath xpath = XPathFactory.newInstance().newXPath();
-      nodeList = (NodeList) xpath.evaluate("//COMPANY_SITE_LIST", soapBody, XPathConstants.NODESET);
-      if (nodeList != null) {
-        return parseSoapBody(nodeList, xpath, companyName);
-      }
-      return null;
-    } catch (SOAPException | XPathExpressionException e) {
-      throw new RuntimeException("An error occurred while extracting the SOAP Response Body", e);
-    }
+    return (List<Site>) super.execute(message, companyName, "//COMPANY_SITE_LIST");
   }
 
-  private List<Site> parseSoapBody(NodeList nodeList, XPath xpath, String companyName) {
+  protected List<Site> parseSoapBody(NodeList nodeList, XPath xpath, String companyName) {
     List<Site> foundSitesList = new ArrayList<>();
     Stopwatch stopwatch = Stopwatch.createStarted();
     try {
