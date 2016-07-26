@@ -10,20 +10,26 @@ import javax.inject.Named;
 public class GuiceModule extends AbstractModule {
 
   @Provides
-  @Named("soapUrl")
-  public String provideSpireOgelUrl(CustomerApplicationConfiguration configuration) {
-    return configuration.getSoapUrl();
+  @Named("soapCompanyUrl")
+  public String provideSpireCompanyUrl(CustomerApplicationConfiguration configuration) {
+    return configuration.getSoapCompanyUrl();
+  }
+
+  @Provides
+  @Named("soapSiteUrl")
+  public String provideSpireSiteUrl(CustomerApplicationConfiguration configuration) {
+    return configuration.getSoapSiteUrl();
   }
 
   @Provides
   @Named("soapUserName")
-  public String provideSpireOgelClientUserName(CustomerApplicationConfiguration configuration) {
+  public String provideSpireSiteClientUserName(CustomerApplicationConfiguration configuration) {
     return configuration.getSoapUserName();
   }
 
   @Provides
   @Named("soapPassword")
-  public String provideSpireOgelClientPassword(CustomerApplicationConfiguration configuration) {
+  public String provideSpireSiteClientPassword(CustomerApplicationConfiguration configuration) {
     return configuration.getSoapPassword();
   }
 

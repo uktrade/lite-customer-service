@@ -13,5 +13,6 @@ logging:
 soapUserName: bisdev.api@test.com
 #soapPassword: sp1reUAT
 
-soapUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANIES
+soapCompanyUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANIES
+soapSiteUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANY_SITES
 soapPassword: dev

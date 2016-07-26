@@ -9,6 +9,7 @@ import ru.vyarus.dropwizard.guice.module.installer.feature.jersey.ResourceInstal
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.sar.config.guice.GuiceModule;
 import uk.gov.bis.lite.sar.exception.CompanyNotFoundException;
+import uk.gov.bis.lite.sar.exception.SiteNotFoundException;
 import uk.gov.bis.lite.sar.resource.CustomerResource;
 
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
@@ -20,6 +21,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
   @Override
   public void run(CustomerApplicationConfiguration configuration, Environment environment) {
     environment.jersey().register(CompanyNotFoundException.CompanyNotFoundExceptionHandler.class);
+    environment.jersey().register(SiteNotFoundException.SiteNotFoundExceptionHandler.class);
   }
 
   @Override

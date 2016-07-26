@@ -23,16 +23,16 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 
-public class CustomerServiceClient extends ServiceClient {
+public class SiteServiceClient extends ServiceClient {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CustomerServiceClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SiteServiceClient.class);
   private String soapUrl;
   private String soapClientUserName;
   private String soapClientPassword;
 
   @Inject
-  public CustomerServiceClient(@Named("soapCompanyUrl") String soapUrl, @Named("soapUserName") String clientUserName,
-                         @Named("soapPassword") String clientPassword) {
+  public SiteServiceClient(@Named("soapSiteUrl") String soapUrl, @Named("soapUserName") String clientUserName,
+                           @Named("soapPassword") String clientPassword) {
     this.soapUrl = soapUrl;
     this.soapClientUserName = clientUserName;
     this.soapClientPassword = clientPassword;
@@ -47,11 +47,11 @@ public class CustomerServiceClient extends ServiceClient {
 
       SOAPMessage request = createRequest(companyName);
       LOGGER.debug(messageAsString(request));
-      LOGGER.info("Retrieving Companies List from Spire");
+      LOGGER.info("Retrieving new Site Information from Spire");
       final Stopwatch stopwatch = Stopwatch.createStarted();
       SOAPMessage response = soapConnection.call(request, soapUrl);
       stopwatch.stop();
-      LOGGER.info("New Companies list has been retrieved from Spire in " + stopwatch.elapsed(TimeUnit.SECONDS) + " seconds ");
+      LOGGER.info("New Site Information has been retrieved from Spire in " + stopwatch.elapsed(TimeUnit.SECONDS) + " seconds ");
       LOGGER.debug(messageAsString(response));
       return response;
     } catch (SOAPException e) {
@@ -70,12 +70,12 @@ public class CustomerServiceClient extends ServiceClient {
 
       // SOAP Envelope
       SOAPEnvelope envelope = soapPart.getEnvelope();
-      envelope.addNamespaceDeclaration("spir", "http://www.fivium.co.uk/fox/webservices/ispire/SPIRE_COMPANIES");
+      envelope.addNamespaceDeclaration("spir", "http://www.fivium.co.uk/fox/webservices/ispire/SPIRE_COMPANY_SITES");
 
       // SOAP Body
       SOAPBody soapBody = envelope.getBody();
-      final SOAPElement soapBodyElement = soapBody.addChildElement("getCompanies", "spir");
-      SOAPElement soapBodyElem1 = soapBodyElement.addChildElement("companyName");
+      final SOAPElement soapBodyElement = soapBody.addChildElement("getSites", "spir");
+      SOAPElement soapBodyElem1 = soapBodyElement.addChildElement("sarRef");
       soapBodyElem1.addTextNode(name);
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
@@ -85,9 +85,10 @@ public class CustomerServiceClient extends ServiceClient {
 
       return soapMessage;
     } catch (SOAPException e) {
-      throw new RuntimeException("An error occurred creating the SOAP request for retrieving Customer Information from Spire", e);
+      throw new RuntimeException("An error occurred creating the SOAP request for retrieving Sites from SAR ", e);
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("Unsupported Encoding type", e);
     }
   }
+
 }

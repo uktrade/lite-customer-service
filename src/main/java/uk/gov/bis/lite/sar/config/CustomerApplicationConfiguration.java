@@ -8,7 +8,11 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
-  private String soapUrl;
+  private String soapCompanyUrl;
+
+  @NotEmpty
+  @JsonProperty
+  private String soapSiteUrl;
 
   @NotEmpty
   @JsonProperty
@@ -18,9 +22,12 @@ public class CustomerApplicationConfiguration extends Configuration {
   @JsonProperty
   private String soapPassword;
 
+  public String getSoapCompanyUrl() {
+    return soapCompanyUrl;
+  }
 
-  public String getSoapUrl() {
-    return soapUrl;
+  public String getSoapSiteUrl() {
+    return soapSiteUrl;
   }
 
   public String getSoapUserName() {
