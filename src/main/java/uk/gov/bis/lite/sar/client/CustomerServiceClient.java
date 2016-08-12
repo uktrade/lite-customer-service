@@ -6,8 +6,6 @@ import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +30,7 @@ public class CustomerServiceClient extends ServiceClient {
 
   @Inject
   public CustomerServiceClient(@Named("soapCompanyUrl") String soapUrl, @Named("soapUserName") String clientUserName,
-                         @Named("soapPassword") String clientPassword) {
+                               @Named("soapPassword") String clientPassword) {
     this.soapUrl = soapUrl;
     this.soapClientUserName = clientUserName;
     this.soapClientPassword = clientPassword;
@@ -41,9 +39,10 @@ public class CustomerServiceClient extends ServiceClient {
   public SOAPMessage executeRequest(String companyName) {
 
     SOAPConnectionFactory soapConnectionFactory;
+    SOAPConnection soapConnection = null;
     try {
       soapConnectionFactory = SOAPConnectionFactory.newInstance();
-      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+      soapConnection = soapConnectionFactory.createConnection();
 
       SOAPMessage request = createRequest(companyName);
       LOGGER.debug(messageAsString(request));
@@ -56,6 +55,15 @@ public class CustomerServiceClient extends ServiceClient {
       return response;
     } catch (SOAPException e) {
       throw new RuntimeException("An error occurred establishing the connection with SOAP client", e);
+    } finally {
+      if (soapConnection != null) {
+        try {
+          LOGGER.info("Closing the soap connection for Company info request ");
+          soapConnection.close();
+        } catch (SOAPException e) {
+          LOGGER.error("An error occurred closing the SOAP Company connection. ", e);
+        }
+      }
     }
   }
 
