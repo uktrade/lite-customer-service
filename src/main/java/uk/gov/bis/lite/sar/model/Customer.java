@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @JsonPropertyOrder({"sarRef", "companyName", "companyNumber", "shortName", "organisationType",
-    "registrationStatus", "registeredAddress", "applicantType", "countryOfOriginCode"})
+    "registrationStatus", "registeredAddress", "applicantType", "countryOfOriginCode", "websites"})
 public class Customer {
 
   private Company company;
@@ -40,7 +40,7 @@ public class Customer {
 
   @JsonProperty("organisationType")
   public String organisationType() {
-    return company.getOrganisationType().getTypeLongName();
+    return company.getOrganisationType() != null ? company.getOrganisationType().getTypeLongName() : null;
   }
 
   @JsonProperty("registrationStatus")

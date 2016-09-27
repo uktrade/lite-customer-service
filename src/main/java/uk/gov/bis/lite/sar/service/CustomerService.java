@@ -41,10 +41,8 @@ public class CustomerService {
   }
 
   public List<Customer> getCustomersByUserId(String userId) {
-    LOGGER.info("getCustomersByUserId: " + userId);
     final SOAPMessage soapMessage = client.getCompanyByUserId(userId);
     List<Company> companies = unmarshaller.execute(soapMessage);
-    LOGGER.info("getCustomersByUserId: companies - " + companies.size());
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 

@@ -1,5 +1,6 @@
 package uk.gov.bis.lite.sar.model.spire;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Company {
@@ -98,7 +99,7 @@ public class Company {
   }
 
   public List<Website> getWebsites() {
-    return websites;
+    return websites != null ? websites : new ArrayList<>();
   }
 
   public void setWebsites(List<Website> websites) {
