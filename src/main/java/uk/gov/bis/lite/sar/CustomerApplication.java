@@ -11,6 +11,7 @@ import uk.gov.bis.lite.sar.config.guice.GuiceModule;
 import uk.gov.bis.lite.sar.exception.CompanyNotFoundException;
 import uk.gov.bis.lite.sar.exception.SiteNotFoundException;
 import uk.gov.bis.lite.sar.resource.CustomerResource;
+import uk.gov.bis.lite.sar.resource.SiteResource;
 
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
 
@@ -30,7 +31,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
         GuiceBundle.<CustomerApplicationConfiguration>builder()
             .modules(new GuiceModule())
             .installers(ResourceInstaller.class)
-            .extensions(CustomerResource.class)
+            .extensions(CustomerResource.class, SiteResource.class)
             .build(Stage.PRODUCTION);
 
     bootstrap.addBundle(guiceBundle);

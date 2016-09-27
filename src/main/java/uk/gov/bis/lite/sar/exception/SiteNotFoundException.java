@@ -7,7 +7,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 
 public class SiteNotFoundException extends RuntimeException {
   public SiteNotFoundException(String siteName) {
-    super("No Site Found Named: " + siteName);
+    super("No SpireSite Found Named: " + siteName);
   }
 
   public static class SiteNotFoundExceptionHandler implements ExceptionMapper<SiteNotFoundException> {

@@ -37,4 +37,5 @@ public class CustomerApplicationConfiguration extends Configuration {
   public String getSoapPassword() {
     return soapPassword;
   }
+
 }

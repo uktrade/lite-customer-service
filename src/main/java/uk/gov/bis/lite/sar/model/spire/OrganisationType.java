@@ -1,7 +1,7 @@
-package uk.gov.bis.lite.sar.model;
+package uk.gov.bis.lite.sar.model.spire;
 
 public enum OrganisationType {
-  TC("Trading Company");
+  TC("Trading Company"), O("Organisation");
 
   private String typeLongName;
 

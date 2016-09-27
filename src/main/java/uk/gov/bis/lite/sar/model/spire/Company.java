@@ -1,4 +1,4 @@
-package uk.gov.bis.lite.sar.model;
+package uk.gov.bis.lite.sar.model.spire;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ public class Company {
   private String shortName;
   private OrganisationType organisationType;
   private String number;
+  private String registeredAddress;
   private String registrationStatus;
   private String applicantType;
   private String natureOfBusiness;
@@ -62,6 +63,14 @@ public class Company {
 
   public void setRegistrationStatus(String registrationStatus) {
     this.registrationStatus = registrationStatus;
+  }
+
+  public String getRegisteredAddress() {
+    return registeredAddress;
+  }
+
+  public void setRegisteredAddress(String registeredAddress) {
+    this.registeredAddress = registeredAddress;
   }
 
   public String getApplicantType() {

@@ -1,68 +1,46 @@
 package uk.gov.bis.lite.sar.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import uk.gov.bis.lite.sar.model.spire.SpireSite;
+
+@JsonPropertyOrder({"sarRef", "siteRef", "companyName", "applicantType", "division",
+    "address"})
 public class Site {
 
-  private String siteRef;
-  private String sarRef;
-  private String division;
-  private String address;
-  private String companyName;
-  private String occupancyStatus;
-  private String applicantType;
+  private SpireSite site;
 
-  public String getSiteRef() {
-    return siteRef;
+  public Site(SpireSite site) {
+    this.site = site;
   }
 
-  public void setSiteRef(String siteRef) {
-    this.siteRef = siteRef;
+  @JsonProperty("sarRef")
+  public String sarRef() {
+    return site.getSarRef();
   }
 
-  public String getSarRef() {
-    return sarRef;
+  @JsonProperty("siteRef")
+  public String siteRef() {
+    return site.getSiteRef();
   }
 
-  public void setSarRef(String sarRef) {
-    this.sarRef = sarRef;
+  @JsonProperty("companyName")
+  public String companyName() {
+    return site.getCompanyName();
   }
 
-  public String getDivision() {
-    return division;
+  @JsonProperty("applicantType")
+  public String applicantType() {
+    return site.getApplicantType();
   }
 
-  public void setDivision(String division) {
-    this.division = division;
+  @JsonProperty("division")
+  public String division() {
+    return site.getDivision();
   }
 
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getCompanyName() {
-    return companyName;
-  }
-
-  public void setCompanyName(String companyName) {
-    this.companyName = companyName;
-  }
-
-  public String getOccupancyStatus() {
-    return occupancyStatus;
-  }
-
-  public void setOccupancyStatus(String occupancyStatus) {
-    this.occupancyStatus = occupancyStatus;
-  }
-
-  public String getApplicantType() {
-    return applicantType;
-  }
-
-  public void setApplicantType(String applicantType) {
-    this.applicantType = applicantType;
+  @JsonProperty("address")
+  public String address() {
+    return site.getAddress();
   }
 }

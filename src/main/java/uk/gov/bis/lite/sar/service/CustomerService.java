@@ -2,28 +2,56 @@ package uk.gov.bis.lite.sar.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import uk.gov.bis.lite.sar.client.CustomerServiceClient;
-import uk.gov.bis.lite.sar.client.unmarshall.CustomerServiceUnmarshaller;
-import uk.gov.bis.lite.sar.model.Company;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.sar.client.CompanyClient;
+import uk.gov.bis.lite.sar.client.unmarshall.CompanyUnmarshaller;
+import uk.gov.bis.lite.sar.model.spire.Company;
+import uk.gov.bis.lite.sar.model.Customer;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.soap.SOAPMessage;
 
 @Singleton
 public class CustomerService {
 
-  private CustomerServiceClient client;
-  private CustomerServiceUnmarshaller unmarshaller;
+  private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
+
+  private CompanyClient client;
+  private CompanyUnmarshaller unmarshaller;
 
   @Inject
-  public CustomerService(CustomerServiceClient client, CustomerServiceUnmarshaller unmarshaller) {
+  public CustomerService(CompanyClient client, CompanyUnmarshaller unmarshaller) {
     this.client = client;
     this.unmarshaller = unmarshaller;
   }
 
-  public List<Company> getCustomerInformation(String sarRef) {
-    final SOAPMessage soapMessage = client.executeRequest(sarRef);
-    return unmarshaller.execute(soapMessage, sarRef);
+  public List<Customer> getCustomersBySearch(String postcode) {
+    final SOAPMessage soapMessage = client.getCompanyByPostCode(postcode);
+    List<Company> companies = unmarshaller.execute(soapMessage);
+    return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
+
+  public List<Customer> getCustomersBySearch(String postcode, String eoriNumber) {
+    final SOAPMessage soapMessage = client.getCompanyByPostCodeEoriNumber(postcode, eoriNumber);
+    List<Company> companies = unmarshaller.execute(soapMessage);
+    return companies.stream().map(Customer::new).collect(Collectors.toList());
+  }
+
+  public List<Customer> getCustomersByUserId(String userId) {
+    LOGGER.info("getCustomersByUserId: " + userId);
+    final SOAPMessage soapMessage = client.getCompanyByUserId(userId);
+    List<Company> companies = unmarshaller.execute(soapMessage);
+    LOGGER.info("getCustomersByUserId: companies - " + companies.size());
+    return companies.stream().map(Customer::new).collect(Collectors.toList());
+  }
+
+  public List<Customer> getCustomersById(String customerId) {
+    final SOAPMessage soapMessage = client.getCompanyBySarRef(customerId);
+    List<Company> companies = unmarshaller.execute(soapMessage);
+    return companies.stream().map(Customer::new).collect(Collectors.toList());
+  }
+
 }

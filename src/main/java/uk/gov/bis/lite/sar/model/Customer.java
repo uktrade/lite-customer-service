@@ -2,17 +2,19 @@ package uk.gov.bis.lite.sar.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import uk.gov.bis.lite.sar.model.spire.Company;
+import uk.gov.bis.lite.sar.model.spire.Website;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @JsonPropertyOrder({"sarRef", "companyName", "companyNumber", "shortName", "organisationType",
-    "registrationStatus", "applicantType", "countryOfOriginCode"})
-public class CompanyWrapper {
+    "registrationStatus", "registeredAddress", "applicantType", "countryOfOriginCode"})
+public class Customer {
 
   private Company company;
 
-  public CompanyWrapper(Company company) {
+  public Customer(Company company) {
     this.company = company;
   }
 
@@ -44,6 +46,11 @@ public class CompanyWrapper {
   @JsonProperty("registrationStatus")
   public String registrationStatus() {
     return company.getRegistrationStatus();
+  }
+
+  @JsonProperty("registeredAddress")
+  public String registeredAddress() {
+    return company.getRegisteredAddress();
   }
 
   @JsonProperty("applicantType")
