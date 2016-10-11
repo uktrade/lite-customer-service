@@ -8,6 +8,14 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
+  private String soapLiteSarUrl;
+
+  @NotEmpty
+  @JsonProperty
+  private String soapSiteSarUrl;
+
+  @NotEmpty
+  @JsonProperty
   private String soapCompanyUrl;
 
   @NotEmpty
@@ -38,4 +46,11 @@ public class CustomerApplicationConfiguration extends Configuration {
     return soapPassword;
   }
 
+  public String getSoapLiteSarUrl() {
+    return soapLiteSarUrl;
+  }
+
+  public String getSoapSiteSarUrl() {
+    return soapSiteSarUrl;
+  }
 }

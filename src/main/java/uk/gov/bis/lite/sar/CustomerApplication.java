@@ -15,6 +15,8 @@ import uk.gov.bis.lite.sar.resource.SiteResource;
 
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
 
+  public static boolean MOCK = true;
+
   public static void main(String[] args) throws Exception {
     new CustomerApplication().run(args);
   }

@@ -1,4 +1,13 @@
-# Logging settings.
+server:
+  type: default
+  applicationConnectors:
+    - type: http
+      port: 8095
+  adminConnectors:
+    - type: http
+      port: 8096
+
+      # Logging settings.
 logging:
 
   # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
@@ -15,4 +24,6 @@ soapUserName: bisdev.api@test.com
 
 soapCompanyUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANIES
 soapSiteUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANY_SITES
+soapLiteSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_LITE_SAR
+soapSiteSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_SITE_FOR_SAR
 soapPassword: dev

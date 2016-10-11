@@ -10,27 +10,39 @@ import javax.inject.Named;
 public class GuiceModule extends AbstractModule {
 
   @Provides
+  @Named("soapLiteSarUrl")
+  public String provideSpireLiteSarUrl(CustomerApplicationConfiguration config) {
+    return config.getSoapLiteSarUrl();
+  }
+
+  @Provides
+  @Named("soapSiteSarUrl")
+  public String provideSpireSiteSarUrl(CustomerApplicationConfiguration config) {
+    return config.getSoapSiteSarUrl();
+  }
+
+  @Provides
   @Named("soapCompanyUrl")
-  public String provideSpireCompanyUrl(CustomerApplicationConfiguration configuration) {
-    return configuration.getSoapCompanyUrl();
+  public String provideSpireCompanyUrl(CustomerApplicationConfiguration config) {
+    return config.getSoapCompanyUrl();
   }
 
   @Provides
   @Named("soapSiteUrl")
-  public String provideSpireSiteUrl(CustomerApplicationConfiguration configuration) {
-    return configuration.getSoapSiteUrl();
+  public String provideSpireSiteUrl(CustomerApplicationConfiguration config) {
+    return config.getSoapSiteUrl();
   }
 
   @Provides
   @Named("soapUserName")
-  public String provideSpireSiteClientUserName(CustomerApplicationConfiguration configuration) {
-    return configuration.getSoapUserName();
+  public String provideSpireSiteClientUserName(CustomerApplicationConfiguration config) {
+    return config.getSoapUserName();
   }
 
   @Provides
   @Named("soapPassword")
-  public String provideSpireSiteClientPassword(CustomerApplicationConfiguration configuration) {
-    return configuration.getSoapPassword();
+  public String provideSpireSiteClientPassword(CustomerApplicationConfiguration config) {
+    return config.getSoapPassword();
   }
 
   @Override
