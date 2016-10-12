@@ -45,8 +45,10 @@ public class CustomerResource {
   public Response createCustomer(CustomerItem item) {
     Optional<String> sarRef = customerService.createCustomer(item);
     if(sarRef.isPresent()) {
+      LOGGER.info("createCustomer GOOD");
       return goodRequest("sarRef", sarRef.get());
     }
+    LOGGER.info("createCustomer BAD");
     return badRequest("Could not create Customer");
   }
 

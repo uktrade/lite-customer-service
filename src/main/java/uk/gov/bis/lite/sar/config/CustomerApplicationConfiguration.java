@@ -8,11 +8,11 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
-  private String soapLiteSarUrl;
+  private String createLiteSarUrl;
 
   @NotEmpty
   @JsonProperty
-  private String soapSiteSarUrl;
+  private String createSiteForSarUrl;
 
   @NotEmpty
   @JsonProperty
@@ -46,11 +46,11 @@ public class CustomerApplicationConfiguration extends Configuration {
     return soapPassword;
   }
 
-  public String getSoapLiteSarUrl() {
-    return soapLiteSarUrl;
+  public String getCreateLiteSarUrl() {
+    return createLiteSarUrl;
   }
 
-  public String getSoapSiteSarUrl() {
-    return soapSiteSarUrl;
+  public String getCreateSiteForSarUrl() {
+    return createSiteForSarUrl;
   }
 }

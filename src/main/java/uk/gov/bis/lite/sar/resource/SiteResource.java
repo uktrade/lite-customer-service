@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.Site;
+import uk.gov.bis.lite.sar.model.SiteAccessItem;
 import uk.gov.bis.lite.sar.model.SiteItem;
 import uk.gov.bis.lite.sar.service.SiteService;
 
@@ -40,9 +41,25 @@ public class SiteResource {
   public Response createSite(SiteItem item) {
     Optional<String> siteRef = siteService.createSite(item);
     if(siteRef.isPresent()) {
+      LOGGER.info("createSite GOOD");
       return goodRequest("siteRef", siteRef.get());
     }
+    LOGGER.info("createSite BAD");
     return badRequest("Could not create Site");
+  }
+
+  @POST
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  @Path("/siteAccess")
+  public Response siteAccess(SiteAccessItem item) {
+    Optional<Boolean> completed = siteService.siteAccessUpdate(item);
+    if(completed.isPresent()) {
+      LOGGER.info("siteAccess GOOD");
+      return goodRequest("siteAccess", "true");
+    }
+    LOGGER.info("siteAccess BAD");
+    return badRequest("Could not update site access");
   }
 
   @GET

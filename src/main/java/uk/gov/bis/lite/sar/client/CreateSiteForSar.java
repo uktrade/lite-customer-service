@@ -5,16 +5,16 @@ import com.google.inject.name.Named;
 
 import javax.xml.soap.SOAPMessage;
 
-public class LiteSiteClient extends SpireClient {
+public class CreateSiteForSar extends SpireClient {
 
   private static final String VERSION_NO = "1.1";
-  private static final String CREATE_LITE_SAR = "SPIRE_CREATE_LITE_SAR";
-  private static final String SAR_DETAILS = "SAR_DETAILS";
+  private static final String NAMESPACE = "SPIRE_CREATE_SITE_FOR_SAR";
+  private static final String CHILD_NAME = "SITE_DETAILS";
 
   @Inject
-  public LiteSiteClient(@Named("soapSiteSarUrl") String url,
-                        @Named("soapUserName") String userName,
-                        @Named("soapPassword") String password) {
+  public CreateSiteForSar(@Named("createSiteForSarUrl") String url,
+                          @Named("soapUserName") String userName,
+                          @Named("soapPassword") String password) {
     super(url, userName, password);
   }
 
@@ -23,7 +23,7 @@ public class LiteSiteClient extends SpireClient {
    */
   public SOAPMessage createSite(String userId, String sarRef, String division, String liteAddress,
                                 String address, String countryRef) {
-    SOAPMessage request = getRequest(CREATE_LITE_SAR, SAR_DETAILS);
+    SOAPMessage request = getRequest(NAMESPACE, CHILD_NAME);
     addChild(request, "VERSION_NO", VERSION_NO);
     addChild(request, "WUA_ID", userId);
     addChild(request, "SAR_REF", sarRef);

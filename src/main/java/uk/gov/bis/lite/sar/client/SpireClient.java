@@ -1,6 +1,7 @@
 package uk.gov.bis.lite.sar.client;
 
 import com.google.common.base.Stopwatch;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.xml.soap.MessageFactory;
@@ -38,6 +40,14 @@ class SpireClient {
   }
 
   SOAPMessage getRequest(String namespace, String childName) {
+    return doGetRequest(namespace, childName, false);
+  }
+
+  SOAPMessage getSpirRequest(String namespace, String childName) {
+    return doGetRequest(namespace, childName, true);
+  }
+
+  private SOAPMessage doGetRequest(String namespace, String childName, boolean includeSpir) {
     try {
       MessageFactory messageFactory = MessageFactory.newInstance();
       SOAPMessage soapMessage = messageFactory.createMessage();
@@ -45,9 +55,13 @@ class SpireClient {
       SOAPPart soapPart = soapMessage.getSOAPPart();
       SOAPEnvelope envelope = soapPart.getEnvelope();
       envelope.addNamespaceDeclaration("spir", "http://www.fivium.co.uk/fox/webservices/ispire/" + namespace);
-
       SOAPBody soapBody = envelope.getBody();
-      soapBody.addChildElement(childName, "spir");
+
+      if(includeSpir) {
+        soapBody.addChildElement(childName, "spir");
+      } else {
+        soapBody.addChildElement(childName);
+      }
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
       String authorization = Base64.getEncoder().encodeToString((soapClientUserName + ":" + soapClientPassword).getBytes("utf-8"));
@@ -82,6 +96,13 @@ class SpireClient {
       log("response", response);
     }
     return response;
+  }
+
+  /**
+   * Returns optional string, empty if blank
+   */
+  Optional<String> opt(String arg) {
+    return StringUtils.isBlank(arg) ? Optional.empty() : Optional.of(arg);
   }
 
   private SOAPMessage executeRequest(SOAPMessage soap) {

@@ -6,8 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.CustomerApplication;
 import uk.gov.bis.lite.sar.client.CompanyClient;
-import uk.gov.bis.lite.sar.client.LiteCustomerClient;
+import uk.gov.bis.lite.sar.client.CreateLiteSar;
 import uk.gov.bis.lite.sar.client.unmarshall.CompanyUnmarshaller;
+import uk.gov.bis.lite.sar.client.unmarshall.CreateLiteSarUnmarshaller;
 import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.CustomerItem;
 import uk.gov.bis.lite.sar.model.spire.Company;
@@ -24,16 +25,20 @@ public class CustomerService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
-  private LiteCustomerClient liteCustomerClient;
+  private CreateLiteSar createLiteSar;
   private CompanyClient companyClient;
   private CompanyUnmarshaller unmarshaller;
+  private CreateLiteSarUnmarshaller createLiteSarUnmarshaller;
 
   @Inject
-  public CustomerService(LiteCustomerClient liteCustomerClient, CompanyClient companyClient,
-                         CompanyUnmarshaller unmarshaller) {
-    this.liteCustomerClient = liteCustomerClient;
+  public CustomerService(CreateLiteSar createLiteSar, 
+                         CompanyClient companyClient,
+                         CompanyUnmarshaller unmarshaller,
+                         CreateLiteSarUnmarshaller createLiteSarUnmarshaller) {
+    this.createLiteSar = createLiteSar;
     this.companyClient = companyClient;
     this.unmarshaller = unmarshaller;
+    this.createLiteSarUnmarshaller = createLiteSarUnmarshaller;
   }
 
   public Optional<String> createCustomer(CustomerItem item) {
@@ -41,7 +46,7 @@ public class CustomerService {
       return Util.optionalRef("SAR7193");
     }
 
-    SOAPMessage soapMessage = liteCustomerClient.createLiteSar(
+    SOAPMessage soapMessage = createLiteSar.createLiteSar(
         item.getUserId(),
         item.getCustomerName(),
         item.getCustomerType(),
@@ -53,7 +58,9 @@ public class CustomerService {
         item.getCompaniesHouseValidated().toString(),
         item.getEoriNumber(),
         item.getEoriValidated().toString());
-    Util.logSoapResponse(soapMessage);
+
+
+
     return Optional.empty();
   }
 

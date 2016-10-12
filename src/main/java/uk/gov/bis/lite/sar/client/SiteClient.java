@@ -17,7 +17,7 @@ public class SiteClient extends SpireClient {
   }
 
   public SOAPMessage getSitesByCustomerIdUserId(String customerId, String userId) {
-    SOAPMessage request = getRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
+    SOAPMessage request = getSpirRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
     addChild(request, "sarRef", customerId);
     addChild(request, "userId", userId);
     return getResponse(request);

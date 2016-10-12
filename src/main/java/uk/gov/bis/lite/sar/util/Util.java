@@ -13,19 +13,18 @@ public class Util {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Util.class);
 
+  public static Optional<Boolean> randomOptionalBoolean() {
+    if(getRandomBoolean()) {
+      return Optional.of(true);
+    }
+    return Optional.empty();
+  }
+
   public static Optional<String> optionalRef(String ref) {
     if (Util.getRandomBoolean()) {
       return Optional.of(ref);
     }
     return Optional.empty();
-  }
-
-  public static void logSoapResponse(SOAPMessage soapMessage) {
-    try {
-      LOGGER.info("CreateLiteSar response: " + soapMessage.getSOAPBody().getFirstChild().toString());
-    } catch (SOAPException e) {
-      e.printStackTrace();
-    }
   }
 
   public static boolean isBlank(String arg) {

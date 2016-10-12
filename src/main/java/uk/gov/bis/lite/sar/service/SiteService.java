@@ -5,10 +5,11 @@ import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.CustomerApplication;
-import uk.gov.bis.lite.sar.client.LiteSiteClient;
+import uk.gov.bis.lite.sar.client.CreateSiteForSar;
 import uk.gov.bis.lite.sar.client.SiteClient;
 import uk.gov.bis.lite.sar.client.unmarshall.SiteUnmarshaller;
 import uk.gov.bis.lite.sar.model.Site;
+import uk.gov.bis.lite.sar.model.SiteAccessItem;
 import uk.gov.bis.lite.sar.model.SiteItem;
 import uk.gov.bis.lite.sar.model.spire.SpireSite;
 import uk.gov.bis.lite.sar.util.Util;
@@ -26,13 +27,21 @@ public class SiteService {
 
   private SiteClient client;
   private SiteUnmarshaller unmarshaller;
-  private LiteSiteClient liteSiteClient;
+  private CreateSiteForSar createSiteForSar;
 
   @Inject
-  public SiteService(SiteClient client, LiteSiteClient liteSiteClient, SiteUnmarshaller unmarshaller) {
+  public SiteService(SiteClient client, CreateSiteForSar createSiteForSar, SiteUnmarshaller unmarshaller) {
     this.client = client;
-    this.liteSiteClient = liteSiteClient;
+    this.createSiteForSar = createSiteForSar;
     this.unmarshaller = unmarshaller;
+  }
+
+  public Optional<Boolean> siteAccessUpdate(SiteAccessItem item) {
+    if (CustomerApplication.MOCK) {
+      return Util.randomOptionalBoolean();
+    }
+
+    return Optional.empty();
   }
 
   public Optional<String> createSite(SiteItem item) {
@@ -40,14 +49,15 @@ public class SiteService {
       return Util.optionalRef("SITE7193");
     }
 
-    SOAPMessage soapMessage = liteSiteClient.createSite(
+    SOAPMessage soapMessage = createSiteForSar.createSite(
         item.getUserId(),
         item.getSarRef(),
         item.getDivision(), // division?
         item.getLiteAddress(),
         item.getAddress(),
         item.getCountryRef());
-    Util.logSoapResponse(soapMessage);
+
+
     return Optional.empty();
   }
 

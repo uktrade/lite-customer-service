@@ -10,15 +10,15 @@ import javax.inject.Named;
 public class GuiceModule extends AbstractModule {
 
   @Provides
-  @Named("soapLiteSarUrl")
-  public String provideSpireLiteSarUrl(CustomerApplicationConfiguration config) {
-    return config.getSoapLiteSarUrl();
+  @Named("createLiteSarUrl")
+  public String provideSpireCreateLiteSarUrl(CustomerApplicationConfiguration config) {
+    return config.getCreateLiteSarUrl();
   }
 
   @Provides
-  @Named("soapSiteSarUrl")
-  public String provideSpireSiteSarUrl(CustomerApplicationConfiguration config) {
-    return config.getSoapSiteSarUrl();
+  @Named("createSiteForSarUrl")
+  public String provideSpireCreateSiteForSarUrl(CustomerApplicationConfiguration config) {
+    return config.getCreateSiteForSarUrl();
   }
 
   @Provides

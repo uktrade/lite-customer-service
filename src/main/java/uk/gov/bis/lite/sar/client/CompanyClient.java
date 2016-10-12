@@ -21,32 +21,32 @@ public class CompanyClient extends SpireClient {
   }
 
   public SOAPMessage getCompanyByPostCodeEoriNumber(String postCode, String eoriNumber) {
-    SOAPMessage soap = getRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
+    SOAPMessage soap = getSpirRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
     addChild(soap, "postCode", postCode);
     addChild(soap, "eoriNumber", eoriNumber);
     return getResponse(soap);
   }
 
   public SOAPMessage getCompanyByPostCode(String postCode) {
-    SOAPMessage soap = getRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
+    SOAPMessage soap = getSpirRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
     addChild(soap, "postCode", postCode);
     return getResponse(soap);
   }
 
   public SOAPMessage getCompanyByUserId(String userId) {
-    SOAPMessage soap = getRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
+    SOAPMessage soap = getSpirRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
     addChild(soap, "userId", userId);
     return getResponse(soap);
   }
 
   public SOAPMessage getCompanyBySarRef(String sarRef) {
-    SOAPMessage soap = getRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
+    SOAPMessage soap = getSpirRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
     addChild(soap, "sarRef", sarRef);
     return getResponse(soap);
   }
 
   public SOAPMessage getCompanyByName(String name) {
-    SOAPMessage soap = getRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
+    SOAPMessage soap = getSpirRequest(ENVELOPE_NAMESPACE, CHILD_NAME);
     addChild(soap, "companyName", name);
     return getResponse(soap);
   }

@@ -18,12 +18,12 @@ logging:
       threshold: INFO
       target: stderr
 
-#soapUrl: https://www.spireuat.bis.gov.uk/spireuat/fox/ispire/SPIRE_COMPANIES
 soapUserName: bisdev.api@test.com
+soapPassword: dev
 #soapPassword: sp1reUAT
 
 soapCompanyUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANIES
 soapSiteUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANY_SITES
-soapLiteSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_LITE_SAR
-soapSiteSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_SITE_FOR_SAR
-soapPassword: dev
+
+createLiteSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_LITE_SAR
+createSiteForSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_SITE_FOR_SAR
