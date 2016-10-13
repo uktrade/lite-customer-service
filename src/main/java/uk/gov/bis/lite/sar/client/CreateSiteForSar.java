@@ -7,7 +7,7 @@ import javax.xml.soap.SOAPMessage;
 
 public class CreateSiteForSar extends SpireClient {
 
-  private static final String VERSION_NO = "1.1";
+  private static final String VERSION_NO = "1.0";
   private static final String NAMESPACE = "SPIRE_CREATE_SITE_FOR_SAR";
   private static final String CHILD_NAME = "SITE_DETAILS";
 

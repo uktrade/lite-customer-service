@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.Site;
-import uk.gov.bis.lite.sar.model.SiteAccessItem;
+import uk.gov.bis.lite.sar.model.UserRoleItem;
 import uk.gov.bis.lite.sar.model.SiteItem;
 import uk.gov.bis.lite.sar.service.SiteService;
 
@@ -41,24 +41,24 @@ public class SiteResource {
   public Response createSite(SiteItem item) {
     Optional<String> siteRef = siteService.createSite(item);
     if(siteRef.isPresent()) {
-      LOGGER.info("createSite GOOD");
-      return goodRequest("siteRef", siteRef.get());
+      LOGGER.info("createSite goodResponse");
+      return goodResponse(siteRef.get());
     }
-    LOGGER.info("createSite BAD");
+    LOGGER.info("createSite badRequest");
     return badRequest("Could not create Site");
   }
 
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
   @Produces({MediaType.APPLICATION_JSON})
-  @Path("/siteAccess")
-  public Response siteAccess(SiteAccessItem item) {
-    Optional<Boolean> completed = siteService.siteAccessUpdate(item);
-    if(completed.isPresent()) {
-      LOGGER.info("siteAccess GOOD");
-      return goodRequest("siteAccess", "true");
+  @Path("/userRole")
+  public Response userRole(UserRoleItem item) {
+    Optional<String> completed = siteService.userRoleUpdate(item);
+    if(completed.isPresent() && completed.get().equals("COMPLETE")) {
+      LOGGER.info("userRole goodResponse");
+      return goodResponse(completed.get());
     }
-    LOGGER.info("siteAccess BAD");
+    LOGGER.info("userRole badRequest");
     return badRequest("Could not update site access");
   }
 
@@ -67,6 +67,10 @@ public class SiteResource {
   public List<Site> getSites(@NotNull @PathParam("customerId") String customerId,
                              @NotNull @PathParam("userId") String userId) {
     return siteService.getSites(customerId, userId);
+  }
+
+  private Response goodResponse(String value) {
+    return Response.ok("{\"response\": \""+value+"\"}", MediaType.APPLICATION_JSON).build();
   }
 
   private Response goodRequest(String name, String value) {

@@ -16,6 +16,10 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
+  private String editUserRolesUrl;
+
+  @NotEmpty
+  @JsonProperty
   private String soapCompanyUrl;
 
   @NotEmpty
@@ -52,5 +56,9 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   public String getCreateSiteForSarUrl() {
     return createSiteForSarUrl;
+  }
+
+  public String getEditUserRolesUrl() {
+    return editUserRolesUrl;
   }
 }

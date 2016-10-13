@@ -1,5 +1,7 @@
 package uk.gov.bis.lite.sar.client.unmarshall;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -17,7 +19,6 @@ import javax.xml.xpath.XPathFactory;
 abstract class ServiceUnmarshaller {
 
   List<?> execute(SOAPMessage message, String mainTag) {
-
     final SOAPBody soapBody;
     NodeList nodeList;
     try {
@@ -33,7 +34,7 @@ abstract class ServiceUnmarshaller {
     }
   }
 
-  Optional<String> getNodeValue(Node singleSiteNode, XPath xpath, String name) {
+  static Optional<String> getNodeValue(Node singleSiteNode, XPath xpath, String name) {
     try {
       Node node = (Node) xpath.evaluate(name, singleSiteNode, XPathConstants.NODE);
       if (node != null) {

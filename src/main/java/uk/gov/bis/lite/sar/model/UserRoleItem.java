@@ -1,9 +1,10 @@
 package uk.gov.bis.lite.sar.model;
 
-public class SiteAccessItem {
+public class UserRoleItem {
 
   private String userId;
   private String adminUserId;
+  private String sarRef;
   private String siteRef;
 
   public String getUserId() {

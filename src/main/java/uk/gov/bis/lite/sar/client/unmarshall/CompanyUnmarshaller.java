@@ -44,8 +44,8 @@ public class CompanyUnmarshaller extends ServiceUnmarshaller {
     List<Company> foundCompaniesList = new ArrayList<>();
     Stopwatch stopwatch = Stopwatch.createStarted();
     try {
-      nodeList = nodeList.item(0).getChildNodes();
-      Node errorNode = (Node) xpath.evaluate(ERROR, nodeList, XPathConstants.NODE);
+      NodeList nodes = nodeList.item(0).getChildNodes();
+      Node errorNode = (Node) xpath.evaluate(ERROR, nodes, XPathConstants.NODE);
       if (errorNode != null) {
         if (errorNode.getTextContent().contains("companyName not found")) {
           throw new CompanyNotFoundException("CompanyNotFound");
@@ -54,9 +54,9 @@ public class CompanyUnmarshaller extends ServiceUnmarshaller {
         }
       }
 
-      for (int i = 0; i < nodeList.getLength(); i++) {
+      for (int i = 0; i < nodes.getLength(); i++) {
         Company company = new Company();
-        Node currentCompanyNode = nodeList.item(i).cloneNode(true);
+        Node currentCompanyNode = nodes.item(i).cloneNode(true);
         if (currentCompanyNode.getNodeType() == Node.ELEMENT_NODE) {
 
           getNodeValue(currentCompanyNode, xpath, REFERENCE).ifPresent(company::setSarRef);

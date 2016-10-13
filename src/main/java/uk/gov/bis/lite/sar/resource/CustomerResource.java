@@ -45,10 +45,10 @@ public class CustomerResource {
   public Response createCustomer(CustomerItem item) {
     Optional<String> sarRef = customerService.createCustomer(item);
     if(sarRef.isPresent()) {
-      LOGGER.info("createCustomer GOOD");
-      return goodRequest("sarRef", sarRef.get());
+      LOGGER.info("createCustomer goodResponse");
+      return goodResponse(sarRef.get());
     }
-    LOGGER.info("createCustomer BAD");
+    LOGGER.info("createCustomer badRequest");
     return badRequest("Could not create Customer");
   }
 
@@ -83,6 +83,10 @@ public class CustomerResource {
         .entity(ImmutableMap.of("code", Response.Status.BAD_REQUEST, "message", message))
         .type(MediaType.APPLICATION_JSON_TYPE)
         .build();
+  }
+
+  private Response goodResponse(String value) {
+    return Response.ok("{\"response\": \""+value+"\"}", MediaType.APPLICATION_JSON).build();
   }
 
   private Response goodRequest(String name, String value) {

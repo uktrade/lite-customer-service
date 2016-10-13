@@ -22,6 +22,12 @@ public class GuiceModule extends AbstractModule {
   }
 
   @Provides
+  @Named("editUserRolesUrl")
+  public String provideSpireEditUserRolesUrl(CustomerApplicationConfiguration config) {
+    return config.getEditUserRolesUrl();
+  }
+
+  @Provides
   @Named("soapCompanyUrl")
   public String provideSpireCompanyUrl(CustomerApplicationConfiguration config) {
     return config.getSoapCompanyUrl();

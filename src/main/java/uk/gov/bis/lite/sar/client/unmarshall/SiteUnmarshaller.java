@@ -10,7 +10,6 @@ import uk.gov.bis.lite.sar.model.spire.SpireSite;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.xml.soap.SOAPMessage;
@@ -37,8 +36,8 @@ public class SiteUnmarshaller extends ServiceUnmarshaller {
     List<SpireSite> foundSitesList = new ArrayList<>();
     Stopwatch stopwatch = Stopwatch.createStarted();
     try {
-      nodeList = nodeList.item(0).getChildNodes();
-      Node errorNode = (Node) xpath.evaluate(ERROR, nodeList, XPathConstants.NODE);
+      NodeList nodes = nodeList.item(0).getChildNodes();
+      Node errorNode = (Node) xpath.evaluate(ERROR, nodes, XPathConstants.NODE);
       if (errorNode != null) {
         if (errorNode.getTextContent().contains(" not found")) {
           throw new SiteNotFoundException("SiteNotFound");
@@ -46,9 +45,9 @@ public class SiteUnmarshaller extends ServiceUnmarshaller {
           throw new RuntimeException("Unexpected Error Occurred: " + errorNode.getTextContent());
         }
       }
-      for (int i = 0; i < nodeList.getLength(); i++) {
+      for (int i = 0; i < nodes.getLength(); i++) {
         SpireSite site = new SpireSite();
-        Node singleSiteNode = nodeList.item(i).cloneNode(true);
+        Node singleSiteNode = nodes.item(i).cloneNode(true);
         if (singleSiteNode.getNodeType() == Node.ELEMENT_NODE) {
           getNodeValue(singleSiteNode, xpath, SITE_REF).ifPresent(site::setSiteRef);
           getNodeValue(singleSiteNode, xpath, SAR_REF).ifPresent(site::setSarRef);

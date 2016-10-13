@@ -8,7 +8,7 @@ import uk.gov.bis.lite.sar.CustomerApplication;
 import uk.gov.bis.lite.sar.client.CompanyClient;
 import uk.gov.bis.lite.sar.client.CreateLiteSar;
 import uk.gov.bis.lite.sar.client.unmarshall.CompanyUnmarshaller;
-import uk.gov.bis.lite.sar.client.unmarshall.CreateLiteSarUnmarshaller;
+import uk.gov.bis.lite.sar.client.unmarshall.Unmarshaller;
 import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.CustomerItem;
 import uk.gov.bis.lite.sar.model.spire.Company;
@@ -27,18 +27,21 @@ public class CustomerService {
 
   private CreateLiteSar createLiteSar;
   private CompanyClient companyClient;
-  private CompanyUnmarshaller unmarshaller;
-  private CreateLiteSarUnmarshaller createLiteSarUnmarshaller;
+  private CompanyUnmarshaller companyUnmarshaller;
+  private Unmarshaller unmarshaller;
+
+  private static final String CLS_RESPONSE_ELEMENT_NAME = "SAR_REF";
+  private static final String CLS_SAR_XPATH_EXPRESSION = "//*[local-name()='RESPONSE']";
 
   @Inject
-  public CustomerService(CreateLiteSar createLiteSar, 
+  public CustomerService(CreateLiteSar createLiteSar,
                          CompanyClient companyClient,
-                         CompanyUnmarshaller unmarshaller,
-                         CreateLiteSarUnmarshaller createLiteSarUnmarshaller) {
+                         CompanyUnmarshaller companyUnmarshaller,
+                         Unmarshaller unmarshaller) {
     this.createLiteSar = createLiteSar;
     this.companyClient = companyClient;
+    this.companyUnmarshaller = companyUnmarshaller;
     this.unmarshaller = unmarshaller;
-    this.createLiteSarUnmarshaller = createLiteSarUnmarshaller;
   }
 
   public Optional<String> createCustomer(CustomerItem item) {
@@ -46,7 +49,7 @@ public class CustomerService {
       return Util.optionalRef("SAR7193");
     }
 
-    SOAPMessage soapMessage = createLiteSar.createLiteSar(
+    SOAPMessage message = createLiteSar.createLiteSar(
         item.getUserId(),
         item.getCustomerName(),
         item.getCustomerType(),
@@ -59,32 +62,30 @@ public class CustomerService {
         item.getEoriNumber(),
         item.getEoriValidated().toString());
 
-
-
-    return Optional.empty();
+    return unmarshaller.getResponse(message, CLS_RESPONSE_ELEMENT_NAME, CLS_SAR_XPATH_EXPRESSION);
   }
 
   public List<Customer> getCustomersBySearch(String postcode) {
     final SOAPMessage soapMessage = companyClient.getCompanyByPostCode(postcode);
-    List<Company> companies = unmarshaller.execute(soapMessage);
+    List<Company> companies = companyUnmarshaller.execute(soapMessage);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersBySearch(String postcode, String eoriNumber) {
     final SOAPMessage soapMessage = companyClient.getCompanyByPostCodeEoriNumber(postcode, eoriNumber);
-    List<Company> companies = unmarshaller.execute(soapMessage);
+    List<Company> companies = companyUnmarshaller.execute(soapMessage);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersByUserId(String userId) {
     final SOAPMessage soapMessage = companyClient.getCompanyByUserId(userId);
-    List<Company> companies = unmarshaller.execute(soapMessage);
+    List<Company> companies = companyUnmarshaller.execute(soapMessage);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersById(String customerId) {
     final SOAPMessage soapMessage = companyClient.getCompanyBySarRef(customerId);
-    List<Company> companies = unmarshaller.execute(soapMessage);
+    List<Company> companies = companyUnmarshaller.execute(soapMessage);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 }
