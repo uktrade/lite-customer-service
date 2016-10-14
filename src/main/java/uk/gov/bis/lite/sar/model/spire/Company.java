@@ -17,7 +17,6 @@ public class Company {
   private String countryOfOrigin;
   private List<Website> websites;
 
-
   public String getSarRef() {
     return sarRef;
   }

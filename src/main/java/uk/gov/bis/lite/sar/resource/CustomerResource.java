@@ -2,12 +2,10 @@ package uk.gov.bis.lite.sar.resource;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.CustomerItem;
-import uk.gov.bis.lite.sar.model.SiteItem;
 import uk.gov.bis.lite.sar.service.CustomerService;
 import uk.gov.bis.lite.sar.util.Util;
 
@@ -44,7 +42,7 @@ public class CustomerResource {
   @Path("/customer")
   public Response createCustomer(CustomerItem item) {
     Optional<String> sarRef = customerService.createCustomer(item);
-    if(sarRef.isPresent()) {
+    if (sarRef.isPresent()) {
       LOGGER.info("createCustomer goodResponse");
       return goodResponse(sarRef.get());
     }
@@ -86,14 +84,6 @@ public class CustomerResource {
   }
 
   private Response goodResponse(String value) {
-    return Response.ok("{\"response\": \""+value+"\"}", MediaType.APPLICATION_JSON).build();
-  }
-
-  private Response goodRequest(String name, String value) {
-    return Response.ok("{\""+name+"\": \""+value+"\"}", MediaType.APPLICATION_JSON).build();
-  }
-
-  private Response goodRequest() {
-    return Response.ok("{\"status\": \"success\"}", MediaType.APPLICATION_JSON).build();
+    return Response.ok("{\"response\": \"" + value + "\"}", MediaType.APPLICATION_JSON).build();
   }
 }

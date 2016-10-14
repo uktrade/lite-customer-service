@@ -9,7 +9,6 @@ public class SiteItem {
   private String address;
   private String countryRef;
 
-
   public String getUserId() {
     return userId;
   }

@@ -35,6 +35,9 @@ public class SiteService {
   private static final String EUR_RESPONSE_ELEMENT_NAME = "RESULT";
   private static final String RESPONSE_XPATH_EXPRESSION = "//*[local-name()='RESPONSE']";
 
+  public static final String USER_ROLE_UPDATE_STATUS_COMPLETE = "COMPLETE";
+  private static final String USER_ROLE_UPDATE_STATUS_ERROR = "Error";
+
   @Inject
   public SiteService(SiteClient client,
                      CreateSiteForSar createSiteForSar,

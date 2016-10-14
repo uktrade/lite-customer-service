@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class OptConsumer<T> {
+
   private Optional<T> optional;
 
   private OptConsumer(Optional<T> optional) {

@@ -23,14 +23,11 @@ public class EditUserRoles extends SpireClient {
     super(url, userName, password);
   }
 
-  /**
-   * createSite
-   */
   public SOAPMessage updateUserSiteToAdmin(String userId, String adminUserId, String siteRef) {
     SOAPMessage request = getRequest(NAMESPACE, CHILD_NAME);
     addChild(request, "VERSION_NO", VERSION_NO);
-    addChild(request, "USER_WUA_ID", userId);
     addChild(request, "ADMIN_WUA_ID", adminUserId);
+    addChild(request, "USER_WUA_ID", userId);
     addChild(request, "SITE_REF", siteRef);
     addChild(request, "ROLE_TYPE", ROLE_TYPE_ADMIN);
     return getResponse(request);

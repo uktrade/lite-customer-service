@@ -40,7 +40,7 @@ public class SiteResource {
   @Path("/site")
   public Response createSite(SiteItem item) {
     Optional<String> siteRef = siteService.createSite(item);
-    if(siteRef.isPresent()) {
+    if (siteRef.isPresent()) {
       LOGGER.info("createSite goodResponse");
       return goodResponse(siteRef.get());
     }
@@ -54,7 +54,7 @@ public class SiteResource {
   @Path("/userRole")
   public Response userRole(UserRoleItem item) {
     Optional<String> completed = siteService.userRoleUpdate(item);
-    if(completed.isPresent() && completed.get().equals("COMPLETE")) {
+    if (completed.isPresent() && completed.get().equals(SiteService.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
       LOGGER.info("userRole goodResponse");
       return goodResponse(completed.get());
     }
@@ -70,11 +70,7 @@ public class SiteResource {
   }
 
   private Response goodResponse(String value) {
-    return Response.ok("{\"response\": \""+value+"\"}", MediaType.APPLICATION_JSON).build();
-  }
-
-  private Response goodRequest(String name, String value) {
-    return Response.ok("{\""+name+"\": \""+value+"\"}", MediaType.APPLICATION_JSON).build();
+    return Response.ok("{\"response\": \"" + value + "\"}", MediaType.APPLICATION_JSON).build();
   }
 
   private Response badRequest(String message) {

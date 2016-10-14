@@ -14,7 +14,6 @@ public class CustomerItem {
   private String eoriNumber;
   private boolean eoriValidated;
 
-
   public String getUserId() {
     return userId;
   }

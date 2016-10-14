@@ -34,17 +34,17 @@ public class CreateLiteSar extends SpireClient {
     addChild(request, "VERSION_NO", VERSION_NO);
     addChild(request, "WUA_ID", userId);
 
-    OptConsumer.of(opt(customerName)).ifPresent(s -> this.addChild(request, "CUSTOMER_NAME", s))
+    OptConsumer.of(Util.opt(customerName)).ifPresent(s -> this.addChild(request, "CUSTOMER_NAME", s))
         .ifNotPresent(() -> LOGGER.warn("No CUSTOMER_NAME value"));
-    OptConsumer.of(opt(customerType)).ifPresent(s -> this.addChild(request, "CUSTOMER_TYPE", s))
+    OptConsumer.of(Util.opt(customerType)).ifPresent(s -> this.addChild(request, "CUSTOMER_TYPE", s))
         .ifNotPresent(() -> LOGGER.warn("No CUSTOMER_TYPE value"));
-    OptConsumer.of(opt(liteAddress)).ifPresent(s -> this.addChild(request, "LITE_ADDRESS", s))
+    OptConsumer.of(Util.opt(liteAddress)).ifPresent(s -> this.addChild(request, "LITE_ADDRESS", s))
         .ifNotPresent(() -> LOGGER.warn("No LITE_ADDRESS value"));
-    OptConsumer.of(opt(address)).ifPresent(s -> this.addChild(request, "ADDRESS", s))
+    OptConsumer.of(Util.opt(address)).ifPresent(s -> this.addChild(request, "ADDRESS", s))
         .ifNotPresent(() -> LOGGER.warn("No ADDRESS value"));
-    OptConsumer.of(opt(countryRef)).ifPresent(s -> this.addChild(request, "COUNTRY_REF", s))
+    OptConsumer.of(Util.opt(countryRef)).ifPresent(s -> this.addChild(request, "COUNTRY_REF", s))
         .ifNotPresent(() -> LOGGER.warn("No COUNTRY_REF value"));
-    OptConsumer.of(opt(website)).ifPresent(s -> this.addChild(request, "WEBSITE", s))
+    OptConsumer.of(Util.opt(website)).ifPresent(s -> this.addChild(request, "WEBSITE", s))
         .ifNotPresent(() -> LOGGER.warn("No WEBSITE value"));
 
     if(!Util.isBlank(companiesHouseNumber)) {

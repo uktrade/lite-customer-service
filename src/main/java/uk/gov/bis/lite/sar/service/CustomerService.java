@@ -45,10 +45,6 @@ public class CustomerService {
   }
 
   public Optional<String> createCustomer(CustomerItem item) {
-    if (CustomerApplication.MOCK) {
-      return Util.optionalRef("SAR7193");
-    }
-
     SOAPMessage message = createLiteSar.createLiteSar(
         item.getUserId(),
         item.getCustomerName(),
@@ -61,7 +57,6 @@ public class CustomerService {
         item.getCompaniesHouseValidated().toString(),
         item.getEoriNumber(),
         item.getEoriValidated().toString());
-
     return unmarshaller.getResponse(message, CLS_RESPONSE_ELEMENT_NAME, CLS_SAR_XPATH_EXPRESSION);
   }
 
