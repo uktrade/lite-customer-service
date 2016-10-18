@@ -9,7 +9,10 @@ import ru.vyarus.dropwizard.guice.module.installer.feature.jersey.ResourceInstal
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.sar.config.guice.GuiceModule;
 import uk.gov.bis.lite.sar.exception.CompanyNotFoundException;
+import uk.gov.bis.lite.sar.exception.CreateException;
 import uk.gov.bis.lite.sar.exception.SiteNotFoundException;
+import uk.gov.bis.lite.sar.resource.CreateCustomerResource;
+import uk.gov.bis.lite.sar.resource.CreateSiteResource;
 import uk.gov.bis.lite.sar.resource.CustomerResource;
 import uk.gov.bis.lite.sar.resource.SiteResource;
 
@@ -21,6 +24,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
 
   @Override
   public void run(CustomerApplicationConfiguration configuration, Environment environment) {
+    environment.jersey().register(CreateException.ServiceExceptionMapper.class);
     environment.jersey().register(CompanyNotFoundException.CompanyNotFoundExceptionHandler.class);
     environment.jersey().register(SiteNotFoundException.SiteNotFoundExceptionHandler.class);
   }
@@ -31,7 +35,8 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
         GuiceBundle.<CustomerApplicationConfiguration>builder()
             .modules(new GuiceModule())
             .installers(ResourceInstaller.class)
-            .extensions(CustomerResource.class, SiteResource.class)
+            .extensions(CustomerResource.class, CreateCustomerResource.class,
+                SiteResource.class, CreateSiteResource.class)
             .build(Stage.PRODUCTION);
 
     bootstrap.addBundle(guiceBundle);

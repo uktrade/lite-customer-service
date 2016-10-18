@@ -1,18 +1,23 @@
 package uk.gov.bis.lite.sar.model;
 
+
+import org.apache.commons.lang3.StringUtils;
+
 public class CustomerItem {
 
   private String userId;
   private String customerName;
   private String customerType;
-  private String liteAddress;
-  private String address;
-  private String countryRef;
+  private AddressItem addressItem;
   private String website;
   private String companiesHouseNumber;
-  private boolean companiesHouseValidated;
+  private Boolean companiesHouseValidated;
   private String eoriNumber;
-  private boolean eoriValidated;
+  private Boolean eoriValidated;
+
+  public boolean hasMandatoryFields() {
+    return !StringUtils.isBlank(userId) && addressItem != null;
+  }
 
   public String getUserId() {
     return userId;
@@ -38,28 +43,12 @@ public class CustomerItem {
     this.customerType = customerType;
   }
 
-  public String getLiteAddress() {
-    return liteAddress;
+  public AddressItem getAddressItem() {
+    return addressItem;
   }
 
-  public void setLiteAddress(String liteAddress) {
-    this.liteAddress = liteAddress;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getCountryRef() {
-    return countryRef;
-  }
-
-  public void setCountryRef(String countryRef) {
-    this.countryRef = countryRef;
+  public void setAddressItem(AddressItem addressItem) {
+    this.addressItem = addressItem;
   }
 
   public String getWebsite() {
@@ -82,7 +71,7 @@ public class CustomerItem {
     return companiesHouseValidated;
   }
 
-  public void setCompaniesHouseValidated(boolean companiesHouseValidated) {
+  public void setCompaniesHouseValidated(Boolean companiesHouseValidated) {
     this.companiesHouseValidated = companiesHouseValidated;
   }
 
@@ -98,7 +87,7 @@ public class CustomerItem {
     return eoriValidated;
   }
 
-  public void setEoriValidated(boolean eoriValidated) {
+  public void setEoriValidated(Boolean eoriValidated) {
     this.eoriValidated = eoriValidated;
   }
 }

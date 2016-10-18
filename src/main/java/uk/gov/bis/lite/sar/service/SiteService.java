@@ -9,6 +9,7 @@ import uk.gov.bis.lite.sar.client.EditUserRoles;
 import uk.gov.bis.lite.sar.client.SiteClient;
 import uk.gov.bis.lite.sar.client.unmarshall.SiteUnmarshaller;
 import uk.gov.bis.lite.sar.client.unmarshall.Unmarshaller;
+import uk.gov.bis.lite.sar.exception.CreateException;
 import uk.gov.bis.lite.sar.model.Site;
 import uk.gov.bis.lite.sar.model.UserRoleItem;
 import uk.gov.bis.lite.sar.model.SiteItem;
@@ -60,14 +61,12 @@ public class SiteService {
   }
 
   public Optional<String> createSite(SiteItem item) {
-    SOAPMessage message = createSiteForSar.createSite(
-        item.getUserId(),
-        item.getSarRef(),
-        item.getDivision(),
-        item.getLiteAddress(),
-        item.getAddress(),
-        item.getCountryRef());
-    return unmarshaller.getResponse(message, CSFS_RESPONSE_ELEMENT_NAME, RESPONSE_XPATH_EXPRESSION);
+    if(item.hasMandatoryFields()) {
+      SOAPMessage message = createSiteForSar.createSite(item);
+      return unmarshaller.getResponse(message, CSFS_RESPONSE_ELEMENT_NAME, RESPONSE_XPATH_EXPRESSION);
+    } else {
+      throw new CreateException("Mandatory fields missing");
+    }
   }
 
   public List<Site> getSites(String customerId, String userId) {

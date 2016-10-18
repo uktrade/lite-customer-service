@@ -18,13 +18,19 @@ logging:
       threshold: INFO
       target: stderr
 
-soapUserName: bisdev.api@test.com
-soapPassword: dev
-#soapPassword: sp1reUAT
+# soapUserName: bisdev.api@test.com
+# soapPassword: dev
+soapUserName: bisuat.api@test.com
+soapPassword: sp1reUAT
 
-soapCompanyUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANIES
-soapSiteUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANY_SITES
+# ssoapCompanyUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANIES
+# ssoapSiteUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_COMPANY_SITES
+soapCompanyUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/SPIRE_COMPANIES
+soapSiteUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/SPIRE_COMPANY_SITES
 
-createLiteSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_LITE_SAR
-createSiteForSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_SITE_FOR_SAR
-editUserRolesUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_EDIT_USER_ROLES
+# createLiteSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_LITE_SAR
+# createSiteForSarUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_CREATE_SITE_FOR_SAR
+# editUserRolesUrl: https://spiredevalpha.fivium.co.uk/spirefox4dev/fox/ispire/SPIRE_EDIT_USER_ROLES
+createLiteSarUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/SPIRE_CREATE_LITE_SAR
+createSiteForSarUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/SPIRE_CREATE_SITE_FOR_SAR
+editUserRolesUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/SPIRE_EDIT_USER_ROLES

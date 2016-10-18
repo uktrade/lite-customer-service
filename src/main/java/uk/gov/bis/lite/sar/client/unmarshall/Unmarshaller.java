@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPException;
@@ -29,13 +30,13 @@ public class Unmarshaller {
       final SOAPBody soapBody = message.getSOAPBody();
       XPath xpath = XPathFactory.newInstance().newXPath();
       NodeList nodeList = (NodeList) xpath.evaluate(expression, soapBody, XPathConstants.NODESET);
-      if (nodeList != null) {
+      if (nodeList != null && nodeList.item(0) != null) {
         return singleElementNodeResult(nodeList, xpath, elementName);
       }
-      return null;
     } catch (SOAPException | XPathExpressionException e) {
       throw new RuntimeException("An error occurred while extracting the SOAP Response Body", e);
     }
+    return Optional.empty();
   }
 
   private Optional<String> singleElementNodeResult(NodeList nodeList, XPath xpath, String nodeName) {
@@ -54,7 +55,7 @@ public class Unmarshaller {
         .filter(node -> node.getNodeType() == Node.ELEMENT_NODE)
         .filter(node -> node.getNodeName().equals(nodeName))
         .map(this::getText)
-        .reduce("", (s, t) -> s + t);
+        .collect(Collectors.joining());
   }
 
   public Optional<String> errorCheck(NodeList nodes, XPath xpath) {

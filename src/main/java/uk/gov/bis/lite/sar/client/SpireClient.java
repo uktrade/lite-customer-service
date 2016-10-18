@@ -1,8 +1,11 @@
 package uk.gov.bis.lite.sar.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.sar.model.AddressItem;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,6 +31,8 @@ class SpireClient {
   private String soapUrl;
   private String soapClientUserName;
   private String soapClientPassword;
+  private static String NEWLINE = System.lineSeparator();
+  private final ObjectMapper objectMapper;
 
   private boolean logRequest = true;
   private boolean logResponse = true;
@@ -36,6 +41,7 @@ class SpireClient {
     this.soapUrl = soapUrl;
     this.soapClientUserName = clientUserName;
     this.soapClientPassword = clientPassword;
+    this.objectMapper = new ObjectMapper();
   }
 
   SOAPMessage getRequest(String namespace, String childName) {
@@ -109,6 +115,27 @@ class SpireClient {
       log("response", response);
     }
     return response;
+  }
+
+  protected String getFriendlyAddress(AddressItem item) {
+    String address = item.getLine1() + NEWLINE;
+    address = address + item.getLine2() + NEWLINE;
+    address = address + item.getLine2() + NEWLINE;
+    address = address + item.getTown() + NEWLINE;
+    address = address + item.getPostcode() + NEWLINE;
+    address = address + item.getCounty() + NEWLINE;
+    address = address + item.getCountry() + NEWLINE;
+    return address;
+  }
+
+  protected String getAddressItemJson(AddressItem item) {
+    String json = "";
+    try {
+      json = objectMapper.writeValueAsString(item).replaceAll("\\s{2,}", " ").trim();
+    } catch (JsonProcessingException e) {
+      LOGGER.error("JsonProcessingException", e);
+    }
+    return json;
   }
 
   private SOAPMessage executeRequest(SOAPMessage message) {

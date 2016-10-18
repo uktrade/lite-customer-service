@@ -4,15 +4,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.CustomerApplication;
 import uk.gov.bis.lite.sar.client.CompanyClient;
 import uk.gov.bis.lite.sar.client.CreateLiteSar;
 import uk.gov.bis.lite.sar.client.unmarshall.CompanyUnmarshaller;
 import uk.gov.bis.lite.sar.client.unmarshall.Unmarshaller;
+import uk.gov.bis.lite.sar.exception.CreateException;
 import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.CustomerItem;
 import uk.gov.bis.lite.sar.model.spire.Company;
-import uk.gov.bis.lite.sar.util.Util;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,19 +44,12 @@ public class CustomerService {
   }
 
   public Optional<String> createCustomer(CustomerItem item) {
-    SOAPMessage message = createLiteSar.createLiteSar(
-        item.getUserId(),
-        item.getCustomerName(),
-        item.getCustomerType(),
-        item.getLiteAddress(),
-        item.getAddress(),
-        item.getCountryRef(),
-        item.getWebsite(),
-        item.getCompaniesHouseNumber(),
-        item.getCompaniesHouseValidated().toString(),
-        item.getEoriNumber(),
-        item.getEoriValidated().toString());
-    return unmarshaller.getResponse(message, CLS_RESPONSE_ELEMENT_NAME, CLS_SAR_XPATH_EXPRESSION);
+    if(item.hasMandatoryFields()) {
+      SOAPMessage message = createLiteSar.createLiteSar(item);
+      return unmarshaller.getResponse(message, CLS_RESPONSE_ELEMENT_NAME, CLS_SAR_XPATH_EXPRESSION);
+    } else {
+      throw new CreateException("Mandatory fields missing");
+    }
   }
 
   public List<Customer> getCustomersBySearch(String postcode) {
@@ -83,4 +75,5 @@ public class CustomerService {
     List<Company> companies = companyUnmarshaller.execute(soapMessage);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
+
 }

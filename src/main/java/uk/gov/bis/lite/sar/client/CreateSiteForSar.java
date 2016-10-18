@@ -2,6 +2,7 @@ package uk.gov.bis.lite.sar.client;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import uk.gov.bis.lite.sar.model.SiteItem;
 
 import javax.xml.soap.SOAPMessage;
 
@@ -21,17 +22,18 @@ public class CreateSiteForSar extends SpireClient {
   /**
    * createSite
    */
-  public SOAPMessage createSite(String userId, String sarRef, String division, String liteAddress,
-                                String address, String countryRef) {
+  public SOAPMessage createSite(SiteItem item) {
+
     SOAPMessage request = getRequest(NAMESPACE, CHILD_NAME);
     addChild(request, "VERSION_NO", VERSION_NO);
-    addChild(request, "WUA_ID", userId);
-    addChild(request, "SAR_REF", sarRef);
-    addChild(request, "DIVISION", division);
-    addChild(request, "LITE_ADDRESS", liteAddress);
-    addChild(request, "ADDRESS", address);
-    addChild(request, "COUNTRY_REF", countryRef);
+
+    addChild(request, "WUA_ID", item.getUserId());
+    addChild(request, "SAR_REF", item.getSarRef());
+    addChild(request, "DIVISION", item.getSiteName());
+    addChild(request, "LITE_ADDRESS", getAddressItemJson(item.getAddressItem()));
+    addChild(request, "ADDRESS", getFriendlyAddress(item.getAddressItem()));
+    addChild(request, "COUNTRY_REF", item.getAddressItem().getCountry());
+
     return getResponse(request);
   }
-
 }

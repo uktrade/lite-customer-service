@@ -1,62 +1,54 @@
 package uk.gov.bis.lite.sar.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.util.OptConsumer;
-import uk.gov.bis.lite.sar.util.Util;
+import org.apache.commons.lang3.StringUtils;
+import uk.gov.bis.lite.sar.model.CustomerItem;
 
 import javax.xml.soap.SOAPMessage;
 
 public class CreateLiteSar extends SpireClient {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CreateLiteSar.class);
   private static final String VERSION_NO = "1.1";
   private static final String NAMESPACE = "SPIRE_CREATE_LITE_SAR";
   private static final String CHILD_NAME = "SAR_DETAILS";
+  private final ObjectMapper objectMapper;
 
   @Inject
   public CreateLiteSar(@Named("createLiteSarUrl") String url,
                        @Named("soapUserName") String userName,
                        @Named("soapPassword") String password) {
     super(url, userName, password);
+    this.objectMapper = new ObjectMapper();
   }
 
   /**
    * createLiteSar
    */
-  public SOAPMessage createLiteSar(String userId, String customerName, String customerType, String liteAddress,
-                                   String address, String countryRef, String website, String companiesHouseNumber,
-                                   String companiesHouseValidated, String eoriNumber, String eoriValidated) {
+  public SOAPMessage createLiteSar(CustomerItem item) {
     SOAPMessage request = getRequest(NAMESPACE, CHILD_NAME);
 
     addChild(request, "VERSION_NO", VERSION_NO);
-    addChild(request, "WUA_ID", userId);
+    addChild(request, "WUA_ID", item.getUserId());
+    addChild(request, "CUSTOMER_NAME", item.getCustomerName());
+    addChild(request, "CUSTOMER_TYPE", item.getCustomerType());
+    addChild(request, "LITE_ADDRESS", getAddressItemJson(item.getAddressItem()));
+    addChild(request, "ADDRESS", getFriendlyAddress(item.getAddressItem()));
+    addChild(request, "COUNTRY_REF", item.getAddressItem().getCountry());
+    addChild(request, "WEBSITE", item.getWebsite());
 
-    OptConsumer.of(Util.opt(customerName)).ifPresent(s -> this.addChild(request, "CUSTOMER_NAME", s))
-        .ifNotPresent(() -> LOGGER.warn("No CUSTOMER_NAME value"));
-    OptConsumer.of(Util.opt(customerType)).ifPresent(s -> this.addChild(request, "CUSTOMER_TYPE", s))
-        .ifNotPresent(() -> LOGGER.warn("No CUSTOMER_TYPE value"));
-    OptConsumer.of(Util.opt(liteAddress)).ifPresent(s -> this.addChild(request, "LITE_ADDRESS", s))
-        .ifNotPresent(() -> LOGGER.warn("No LITE_ADDRESS value"));
-    OptConsumer.of(Util.opt(address)).ifPresent(s -> this.addChild(request, "ADDRESS", s))
-        .ifNotPresent(() -> LOGGER.warn("No ADDRESS value"));
-    OptConsumer.of(Util.opt(countryRef)).ifPresent(s -> this.addChild(request, "COUNTRY_REF", s))
-        .ifNotPresent(() -> LOGGER.warn("No COUNTRY_REF value"));
-    OptConsumer.of(Util.opt(website)).ifPresent(s -> this.addChild(request, "WEBSITE", s))
-        .ifNotPresent(() -> LOGGER.warn("No WEBSITE value"));
-
-    if(!Util.isBlank(companiesHouseNumber)) {
+    String companiesHouseNumber = item.getCompaniesHouseNumber();
+    if(!StringUtils.isBlank(companiesHouseNumber)) {
       addChild(request, "COMPANIES_HOUSE_NUMBER", companiesHouseNumber);
-      addChild(request, "COMPANIES_HOUSE_VALIDATED", companiesHouseValidated);
+      addChild(request, "COMPANIES_HOUSE_VALIDATED", item.getCompaniesHouseValidated().toString());
     }
-    if(!Util.isBlank(eoriNumber)) {
+    String eoriNumber = item.getEoriNumber();
+    if(!StringUtils.isBlank(eoriNumber)) {
       addChild(request, "EORI_NUMBER", eoriNumber);
-      addChild(request, "EORI_VALIDATED", eoriValidated);
+      addChild(request, "EORI_VALIDATED", item.getEoriValidated().toString());
     }
     return getResponse(request);
   }
-
 
 }

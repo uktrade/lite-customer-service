@@ -37,20 +37,6 @@ public class SiteResource {
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
   @Produces({MediaType.APPLICATION_JSON})
-  @Path("/site")
-  public Response createSite(SiteItem item) {
-    Optional<String> siteRef = siteService.createSite(item);
-    if (siteRef.isPresent()) {
-      LOGGER.info("createSite goodResponse");
-      return goodResponse(siteRef.get());
-    }
-    LOGGER.info("createSite badRequest");
-    return badRequest("Could not create Site");
-  }
-
-  @POST
-  @Consumes({MediaType.APPLICATION_JSON})
-  @Produces({MediaType.APPLICATION_JSON})
   @Path("/userRole")
   public Response userRole(UserRoleItem item) {
     Optional<String> completed = siteService.userRoleUpdate(item);
