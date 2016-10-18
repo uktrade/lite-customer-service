@@ -55,6 +55,7 @@ public class SiteService {
   public Optional<String> userRoleUpdate(UserRoleItem item) {
     SOAPMessage message = editUserRoles.updateUserSiteToAdmin(
         item.getUserId(),
+        item.getRoleType(),
         item.getAdminUserId(),
         item.getSiteRef());
     return unmarshaller.getResponse(message, EUR_RESPONSE_ELEMENT_NAME, RESPONSE_XPATH_EXPRESSION);
