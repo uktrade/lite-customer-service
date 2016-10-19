@@ -15,10 +15,6 @@ public class CustomerItem {
   private String eoriNumber;
   private Boolean eoriValidated;
 
-  public boolean hasMandatoryFields() {
-    return !StringUtils.isBlank(userId) && addressItem != null;
-  }
-
   public String getUserId() {
     return userId;
   }

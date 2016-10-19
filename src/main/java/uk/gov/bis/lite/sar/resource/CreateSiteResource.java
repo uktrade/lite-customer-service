@@ -34,12 +34,8 @@ public class CreateSiteResource {
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/create-site")
   public Response createSite(SiteItem item) {
-    Optional<String> siteRef = siteService.createSite(item);
-    if (siteRef.isPresent()) {
-      return goodResponse(siteRef.get());
-    } else {
-      throw new CreateException("Could not create Site");
-    }
+    String siteRef = siteService.createSite(item);
+    return goodResponse(siteRef);
   }
 
   private Response goodResponse(String value) {

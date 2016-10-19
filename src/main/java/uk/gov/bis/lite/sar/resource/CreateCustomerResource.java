@@ -34,12 +34,8 @@ public class CreateCustomerResource {
   @Path("/create-customer")
   public Response createCustomer(CustomerItem item) {
     LOGGER.info("createCustomer");
-    Optional<String> sarRef = customerService.createCustomer(item);
-    if (sarRef.isPresent()) {
-      return goodResponse(sarRef.get());
-    } else {
-      throw new CreateException("Could not create Customer");
-    }
+    String sarRef = customerService.createCustomer(item);
+    return goodResponse(sarRef);
   }
 
   private Response goodResponse(String value) {

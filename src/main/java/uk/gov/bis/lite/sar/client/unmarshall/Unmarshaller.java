@@ -7,6 +7,7 @@ import org.w3c.dom.Comment;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import uk.gov.bis.lite.sar.exception.CreateException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,29 +26,30 @@ public class Unmarshaller {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Unmarshaller.class);
 
-  public Optional<String> getResponse(SOAPMessage message, String elementName, String expression) {
+  public String getResponse(SOAPMessage message, String elementName, String expression) {
     try {
       final SOAPBody soapBody = message.getSOAPBody();
       XPath xpath = XPathFactory.newInstance().newXPath();
       NodeList nodeList = (NodeList) xpath.evaluate(expression, soapBody, XPathConstants.NODESET);
       if (nodeList != null && nodeList.item(0) != null) {
         return singleElementNodeResult(nodeList, xpath, elementName);
+      } else {
+        throw new CreateException("Soap response has no content");
       }
     } catch (SOAPException | XPathExpressionException e) {
       throw new RuntimeException("An error occurred while extracting the SOAP Response Body", e);
     }
-    return Optional.empty();
   }
 
-  private Optional<String> singleElementNodeResult(NodeList nodeList, XPath xpath, String nodeName) {
+  private String singleElementNodeResult(NodeList nodeList, XPath xpath, String nodeName) {
     NodeList nodes = nodeList.item(0).getChildNodes();
     Optional<String> errorCheck = errorCheck(nodes, xpath);
     if (!errorCheck.isPresent()) {
-      return Optional.of(reduce(nodes, nodeName));
+      return reduce(nodes, nodeName);
     } else {
       LOGGER.error(errorCheck.get());
+      throw new CreateException(errorCheck.get());
     }
-    return Optional.empty();
   }
 
   public String reduce(NodeList nodes, String nodeName) {

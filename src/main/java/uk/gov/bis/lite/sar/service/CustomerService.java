@@ -2,6 +2,7 @@ package uk.gov.bis.lite.sar.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.client.CompanyClient;
@@ -43,12 +44,14 @@ public class CustomerService {
     this.unmarshaller = unmarshaller;
   }
 
-  public Optional<String> createCustomer(CustomerItem item) {
-    if(item.hasMandatoryFields()) {
+  public String createCustomer(CustomerItem item) {
+
+    // Allow if we have a userId and address TODO check this is correct
+    if(!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
       SOAPMessage message = createLiteSar.createLiteSar(item);
       return unmarshaller.getResponse(message, CLS_RESPONSE_ELEMENT_NAME, CLS_SAR_XPATH_EXPRESSION);
     } else {
-      throw new CreateException("Mandatory fields missing");
+      throw new CreateException("Mandatory fields missing: userId and/or address");
     }
   }
 

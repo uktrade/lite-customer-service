@@ -39,10 +39,10 @@ public class SiteResource {
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/userRole")
   public Response userRole(UserRoleItem item) {
-    Optional<String> completed = siteService.userRoleUpdate(item);
-    if (completed.isPresent() && completed.get().equals(SiteService.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
+    String completed = siteService.userRoleUpdate(item);
+    if (completed.equals(SiteService.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
       LOGGER.info("userRole goodResponse");
-      return goodResponse(completed.get());
+      return goodResponse(completed);
     }
     LOGGER.info("userRole badRequest");
     return badRequest("Could not update site access");

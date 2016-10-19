@@ -2,6 +2,7 @@ package uk.gov.bis.lite.sar.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.client.CreateSiteForSar;
@@ -52,7 +53,7 @@ public class SiteService {
     this.unmarshaller = unmarshaller;
   }
 
-  public Optional<String> userRoleUpdate(UserRoleItem item) {
+  public String userRoleUpdate(UserRoleItem item) {
     SOAPMessage message = editUserRoles.updateUserSiteToAdmin(
         item.getUserId(),
         item.getRoleType(),
@@ -61,12 +62,14 @@ public class SiteService {
     return unmarshaller.getResponse(message, EUR_RESPONSE_ELEMENT_NAME, RESPONSE_XPATH_EXPRESSION);
   }
 
-  public Optional<String> createSite(SiteItem item) {
-    if(item.hasMandatoryFields()) {
+  public String createSite(SiteItem item) {
+
+    // Allow if we have a userId and address TODO check this is correct
+    if(!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
       SOAPMessage message = createSiteForSar.createSite(item);
       return unmarshaller.getResponse(message, CSFS_RESPONSE_ELEMENT_NAME, RESPONSE_XPATH_EXPRESSION);
     } else {
-      throw new CreateException("Mandatory fields missing");
+      throw new CreateException("Mandatory fields missing: userId and/or address");
     }
   }
 

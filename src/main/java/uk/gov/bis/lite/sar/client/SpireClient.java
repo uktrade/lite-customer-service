@@ -2,6 +2,7 @@ package uk.gov.bis.lite.sar.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,6 @@ class SpireClient {
   private String soapUrl;
   private String soapClientUserName;
   private String soapClientPassword;
-  private static String NEWLINE = System.lineSeparator();
   private final ObjectMapper objectMapper;
 
   private boolean logRequest = true;
@@ -118,20 +118,14 @@ class SpireClient {
   }
 
   protected String getFriendlyAddress(AddressItem item) {
-    String address = item.getLine1() + NEWLINE;
-    address = address + item.getLine2() + NEWLINE;
-    address = address + item.getLine2() + NEWLINE;
-    address = address + item.getTown() + NEWLINE;
-    address = address + item.getPostcode() + NEWLINE;
-    address = address + item.getCounty() + NEWLINE;
-    address = address + item.getCountry() + NEWLINE;
-    return address;
+    return Joiner.on("\n").skipNulls()
+        .join(item.getLine1(), item.getLine2(), item.getTown(), item.getPostcode(), item.getCounty(), item.getCountry());
   }
 
   protected String getAddressItemJson(AddressItem item) {
     String json = "";
     try {
-      json = objectMapper.writeValueAsString(item).replaceAll("\\s{2,}", " ").trim();
+      json = objectMapper.writeValueAsString(item).trim();
     } catch (JsonProcessingException e) {
       LOGGER.error("JsonProcessingException", e);
     }
