@@ -2,11 +2,23 @@ package uk.gov.bis.lite.sar.config.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import io.dropwizard.setup.Environment;
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
+import uk.gov.bis.lite.spireclient.SpireClientService;
 
 import javax.inject.Named;
 
 public class GuiceModule extends AbstractModule {
+
+  @Provides
+  @Singleton
+  SpireClientService provideSpireService(Environment environment, CustomerApplicationConfiguration config) {
+    SpireClientService service = new SpireClientService();
+    service.init(config.getSpireServiceUserName(), config.getSpireServicePassword(),
+        config.getSpireServiceUrl(), config.getSpireServiceActiveEndpoints());
+    return service;
+  }
 
   @Provides
   @Named("createLiteSarUrl")

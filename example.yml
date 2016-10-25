@@ -18,6 +18,12 @@ logging:
       threshold: INFO
       target: stderr
 
+
+spireServiceUserName: bisuat.api@test.com
+spireServicePassword: sp1reUAT
+spireServiceUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/
+spireServiceActiveEndpoints: CREATE_LITE_SAR, CREATE_SITE_FOR_SAR, EDIT_USER_ROLES
+
 # soapUserName: bisdev.api@test.com
 # soapPassword: dev
 soapUserName: bisuat.api@test.com

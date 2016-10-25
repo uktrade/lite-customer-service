@@ -1,14 +1,10 @@
 package uk.gov.bis.lite.sar.resource;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.exception.CreateException;
 import uk.gov.bis.lite.sar.model.CustomerItem;
 import uk.gov.bis.lite.sar.service.CustomerService;
-
-import java.util.Optional;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

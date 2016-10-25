@@ -8,6 +8,22 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
+  private String spireServiceUserName;
+
+  @NotEmpty
+  @JsonProperty
+  private String spireServicePassword;
+
+  @NotEmpty
+  @JsonProperty
+  private String spireServiceUrl;
+
+  @NotEmpty
+  @JsonProperty
+  private String spireServiceActiveEndpoints;
+
+  @NotEmpty
+  @JsonProperty
   private String createLiteSarUrl;
 
   @NotEmpty
@@ -60,5 +76,37 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   public String getEditUserRolesUrl() {
     return editUserRolesUrl;
+  }
+
+  public String getSpireServiceUserName() {
+    return spireServiceUserName;
+  }
+
+  public void setSpireServiceUserName(String spireServiceUserName) {
+    this.spireServiceUserName = spireServiceUserName;
+  }
+
+  public String getSpireServicePassword() {
+    return spireServicePassword;
+  }
+
+  public void setSpireServicePassword(String spireServicePassword) {
+    this.spireServicePassword = spireServicePassword;
+  }
+
+  public String getSpireServiceUrl() {
+    return spireServiceUrl;
+  }
+
+  public void setSpireServiceUrl(String spireServiceUrl) {
+    this.spireServiceUrl = spireServiceUrl;
+  }
+
+  public String getSpireServiceActiveEndpoints() {
+    return spireServiceActiveEndpoints;
+  }
+
+  public void setSpireServiceActiveEndpoints(String spireServiceActiveEndpoints) {
+    this.spireServiceActiveEndpoints = spireServiceActiveEndpoints;
   }
 }

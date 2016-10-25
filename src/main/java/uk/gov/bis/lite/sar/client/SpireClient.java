@@ -6,7 +6,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.model.AddressItem;
+import uk.gov.bis.lite.spireclient.items.AddressItem;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

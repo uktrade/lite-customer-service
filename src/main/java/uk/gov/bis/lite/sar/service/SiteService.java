@@ -5,19 +5,18 @@ import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.client.CreateSiteForSar;
-import uk.gov.bis.lite.sar.client.EditUserRoles;
 import uk.gov.bis.lite.sar.client.SiteClient;
 import uk.gov.bis.lite.sar.client.unmarshall.SiteUnmarshaller;
-import uk.gov.bis.lite.sar.client.unmarshall.Unmarshaller;
-import uk.gov.bis.lite.sar.exception.CreateException;
 import uk.gov.bis.lite.sar.model.Site;
-import uk.gov.bis.lite.sar.model.UserRoleItem;
 import uk.gov.bis.lite.sar.model.SiteItem;
+import uk.gov.bis.lite.sar.model.UserRoleItem;
 import uk.gov.bis.lite.sar.model.spire.SpireSite;
+import uk.gov.bis.lite.spireclient.SpireClientService;
+import uk.gov.bis.lite.spireclient.model.SpireRequest;
+import uk.gov.bis.lite.spireclient.model.SpireResponse;
+import uk.gov.bis.lite.spireclient.spire.SpireException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.xml.soap.SOAPMessage;
@@ -29,47 +28,52 @@ public class SiteService {
 
   private SiteClient client;
   private SiteUnmarshaller siteUnmarshaller;
-  private CreateSiteForSar createSiteForSar;
-  private EditUserRoles editUserRoles;
-  private Unmarshaller unmarshaller;
-
-  private static final String CSFS_RESPONSE_ELEMENT_NAME = "SITE_REF";
-  private static final String EUR_RESPONSE_ELEMENT_NAME = "RESULT";
-  private static final String RESPONSE_XPATH_EXPRESSION = "//*[local-name()='RESPONSE']";
+  private SpireClientService spireClient;
 
   public static final String USER_ROLE_UPDATE_STATUS_COMPLETE = "COMPLETE";
   private static final String USER_ROLE_UPDATE_STATUS_ERROR = "Error";
 
   @Inject
   public SiteService(SiteClient client,
-                     CreateSiteForSar createSiteForSar,
-                     EditUserRoles editUserRoles,
                      SiteUnmarshaller siteUnmarshaller,
-                     Unmarshaller unmarshaller) {
+                     SpireClientService spireClient) {
     this.client = client;
-    this.createSiteForSar = createSiteForSar;
-    this.editUserRoles = editUserRoles;
     this.siteUnmarshaller = siteUnmarshaller;
-    this.unmarshaller = unmarshaller;
+    this.spireClient = spireClient;
   }
 
   public String userRoleUpdate(UserRoleItem item) {
-    SOAPMessage message = editUserRoles.updateUserSiteToAdmin(
-        item.getUserId(),
-        item.getRoleType(),
-        item.getAdminUserId(),
-        item.getSiteRef());
-    return unmarshaller.getResponse(message, EUR_RESPONSE_ELEMENT_NAME, RESPONSE_XPATH_EXPRESSION);
+
+    // Setup Spire request
+    SpireRequest request = spireClient.getSpireRequest(SpireClientService.Endpoint.EDIT_USER_ROLES, item.getUserId());
+    request.setAdminUserId(item.getAdminUserId());
+    request.setSiteRef(item.getSiteRef());
+    request.setRoleType(item.getRoleType());
+
+    // Execute Spire Request
+    SpireResponse response = spireClient.executeRequest(request);
+    LOGGER.info("SpireResponse: " + response.getInfo());
+    return response.getRef();
   }
 
   public String createSite(SiteItem item) {
 
     // Allow if we have a userId and address TODO check this is correct
     if(!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
-      SOAPMessage message = createSiteForSar.createSite(item);
-      return unmarshaller.getResponse(message, CSFS_RESPONSE_ELEMENT_NAME, RESPONSE_XPATH_EXPRESSION);
+
+      // Setup Spire request
+      SpireRequest request = spireClient.getSpireRequest(SpireClientService.Endpoint.CREATE_SITE_FOR_SAR, item.getUserId());
+      request.setAddressData(item.getAddressItem());
+      request.setSarRef(item.getSarRef());
+      request.setSiteName(item.getSiteName());
+
+      // Execute Spire Request
+      SpireResponse response = spireClient.executeRequest(request);
+      LOGGER.info("SpireResponse: " + response.getInfo());
+      return response.getRef();
+
     } else {
-      throw new CreateException("Mandatory fields missing: userId and/or address");
+      throw new SpireException("Mandatory fields missing: userId and/or address");
     }
   }
 
