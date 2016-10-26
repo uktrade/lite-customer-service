@@ -1,0 +1,31 @@
+package uk.gov.bis.lite.spire;
+
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.spire.model.AddressItem;
+public class SpireUtil {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(SpireUtil.class);
+
+  private static ObjectMapper mapper = new ObjectMapper();
+
+  public static String getFriendlyAddress(AddressItem address) {
+    return Joiner.on("\n").skipNulls()
+        .join(address.getLine1(), address.getLine2(), address.getTown(),
+            address.getPostcode(), address.getCounty(), address.getCountry());
+  }
+
+  public static String getAddressItemJson(AddressItem address) {
+    String json = "";
+    try {
+      json = mapper.writeValueAsString(address).trim();
+    } catch (JsonProcessingException e) {
+      LOGGER.error("JsonProcessingException", e);
+    }
+    return json;
+  }
+}

@@ -5,11 +5,28 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.dropwizard.setup.Environment;
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
+import uk.gov.bis.lite.spire.SpireClient;
+import uk.gov.bis.lite.spire.SpireUnmarshaller;
 import uk.gov.bis.lite.spireclient.SpireClientService;
 
 import javax.inject.Named;
 
 public class GuiceModule extends AbstractModule {
+
+  @Provides
+  @Singleton
+  SpireClient provideSpireClient(Environment environment, CustomerApplicationConfiguration config) {
+    SpireClient client = new SpireClient();
+    client.init(config.getSpireServiceUserName(), config.getSpireServicePassword(), config.getSpireServiceUrl());
+    return client;
+  }
+
+  @Provides
+  @Singleton
+  SpireUnmarshaller provideSpireUnmarshaller(Environment environment, CustomerApplicationConfiguration config) {
+    SpireUnmarshaller spireUnmarshaller = new SpireUnmarshaller();
+    return spireUnmarshaller;
+  }
 
   @Provides
   @Singleton

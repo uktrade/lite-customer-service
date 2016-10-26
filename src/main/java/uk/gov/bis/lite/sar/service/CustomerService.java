@@ -10,10 +10,15 @@ import uk.gov.bis.lite.sar.client.unmarshall.CompanyUnmarshaller;
 import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.CustomerItem;
 import uk.gov.bis.lite.sar.model.spire.Company;
+import uk.gov.bis.lite.spire.SpireClient;
+import uk.gov.bis.lite.spire.SpireEndpoint;
+import uk.gov.bis.lite.spire.SpireException;
+import uk.gov.bis.lite.spire.SpireName;
+import uk.gov.bis.lite.spire.SpireRequest;
+import uk.gov.bis.lite.spire.SpireResponse;
+import uk.gov.bis.lite.spire.SpireUnmarshaller;
+import uk.gov.bis.lite.spire.SpireUtil;
 import uk.gov.bis.lite.spireclient.SpireClientService;
-import uk.gov.bis.lite.spireclient.model.SpireRequest;
-import uk.gov.bis.lite.spireclient.model.SpireResponse;
-import uk.gov.bis.lite.spireclient.spire.SpireException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,13 +34,17 @@ public class CustomerService {
   private CompanyUnmarshaller companyUnmarshaller;
   private SpireClientService spireClient;
 
+  private SpireClient spClient;
+  private SpireUnmarshaller spireUnmarshaller;
+
   @Inject
-  public CustomerService(CompanyClient companyClient,
-                         CompanyUnmarshaller companyUnmarshaller,
-                         SpireClientService spireClient) {
+  public CustomerService(CompanyClient companyClient, CompanyUnmarshaller companyUnmarshaller, SpireClientService spireClient,
+                         SpireClient spClient, SpireUnmarshaller spireUnmarshaller) {
     this.companyClient = companyClient;
     this.companyUnmarshaller = companyUnmarshaller;
     this.spireClient = spireClient;
+    this.spClient = spClient;
+    this.spireUnmarshaller = spireUnmarshaller;
   }
 
   public String createCustomer(CustomerItem item) {
@@ -44,22 +53,29 @@ public class CustomerService {
     if(!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
 
       // Setup Spire request
-      SpireRequest request = spireClient.getSpireRequest(SpireClientService.Endpoint.CREATE_LITE_SAR, item.getUserId());
-      request.setAddressData(item.getAddressItem());
-      request.setCustomerName(item.getCustomerName());
-      request.setCustomerType(item.getCustomerType());
-      request.setWebsite(item.getWebsite());
-      request.setCompaniesHouseNumber(item.getCompaniesHouseNumber());
-      request.setCompaniesHouseValidated(item.getCompaniesHouseValidated());
-      request.setEoriNumber(item.getEoriNumber());
-      request.setEoriValidated(item.getEoriValidated());
+      SpireRequest request = spClient.createRequest(SpireEndpoint.CREATE_LITE_SAR);
+      request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_1);
+      request.addChild(SpireName.WUA_ID, item.getUserId());
+      request.addChild(SpireName.CUSTOMER_NAME, item.getCustomerName());
+      request.addChild(SpireName.CUSTOMER_TYPE, item.getCustomerType());
+      request.addChild(SpireName.LITE_ADDRESS, SpireUtil.getAddressItemJson(item.getAddressItem()));
+      request.addChild(SpireName.ADDRESS, SpireUtil.getFriendlyAddress(item.getAddressItem()));
+      request.addChild(SpireName.COUNTRY_REF, item.getAddressItem().getCountry());
+      request.addChild(SpireName.WEBSITE, item.getWebsite());
+      String companiesHouseNumber = item.getCompaniesHouseNumber();
+      if(!StringUtils.isBlank(companiesHouseNumber)) {
+        request.addChild(SpireName.COMPANIES_HOUSE_NUMBER, companiesHouseNumber);
+        request.addChild(SpireName.COMPANIES_HOUSE_VALIDATED, item.getCompaniesHouseValidatedStr());
+      }
+      String eoriNumber = item.getEoriNumber();
+      if(!StringUtils.isBlank(eoriNumber)) {
+        request.addChild(SpireName.EORI_NUMBER, eoriNumber);
+        request.addChild(SpireName.EORI_VALIDATED, item.getEoriValidatedStr());
+      }
 
-      // Execute Spire Request
-      SpireResponse response = spireClient.executeRequest(request);
-
-      LOGGER.info("SpireResponse: " + response.getInfo());
-
-      return response.getRef();
+      // Get Response and unmarshall
+      SpireResponse response = spClient.sendRequest(request);
+      return spireUnmarshaller.getSingleResponseElementContent(response);
     } else {
       throw new SpireException("Mandatory fields missing: userId and/or address");
     }
@@ -88,5 +104,4 @@ public class CustomerService {
     List<Company> companies = companyUnmarshaller.execute(soapMessage);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
-
 }

@@ -1,6 +1,7 @@
 package uk.gov.bis.lite.sar.model;
 
-import uk.gov.bis.lite.spireclient.items.AddressItem;
+
+import uk.gov.bis.lite.spire.model.AddressItem;
 
 public class CustomerItem {
 
@@ -13,6 +14,14 @@ public class CustomerItem {
   private Boolean companiesHouseValidated;
   private String eoriNumber;
   private Boolean eoriValidated;
+
+  public String getEoriValidatedStr() {
+    return eoriValidated ? "true" : "false";
+  }
+
+  public String getCompaniesHouseValidatedStr() {
+    return companiesHouseValidated ? "true" : "false";
+  }
 
   public String getUserId() {
     return userId;

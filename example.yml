@@ -19,6 +19,10 @@ logging:
       target: stderr
 
 
+spireClientUserName: bisuat.api@test.com
+spireClientPassword: sp1reUAT
+spireClientUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/
+
 spireServiceUserName: bisuat.api@test.com
 spireServicePassword: sp1reUAT
 spireServiceUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/

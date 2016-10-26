@@ -6,6 +6,19 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class CustomerApplicationConfiguration extends Configuration {
 
+
+  @NotEmpty
+  @JsonProperty
+  private String spireClientUserName;
+
+  @NotEmpty
+  @JsonProperty
+  private String spireClientPassword;
+
+  @NotEmpty
+  @JsonProperty
+  private String spireClientUrl;
+
   @NotEmpty
   @JsonProperty
   private String spireServiceUserName;
@@ -108,5 +121,17 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   public void setSpireServiceActiveEndpoints(String spireServiceActiveEndpoints) {
     this.spireServiceActiveEndpoints = spireServiceActiveEndpoints;
+  }
+
+  public String getSpireClientUserName() {
+    return spireClientUserName;
+  }
+
+  public String getSpireClientPassword() {
+    return spireClientPassword;
+  }
+
+  public String getSpireClientUrl() {
+    return spireClientUrl;
   }
 }
