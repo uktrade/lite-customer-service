@@ -30,8 +30,7 @@ public class CreateSiteResource {
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/create-site")
   public Response createSite(SiteItem item) {
-    String siteRef = siteService.createSite(item);
-    return goodResponse(siteRef);
+    return goodResponse(siteService.createSite(item));
   }
 
   private Response goodResponse(String value) {

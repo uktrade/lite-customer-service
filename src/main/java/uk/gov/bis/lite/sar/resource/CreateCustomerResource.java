@@ -29,9 +29,7 @@ public class CreateCustomerResource {
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/create-customer")
   public Response createCustomer(CustomerItem item) {
-    LOGGER.info("createCustomer");
-    String sarRef = customerService.createCustomer(item);
-    return goodResponse(sarRef);
+    return goodResponse(customerService.createCustomer(item));
   }
 
   private Response goodResponse(String value) {

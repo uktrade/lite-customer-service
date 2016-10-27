@@ -1,11 +1,12 @@
-package uk.gov.bis.lite.sar.model.spire;
+package uk.gov.bis.lite.spire.model;
 
-public enum OrganisationType {
+public enum SpireOrganisationType {
+
   TC("Trading Company"), O("Organisation");
 
   private String typeLongName;
 
-  OrganisationType(String typeLongName) {
+  SpireOrganisationType(String typeLongName) {
     this.typeLongName = typeLongName;
   }
 

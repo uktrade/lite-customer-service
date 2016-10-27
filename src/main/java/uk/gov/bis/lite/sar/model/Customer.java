@@ -2,8 +2,8 @@ package uk.gov.bis.lite.sar.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import uk.gov.bis.lite.sar.model.spire.Company;
-import uk.gov.bis.lite.sar.model.spire.Website;
+import uk.gov.bis.lite.spire.model.SpireCompany;
+import uk.gov.bis.lite.spire.model.SpireWebsite;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
     "registrationStatus", "registeredAddress", "applicantType", "countryOfOriginCode", "websites"})
 public class Customer {
 
-  private Company company;
+  private SpireCompany company;
 
-  public Customer(Company company) {
+  public Customer(SpireCompany company) {
     this.company = company;
   }
 
@@ -40,7 +40,7 @@ public class Customer {
 
   @JsonProperty("organisationType")
   public String organisationType() {
-    return company.getOrganisationType() != null ? company.getOrganisationType().getTypeLongName() : null;
+    return company.getSpireOrganisationType() != null ? company.getSpireOrganisationType().getTypeLongName() : null;
   }
 
   @JsonProperty("registrationStatus")
@@ -65,6 +65,6 @@ public class Customer {
 
   @JsonProperty("websites")
   public List<String> websites() {
-    return company.getWebsites().stream().map(Website::getUrl).collect(Collectors.toList());
+    return company.getWebsites().stream().map(SpireWebsite::getUrl).collect(Collectors.toList());
   }
 }

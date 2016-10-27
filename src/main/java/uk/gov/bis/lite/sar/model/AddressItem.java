@@ -1,4 +1,4 @@
-package uk.gov.bis.lite.spireclient.items;
+package uk.gov.bis.lite.sar.model;
 
 public class AddressItem {
 

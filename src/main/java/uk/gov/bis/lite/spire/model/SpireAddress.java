@@ -10,7 +10,6 @@ public class SpireAddress {
   private String postcode;
   private String country;
 
-
   public String getLine1() {
     return line1;
   }

@@ -1,6 +1,7 @@
-package uk.gov.bis.lite.sar.model.spire;
+package uk.gov.bis.lite.spire.model;
 
-public class Website {
+public class SpireWebsite {
+
   private String url;
   private String action;
 

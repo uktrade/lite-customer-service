@@ -1,21 +1,21 @@
-package uk.gov.bis.lite.sar.model.spire;
+package uk.gov.bis.lite.spire.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Company {
+public class SpireCompany {
 
   private String sarRef;
   private String name;
   private String shortName;
-  private OrganisationType organisationType;
+  private SpireOrganisationType spireOrganisationType;
   private String number;
   private String registeredAddress;
   private String registrationStatus;
   private String applicantType;
   private String natureOfBusiness;
   private String countryOfOrigin;
-  private List<Website> websites;
+  private List<SpireWebsite> websites;
 
   public String getSarRef() {
     return sarRef;
@@ -41,12 +41,12 @@ public class Company {
     this.shortName = shortName;
   }
 
-  public OrganisationType getOrganisationType() {
-    return organisationType;
+  public SpireOrganisationType getSpireOrganisationType() {
+    return spireOrganisationType;
   }
 
-  public void setOrganisationType(OrganisationType organisationType) {
-    this.organisationType = organisationType;
+  public void setSpireOrganisationType(SpireOrganisationType spireOrganisationType) {
+    this.spireOrganisationType = spireOrganisationType;
   }
 
   public String getNumber() {
@@ -97,11 +97,11 @@ public class Company {
     this.countryOfOrigin = countryOfOrigin;
   }
 
-  public List<Website> getWebsites() {
+  public List<SpireWebsite> getWebsites() {
     return websites != null ? websites : new ArrayList<>();
   }
 
-  public void setWebsites(List<Website> websites) {
+  public void setWebsites(List<SpireWebsite> websites) {
     this.websites = websites;
   }
 }

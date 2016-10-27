@@ -1,4 +1,4 @@
-package uk.gov.bis.lite.spire;
+package uk.gov.bis.lite.sar.util;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -6,10 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.spire.model.AddressItem;
-public class SpireUtil {
+import uk.gov.bis.lite.sar.model.AddressItem;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SpireUtil.class);
+public class Util {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Util.class);
 
   private static ObjectMapper mapper = new ObjectMapper();
 

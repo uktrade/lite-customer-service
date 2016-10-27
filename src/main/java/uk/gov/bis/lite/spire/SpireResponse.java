@@ -4,15 +4,10 @@ import javax.xml.soap.SOAPMessage;
 
 public class SpireResponse {
 
-  private SpireEndpoint endpoint;
+  private SpireClient.Endpoint endpoint;
   private SOAPMessage message;
 
-
-  public SpireResponse(SOAPMessage message) {
-    this.message = message;
-  }
-
-  public SpireResponse(SOAPMessage message, SpireEndpoint endpoint) {
+  public SpireResponse(SOAPMessage message, SpireClient.Endpoint endpoint) {
     this.message = message;
     this.endpoint = endpoint;
   }
@@ -25,11 +20,11 @@ public class SpireResponse {
     this.message = message;
   }
 
-  public SpireEndpoint getEndpoint() {
+  public SpireClient.Endpoint getEndpoint() {
     return endpoint;
   }
 
-  public void setEndpoint(SpireEndpoint endpoint) {
+  public void setEndpoint(SpireClient.Endpoint endpoint) {
     this.endpoint = endpoint;
   }
 }

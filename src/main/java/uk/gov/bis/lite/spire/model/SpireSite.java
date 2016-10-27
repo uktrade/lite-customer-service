@@ -1,4 +1,4 @@
-package uk.gov.bis.lite.sar.model.spire;
+package uk.gov.bis.lite.spire.model;
 
 public class SpireSite {
 

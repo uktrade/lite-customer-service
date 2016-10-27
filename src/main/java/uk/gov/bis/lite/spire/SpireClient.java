@@ -27,13 +27,17 @@ public class SpireClient {
   private String SPIR_PREFIX = "spir";
   private String NAMESPACE_URI = "http://www.fivium.co.uk/fox/webservices/ispire/";
 
+  public enum Endpoint {
+    CREATE_OGEL_APP, CREATE_LITE_SAR, CREATE_SITE_FOR_SAR, EDIT_USER_ROLES, COMPANY_SITES, COMPANIES;
+  }
+
   public void init(String username, String password, String url) {
     this.username = username;
     this.password = password;
     this.url = url;
   }
 
-  public SpireRequest createRequest(SpireEndpoint endpoint) {
+  public SpireRequest createRequest(Endpoint endpoint) {
     SpireRequest request = new SpireRequest(endpoint);
     switch (endpoint) {
       case CREATE_SITE_FOR_SAR:
@@ -51,6 +55,14 @@ public class SpireClient {
       case CREATE_OGEL_APP:
         request.setEndpointTarget(SpireName.COA_NAME_SPACE);
         request.setSoapMessage(doGetSoapRequest(SpireName.COA_NAME_SPACE, SpireName.COA_REQUEST_CHILD, false));
+        break;
+      case COMPANY_SITES:
+        request.setEndpointTarget(SpireName.COMPANY_SITES_NAME_SPACE);
+        request.setSoapMessage(doGetSoapRequest(SpireName.COMPANY_SITES_NAME_SPACE, SpireName.COMPANY_SITES_REQUEST_CHILD, true));
+        break;
+      case COMPANIES:
+        request.setEndpointTarget(SpireName.COMPANIES_NAME_SPACE);
+        request.setSoapMessage(doGetSoapRequest(SpireName.COMPANIES_NAME_SPACE, SpireName.COMPANIES_REQUEST_CHILD, true));
         break;
       default:
     }
@@ -127,4 +139,5 @@ public class SpireClient {
       LOGGER.error("error", e);
     }
   }
+
 }

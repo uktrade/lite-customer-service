@@ -1,4 +1,4 @@
-package uk.gov.bis.lite.spire;
+package uk.gov.bis.lite.spire.exception;
 
 import io.dropwizard.jersey.errors.ErrorMessage;
 
@@ -11,9 +11,9 @@ public class SpireException extends RuntimeException {
     super("Spire Exception: " + info);
   }
 
-  public static class ServiceExceptionMapper implements ExceptionMapper<uk.gov.bis.lite.spireclient.spire.SpireException> {
+  public static class ServiceExceptionMapper implements ExceptionMapper<SpireException> {
     @Override
-    public Response toResponse(uk.gov.bis.lite.spireclient.spire.SpireException exception) {
+    public Response toResponse(SpireException exception) {
       return Response.status(400).entity(new ErrorMessage(400, exception.getMessage())).build();
     }
   }

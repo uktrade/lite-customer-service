@@ -1,8 +1,6 @@
 package uk.gov.bis.lite.sar.model;
 
 
-import uk.gov.bis.lite.spire.model.AddressItem;
-
 public class CustomerItem {
 
   private String userId;
