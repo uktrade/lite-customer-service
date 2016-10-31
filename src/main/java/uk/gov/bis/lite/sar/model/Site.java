@@ -2,7 +2,7 @@ package uk.gov.bis.lite.sar.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import uk.gov.bis.lite.spire.model.SpireSite;
+import uk.gov.bis.lite.spire.client.model.SpireSite;
 
 @JsonPropertyOrder({"sarRef", "siteRef", "companyName", "applicantType", "division", "address"})
 public class Site {

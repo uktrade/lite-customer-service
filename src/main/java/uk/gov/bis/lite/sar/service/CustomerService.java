@@ -2,19 +2,18 @@ package uk.gov.bis.lite.sar.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.CustomerItem;
 import uk.gov.bis.lite.sar.util.Util;
-import uk.gov.bis.lite.spire.SpireClient;
-import uk.gov.bis.lite.spire.SpireName;
-import uk.gov.bis.lite.spire.SpireRequest;
-import uk.gov.bis.lite.spire.SpireResponse;
-import uk.gov.bis.lite.spire.SpireUnmarshaller;
-import uk.gov.bis.lite.spire.exception.SpireException;
-import uk.gov.bis.lite.spire.model.SpireCompany;
+import uk.gov.bis.lite.spire.client.SpireClient;
+import uk.gov.bis.lite.spire.client.SpireName;
+import uk.gov.bis.lite.spire.client.exception.SpireException;
+import uk.gov.bis.lite.spire.client.model.SpireCompany;
+import uk.gov.bis.lite.spire.client.model.SpireRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,13 +23,14 @@ public class CustomerService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
-  private SpireClient spireClient;
-  private SpireUnmarshaller spireUnmarshaller;
+  private SpireClient companyClient;
+  private SpireClient createLiteSarClient;
 
   @Inject
-  public CustomerService(SpireClient spireClient, SpireUnmarshaller spireUnmarshaller) {
-    this.spireClient = spireClient;
-    this.spireUnmarshaller = spireUnmarshaller;
+  public CustomerService(@Named("SpireCompanyClient") SpireClient companyClient,
+                         @Named("SpireCreateLiteSarClient") SpireClient createLiteSarClient) {
+    this.companyClient = companyClient;
+    this.createLiteSarClient = createLiteSarClient;
   }
 
   public String createCustomer(CustomerItem item) {
@@ -39,7 +39,7 @@ public class CustomerService {
     if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
 
       // Setup SpireRequest
-      SpireRequest request = spireClient.createRequest(SpireClient.Endpoint.CREATE_LITE_SAR);
+      SpireRequest request = createLiteSarClient.createRequest();
       request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_1);
       request.addChild(SpireName.WUA_ID, item.getUserId());
       request.addChild(SpireName.CUSTOMER_NAME, item.getCustomerName());
@@ -59,9 +59,7 @@ public class CustomerService {
         request.addChild(SpireName.EORI_VALIDATED, item.getEoriValidatedStr());
       }
 
-      // Get SpireResponse and unmarshall
-      SpireResponse response = spireClient.sendRequest(request);
-      return spireUnmarshaller.getSingleResponseElementContent(response);
+      return (String) createLiteSarClient.getResult(request);
     } else {
       throw new SpireException("Mandatory fields missing: userId and/or address");
     }
@@ -69,58 +67,34 @@ public class CustomerService {
 
   public List<Customer> getCustomersBySearch(String postcode) {
 
-    // Setup SpireRequest
-    SpireRequest request = spireClient.createRequest(SpireClient.Endpoint.COMPANIES);
+    SpireRequest request = companyClient.createRequest();
     request.addChild(SpireName.postCode, postcode);
-
-    // Get SpireResponse and unmarshall
-    SpireResponse response = spireClient.sendRequest(request);
-    List<SpireCompany> companies = spireUnmarshaller.getSpireCompanies(response);
-
-    // Map SpireCompany to Customer
+    List<SpireCompany> companies = (List<SpireCompany>) companyClient.getResult(request);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersBySearch(String postcode, String eoriNumber) {
 
-    // Setup SpireRequest
-    SpireRequest request = spireClient.createRequest(SpireClient.Endpoint.COMPANIES);
+    SpireRequest request = companyClient.createRequest();
     request.addChild(SpireName.postCode, postcode);
     request.addChild(SpireName.eoriNumber, eoriNumber);
-
-    // Get SpireResponse and unmarshall
-    SpireResponse response = spireClient.sendRequest(request);
-    List<SpireCompany> companies = spireUnmarshaller.getSpireCompanies(response);
-
-    // Map SpireCompany to Customer
+    List<SpireCompany> companies = (List<SpireCompany>) companyClient.getResult(request);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersByUserId(String userId) {
 
-    // Setup SpireRequest
-    SpireRequest request = spireClient.createRequest(SpireClient.Endpoint.COMPANIES);
+    SpireRequest request = companyClient.createRequest();
     request.addChild(SpireName.userId, userId);
-
-    // Get SpireResponse and unmarshall
-    SpireResponse response = spireClient.sendRequest(request);
-    List<SpireCompany> companies = spireUnmarshaller.getSpireCompanies(response);
-
-    // Map SpireCompany to Customer
+    List<SpireCompany> companies = (List<SpireCompany>) companyClient.getResult(request);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersById(String customerId) {
 
-    // Setup SpireRequest
-    SpireRequest request = spireClient.createRequest(SpireClient.Endpoint.COMPANIES);
+    SpireRequest request = companyClient.createRequest();
     request.addChild(SpireName.sarRef, customerId);
-
-    // Get SpireResponse and unmarshall
-    SpireResponse response = spireClient.sendRequest(request);
-    List<SpireCompany> companies = spireUnmarshaller.getSpireCompanies(response);
-
-    // Map SpireCompany to Customer
+    List<SpireCompany> companies = (List<SpireCompany>) companyClient.getResult(request);
     return companies.stream().map(Customer::new).collect(Collectors.toList());
   }
 }

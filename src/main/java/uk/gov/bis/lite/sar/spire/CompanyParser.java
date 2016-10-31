@@ -1,49 +1,39 @@
-package uk.gov.bis.lite.spire.unmarshaller;
+package uk.gov.bis.lite.sar.spire;
 
-import static uk.gov.bis.lite.spire.SpireClient.Endpoint.COMPANIES;
-import static uk.gov.bis.lite.spire.SpireName.APPLICANT_TYPE;
-import static uk.gov.bis.lite.spire.SpireName.COMPANIES_RESPONSE_LIST;
-import static uk.gov.bis.lite.spire.SpireName.COMPANY_NUMBER;
-import static uk.gov.bis.lite.spire.SpireName.COUNTRY_OF_ORIGIN;
-import static uk.gov.bis.lite.spire.SpireName.NAME;
-import static uk.gov.bis.lite.spire.SpireName.NATURE_OF_BUSINESS;
-import static uk.gov.bis.lite.spire.SpireName.ORGANISATION_TYPE;
-import static uk.gov.bis.lite.spire.SpireName.REGISTERED_ADDRESS;
-import static uk.gov.bis.lite.spire.SpireName.REGISTRATION_STATUS;
-import static uk.gov.bis.lite.spire.SpireName.SAR_REF;
-import static uk.gov.bis.lite.spire.SpireName.SHORT_NAME;
-import static uk.gov.bis.lite.spire.SpireName.WEBSITE_LIST;
-import static uk.gov.bis.lite.spire.SpireName.WEBSITE_URL;
+
+import static uk.gov.bis.lite.spire.client.SpireName.APPLICANT_TYPE;
+import static uk.gov.bis.lite.spire.client.SpireName.COMPANY_NUMBER;
+import static uk.gov.bis.lite.spire.client.SpireName.COUNTRY_OF_ORIGIN;
+import static uk.gov.bis.lite.spire.client.SpireName.NAME;
+import static uk.gov.bis.lite.spire.client.SpireName.NATURE_OF_BUSINESS;
+import static uk.gov.bis.lite.spire.client.SpireName.ORGANISATION_TYPE;
+import static uk.gov.bis.lite.spire.client.SpireName.REGISTERED_ADDRESS;
+import static uk.gov.bis.lite.spire.client.SpireName.REGISTRATION_STATUS;
+import static uk.gov.bis.lite.spire.client.SpireName.SAR_REF;
+import static uk.gov.bis.lite.spire.client.SpireName.SHORT_NAME;
+import static uk.gov.bis.lite.spire.client.SpireName.WEBSITE_LIST;
+import static uk.gov.bis.lite.spire.client.SpireName.WEBSITE_URL;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import uk.gov.bis.lite.spire.SpireResponse;
-import uk.gov.bis.lite.spire.exception.SpireException;
-import uk.gov.bis.lite.spire.model.SpireCompany;
-import uk.gov.bis.lite.spire.model.SpireOrganisationType;
-import uk.gov.bis.lite.spire.model.SpireWebsite;
+import uk.gov.bis.lite.spire.client.model.SpireCompany;
+import uk.gov.bis.lite.spire.client.model.SpireOrganisationType;
+import uk.gov.bis.lite.spire.client.model.SpireResponse;
+import uk.gov.bis.lite.spire.client.model.SpireWebsite;
+import uk.gov.bis.lite.spire.client.parser.SpireParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.soap.SOAPMessage;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-public class CompanyParser extends SpireParser {
+public class CompanyParser extends SpireParser<List<SpireCompany>> {
 
-  public List<SpireCompany> getSpireCompanies(SpireResponse spireResponse) {
-    List<SpireCompany> companies;
-    SOAPMessage message = spireResponse.getMessage();
-    if (spireResponse.getEndpoint().equals(COMPANIES)) {
-      checkForErrors(message); // throws SpireException if any error/soapFault found
-      companies = parseCompanies(getNodeList(message, COMPANIES_RESPONSE_LIST));
-    } else {
-      throw new SpireException("Configuration issue: [CompanyParser must be called with a SpireRequest with a COMPANIES endpoint]");
-    }
-    return companies;
+  public List<SpireCompany> getResult(SpireResponse spireResponse) {
+    return parseCompanies(getNodeList(spireResponse.getMessage(), "//COMPANIES_LIST"));
   }
 
   private List<SpireCompany> parseCompanies(NodeList nodeList) {
@@ -88,4 +78,7 @@ public class CompanyParser extends SpireParser {
     }
     return companies;
   }
+
+
 }
+

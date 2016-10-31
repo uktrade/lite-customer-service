@@ -2,19 +2,18 @@ package uk.gov.bis.lite.sar.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.Site;
 import uk.gov.bis.lite.sar.model.SiteItem;
 import uk.gov.bis.lite.sar.util.Util;
-import uk.gov.bis.lite.spire.SpireClient;
-import uk.gov.bis.lite.spire.SpireName;
-import uk.gov.bis.lite.spire.SpireRequest;
-import uk.gov.bis.lite.spire.SpireResponse;
-import uk.gov.bis.lite.spire.SpireUnmarshaller;
-import uk.gov.bis.lite.spire.exception.SpireException;
-import uk.gov.bis.lite.spire.model.SpireSite;
+import uk.gov.bis.lite.spire.client.SpireClient;
+import uk.gov.bis.lite.spire.client.SpireName;
+import uk.gov.bis.lite.spire.client.exception.SpireException;
+import uk.gov.bis.lite.spire.client.model.SpireRequest;
+import uk.gov.bis.lite.spire.client.model.SpireSite;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,14 +23,15 @@ public class SiteService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SiteService.class);
 
-  private SpireClient spireClient;
-  private SpireUnmarshaller spireUnmarshaller;
+  private SpireClient createSiteForSarClient;
+  private SpireClient companySitesClient;
 
 
   @Inject
-  public SiteService(SpireClient spireClient, SpireUnmarshaller spireUnmarshaller) {
-    this.spireClient = spireClient;
-    this.spireUnmarshaller = spireUnmarshaller;
+  public SiteService(@Named("SpireCreateSiteForSarClient") SpireClient createSiteForSarClient,
+                     @Named("SpireCompanySitesClient") SpireClient companySitesClient) {
+    this.createSiteForSarClient = createSiteForSarClient;
+    this.companySitesClient = companySitesClient;
   }
 
   public String createSite(SiteItem item) {
@@ -39,7 +39,7 @@ public class SiteService {
     if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
 
       // Setup SpireRequest
-      SpireRequest request = spireClient.createRequest(SpireClient.Endpoint.CREATE_SITE_FOR_SAR);
+      SpireRequest request = createSiteForSarClient.createRequest();
       request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_0);
       request.addChild(SpireName.WUA_ID, item.getUserId());
       request.addChild(SpireName.SAR_REF, item.getSarRef());
@@ -48,9 +48,7 @@ public class SiteService {
       request.addChild(SpireName.ADDRESS, Util.getFriendlyAddress(item.getAddressItem()));
       request.addChild(SpireName.COUNTRY_REF, item.getAddressItem().getCountry());
 
-      // Get SpireResponse and unmarshall
-      SpireResponse response = spireClient.sendRequest(request);
-      return spireUnmarshaller.getSingleResponseElementContent(response);
+      return (String) createSiteForSarClient.getResult(request);
     } else {
       throw new SpireException("Mandatory fields missing: userId and/or address");
     }
@@ -59,15 +57,14 @@ public class SiteService {
   public List<Site> getSites(String customerId, String userId) {
 
     // Setup SpireRequest
-    SpireRequest request = spireClient.createRequest(SpireClient.Endpoint.COMPANY_SITES);
+    SpireRequest request = companySitesClient.createRequest();
     request.addChild(SpireName.userId, userId);
     request.addChild(SpireName.sarRef, customerId);
 
-    // Get SpireResponse and unmarshall
-    SpireResponse response = spireClient.sendRequest(request);
-    List<SpireSite> spireSites = spireUnmarshaller.getSpireSites(response);
+    // Send request and unmarshall
+    List<SpireSite> sites = (List<SpireSite>) companySitesClient.getResult(request);
 
-    // Map SpireCompany to Customer
-    return spireSites.stream().map(Site::new).collect(Collectors.toList());
+    // Map SpireSite to Customer
+    return sites.stream().map(Site::new).collect(Collectors.toList());
   }
 }
