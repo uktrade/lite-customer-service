@@ -17,8 +17,8 @@ import static uk.gov.bis.lite.spire.client.SpireName.WEBSITE_URL;
 import org.w3c.dom.Node;
 import uk.gov.bis.lite.sar.spire.model.SpireCompany;
 import uk.gov.bis.lite.sar.spire.model.SpireOrganisationType;
-import uk.gov.bis.lite.spire.client.SpireResponse;
 import uk.gov.bis.lite.sar.spire.model.SpireWebsite;
+import uk.gov.bis.lite.spire.client.SpireResponse;
 import uk.gov.bis.lite.spire.client.parser.SpireParser;
 
 import java.util.ArrayList;

@@ -12,8 +12,8 @@ import uk.gov.bis.lite.sar.spire.SpireCompanyClient;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.util.Util;
 import uk.gov.bis.lite.spire.client.SpireName;
-import uk.gov.bis.lite.spire.client.exception.SpireException;
 import uk.gov.bis.lite.spire.client.SpireRequest;
+import uk.gov.bis.lite.spire.client.exception.SpireException;
 
 import java.util.List;
 import java.util.stream.Collectors;

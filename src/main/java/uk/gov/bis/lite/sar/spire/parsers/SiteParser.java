@@ -9,8 +9,8 @@ import static uk.gov.bis.lite.spire.client.SpireName.SAR_REF;
 import static uk.gov.bis.lite.spire.client.SpireName.SITE_REF;
 
 import org.w3c.dom.Node;
-import uk.gov.bis.lite.spire.client.SpireResponse;
 import uk.gov.bis.lite.sar.spire.model.SpireSite;
+import uk.gov.bis.lite.spire.client.SpireResponse;
 import uk.gov.bis.lite.spire.client.parser.SpireParser;
 
 import java.util.ArrayList;
