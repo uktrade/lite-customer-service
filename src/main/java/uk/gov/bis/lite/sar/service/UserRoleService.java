@@ -19,7 +19,7 @@ public class UserRoleService {
   public static final String USER_ROLE_UPDATE_STATUS_COMPLETE = "COMPLETE";
   public static final String USER_ROLE_UPDATE_STATUS_ERROR = "Error";
 
-  private SpireClient editUserRolesClient;
+  private SpireClient<String> editUserRolesClient;
 
   @Inject
   public UserRoleService(@Named("SpireEditUserRolesClient") SpireClient editUserRolesClient) {
@@ -27,15 +27,12 @@ public class UserRoleService {
   }
 
   public String userRoleUpdate(UserRoleItem item) {
-
-    // Setup Spire request
     SpireRequest request = editUserRolesClient.createRequest();
     request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_1);
     request.addChild(SpireName.ADMIN_WUA_ID, item.getAdminUserId());
     request.addChild(SpireName.USER_WUA_ID, item.getUserId());
     request.addChild(SpireName.SITE_REF, item.getSiteRef());
     request.addChild(SpireName.ROLE_TYPE, item.getRoleType());
-
-    return (String) editUserRolesClient.getResult(request);
+    return editUserRolesClient.getResult(request);
   }
 }

@@ -23,9 +23,8 @@ public class SiteService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SiteService.class);
 
-  private SpireClient createSiteForSarClient;
-  private SpireClient companySitesClient;
-
+  private SpireClient<String> createSiteForSarClient;
+  private SpireClient<List<SpireSite>> companySitesClient;
 
   @Inject
   public SiteService(@Named("SpireCreateSiteForSarClient") SpireClient createSiteForSarClient,
@@ -35,10 +34,7 @@ public class SiteService {
   }
 
   public String createSite(SiteItem item) {
-
     if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
-
-      // Setup SpireRequest
       SpireRequest request = createSiteForSarClient.createRequest();
       request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_0);
       request.addChild(SpireName.WUA_ID, item.getUserId());
@@ -47,24 +43,17 @@ public class SiteService {
       request.addChild(SpireName.LITE_ADDRESS, Util.getAddressItemJson(item.getAddressItem()));
       request.addChild(SpireName.ADDRESS, Util.getFriendlyAddress(item.getAddressItem()));
       request.addChild(SpireName.COUNTRY_REF, item.getAddressItem().getCountry());
-
-      return (String) createSiteForSarClient.getResult(request);
+      return createSiteForSarClient.getResult(request);
     } else {
       throw new SpireException("Mandatory fields missing: userId and/or address");
     }
   }
 
   public List<Site> getSites(String customerId, String userId) {
-
-    // Setup SpireRequest
     SpireRequest request = companySitesClient.createRequest();
     request.addChild(SpireName.userId, userId);
     request.addChild(SpireName.sarRef, customerId);
-
-    // Send request and unmarshall
-    List<SpireSite> sites = (List<SpireSite>) companySitesClient.getResult(request);
-
     // Map SpireSite to Customer
-    return sites.stream().map(Site::new).collect(Collectors.toList());
+    return companySitesClient.getResult(request).stream().map(Site::new).collect(Collectors.toList());
   }
 }

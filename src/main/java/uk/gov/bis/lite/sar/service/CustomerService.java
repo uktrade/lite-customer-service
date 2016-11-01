@@ -23,8 +23,8 @@ public class CustomerService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
-  private SpireClient companyClient;
-  private SpireClient createLiteSarClient;
+  private SpireClient<List<SpireCompany>> companyClient;
+  private SpireClient<String> createLiteSarClient;
 
   @Inject
   public CustomerService(@Named("SpireCompanyClient") SpireClient companyClient,
@@ -34,11 +34,8 @@ public class CustomerService {
   }
 
   public String createCustomer(CustomerItem item) {
-
     // Allow if we have a userId and address TODO check this is correct
     if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
-
-      // Setup SpireRequest
       SpireRequest request = createLiteSarClient.createRequest();
       request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_1);
       request.addChild(SpireName.WUA_ID, item.getUserId());
@@ -58,43 +55,34 @@ public class CustomerService {
         request.addChild(SpireName.EORI_NUMBER, eoriNumber);
         request.addChild(SpireName.EORI_VALIDATED, item.getEoriValidatedStr());
       }
-
-      return (String) createLiteSarClient.getResult(request);
+      return createLiteSarClient.getResult(request);
     } else {
       throw new SpireException("Mandatory fields missing: userId and/or address");
     }
   }
 
   public List<Customer> getCustomersBySearch(String postcode) {
-
     SpireRequest request = companyClient.createRequest();
     request.addChild(SpireName.postCode, postcode);
-    List<SpireCompany> companies = (List<SpireCompany>) companyClient.getResult(request);
-    return companies.stream().map(Customer::new).collect(Collectors.toList());
+    return companyClient.getResult(request).stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersBySearch(String postcode, String eoriNumber) {
-
     SpireRequest request = companyClient.createRequest();
     request.addChild(SpireName.postCode, postcode);
     request.addChild(SpireName.eoriNumber, eoriNumber);
-    List<SpireCompany> companies = (List<SpireCompany>) companyClient.getResult(request);
-    return companies.stream().map(Customer::new).collect(Collectors.toList());
+    return companyClient.getResult(request).stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersByUserId(String userId) {
-
     SpireRequest request = companyClient.createRequest();
     request.addChild(SpireName.userId, userId);
-    List<SpireCompany> companies = (List<SpireCompany>) companyClient.getResult(request);
-    return companies.stream().map(Customer::new).collect(Collectors.toList());
+    return companyClient.getResult(request).stream().map(Customer::new).collect(Collectors.toList());
   }
 
   public List<Customer> getCustomersById(String customerId) {
-
     SpireRequest request = companyClient.createRequest();
     request.addChild(SpireName.sarRef, customerId);
-    List<SpireCompany> companies = (List<SpireCompany>) companyClient.getResult(request);
-    return companies.stream().map(Customer::new).collect(Collectors.toList());
+    return companyClient.getResult(request).stream().map(Customer::new).collect(Collectors.toList());
   }
 }
