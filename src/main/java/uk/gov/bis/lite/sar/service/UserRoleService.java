@@ -6,9 +6,9 @@ import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.UserRoleItem;
-import uk.gov.bis.lite.spire.client.SpireClient;
+import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.spire.client.SpireName;
-import uk.gov.bis.lite.spire.client.model.SpireRequest;
+import uk.gov.bis.lite.spire.client.SpireRequest;
 
 
 @Singleton
@@ -19,10 +19,10 @@ public class UserRoleService {
   public static final String USER_ROLE_UPDATE_STATUS_COMPLETE = "COMPLETE";
   public static final String USER_ROLE_UPDATE_STATUS_ERROR = "Error";
 
-  private SpireClient<String> editUserRolesClient;
+  private SpireReferenceClient editUserRolesClient;
 
   @Inject
-  public UserRoleService(@Named("SpireEditUserRolesClient") SpireClient editUserRolesClient) {
+  public UserRoleService(@Named("SpireEditUserRolesClient") SpireReferenceClient editUserRolesClient) {
     this.editUserRolesClient = editUserRolesClient;
   }
 

@@ -8,12 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.CustomerItem;
+import uk.gov.bis.lite.sar.spire.SpireCompanyClient;
+import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.util.Util;
-import uk.gov.bis.lite.spire.client.SpireClient;
 import uk.gov.bis.lite.spire.client.SpireName;
 import uk.gov.bis.lite.spire.client.exception.SpireException;
-import uk.gov.bis.lite.spire.client.model.SpireCompany;
-import uk.gov.bis.lite.spire.client.model.SpireRequest;
+import uk.gov.bis.lite.spire.client.SpireRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,20 +23,20 @@ public class CustomerService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
-  private SpireClient<List<SpireCompany>> companyClient;
-  private SpireClient<String> createLiteSarClient;
+  private SpireReferenceClient createLiteSarReferenceClient;
+  private SpireCompanyClient companyClient;
 
   @Inject
-  public CustomerService(@Named("SpireCompanyClient") SpireClient companyClient,
-                         @Named("SpireCreateLiteSarClient") SpireClient createLiteSarClient) {
+  public CustomerService(@Named("SpireCreateLiteSarClient") SpireReferenceClient createLiteSarReferenceClient,
+                         SpireCompanyClient companyClient) {
+    this.createLiteSarReferenceClient = createLiteSarReferenceClient;
     this.companyClient = companyClient;
-    this.createLiteSarClient = createLiteSarClient;
   }
 
   public String createCustomer(CustomerItem item) {
     // Allow if we have a userId and address TODO check this is correct
     if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
-      SpireRequest request = createLiteSarClient.createRequest();
+      SpireRequest request = createLiteSarReferenceClient.createRequest();
       request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_1);
       request.addChild(SpireName.WUA_ID, item.getUserId());
       request.addChild(SpireName.CUSTOMER_NAME, item.getCustomerName());
@@ -55,7 +55,7 @@ public class CustomerService {
         request.addChild(SpireName.EORI_NUMBER, eoriNumber);
         request.addChild(SpireName.EORI_VALIDATED, item.getEoriValidatedStr());
       }
-      return createLiteSarClient.getResult(request);
+      return createLiteSarReferenceClient.getResult(request);
     } else {
       throw new SpireException("Mandatory fields missing: userId and/or address");
     }

@@ -2,8 +2,8 @@ package uk.gov.bis.lite.sar.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import uk.gov.bis.lite.spire.client.model.SpireCompany;
-import uk.gov.bis.lite.spire.client.model.SpireWebsite;
+import uk.gov.bis.lite.sar.spire.model.SpireCompany;
+import uk.gov.bis.lite.sar.spire.model.SpireWebsite;
 
 import java.util.List;
 import java.util.stream.Collectors;

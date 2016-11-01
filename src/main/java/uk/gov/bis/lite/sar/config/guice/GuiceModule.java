@@ -6,22 +6,20 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import io.dropwizard.setup.Environment;
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
-import uk.gov.bis.lite.sar.spire.CompanyParser;
-import uk.gov.bis.lite.sar.spire.CompanySiteParser;
-import uk.gov.bis.lite.spire.client.SpireClient;
-import uk.gov.bis.lite.spire.client.model.SpireCompany;
-import uk.gov.bis.lite.spire.client.model.SpireSite;
-import uk.gov.bis.lite.spire.client.parser.SingleResponseParser;
-
-import java.util.List;
+import uk.gov.bis.lite.sar.spire.SpireCompanyClient;
+import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
+import uk.gov.bis.lite.sar.spire.SpireSiteClient;
+import uk.gov.bis.lite.sar.spire.parsers.CompanyParser;
+import uk.gov.bis.lite.sar.spire.parsers.SiteParser;
+import uk.gov.bis.lite.spire.client.parser.ReferenceParser;
 
 public class GuiceModule extends AbstractModule {
 
   @Provides
   @Singleton
   @Named("SpireCreateLiteSarClient")
-  SpireClient provideCreateLiteSar1SpireClient(Environment env, CustomerApplicationConfiguration config) {
-    SpireClient<String> client = new SpireClient<>(new SingleResponseParser("SAR_REF"));
+  SpireReferenceClient provideCreateLiteSar(Environment env, CustomerApplicationConfiguration config) {
+    SpireReferenceClient client = new SpireReferenceClient(new ReferenceParser("SAR_REF"));
     client.setSpireConfig(config.getSpireClientUserName(), config.getSpireClientPassword(), config.getSpireClientUrl());
     client.setConfig("SPIRE_CREATE_LITE_SAR", "SAR_DETAILS", false);
     return client;
@@ -30,8 +28,8 @@ public class GuiceModule extends AbstractModule {
   @Provides
   @Singleton
   @Named("SpireCreateSiteForSarClient")
-  SpireClient provideCreateSiteForSarSpireClient(Environment env, CustomerApplicationConfiguration config) {
-    SpireClient<String> client = new SpireClient<>(new SingleResponseParser("SITE_REF"));
+  SpireReferenceClient provideCreateSiteForSar(Environment env, CustomerApplicationConfiguration config) {
+    SpireReferenceClient client = new SpireReferenceClient(new ReferenceParser("SITE_REF"));
     client.setSpireConfig(config.getSpireClientUserName(), config.getSpireClientPassword(), config.getSpireClientUrl());
     client.setConfig("SPIRE_CREATE_SITE_FOR_SAR", "SITE_DETAILS", false);
     return client;
@@ -40,18 +38,18 @@ public class GuiceModule extends AbstractModule {
   @Provides
   @Singleton
   @Named("SpireEditUserRolesClient")
-  SpireClient provideEditUserRolesSpireClient(Environment env, CustomerApplicationConfiguration config) {
-    SpireClient<String> client = new SpireClient<>(new SingleResponseParser("RESULT"));
+  SpireReferenceClient provideEditUserRoles(Environment env, CustomerApplicationConfiguration config) {
+    SpireReferenceClient client = new SpireReferenceClient(new ReferenceParser("RESULT"));
     client.setSpireConfig(config.getSpireClientUserName(), config.getSpireClientPassword(), config.getSpireClientUrl());
     client.setConfig("SPIRE_EDIT_USER_ROLES", "USER_DETAILS", false);
     return client;
   }
 
+
   @Provides
   @Singleton
-  @Named("SpireCompanyClient")
-  SpireClient provideCompanyClient(Environment env, CustomerApplicationConfiguration config) {
-    SpireClient<List<SpireCompany>> client = new SpireClient<>(new CompanyParser());
+  SpireCompanyClient provideCompany(Environment env, CustomerApplicationConfiguration config) {
+    SpireCompanyClient client = new SpireCompanyClient(new CompanyParser());
     client.setSpireConfig(config.getSpireClientUserName(), config.getSpireClientPassword(), config.getSpireClientUrl());
     client.setConfig("SPIRE_COMPANIES", "getCompanies", true);
     return client;
@@ -59,9 +57,8 @@ public class GuiceModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @Named("SpireCompanySitesClient")
-  SpireClient provideCompanySitesSpireClient(Environment env, CustomerApplicationConfiguration config) {
-    SpireClient<List<SpireSite>> client = new SpireClient<>(new CompanySiteParser());
+  SpireSiteClient provideCompanySite(Environment env, CustomerApplicationConfiguration config) {
+    SpireSiteClient client = new SpireSiteClient(new SiteParser());
     client.setSpireConfig(config.getSpireClientUserName(), config.getSpireClientPassword(), config.getSpireClientUrl());
     client.setConfig("SPIRE_COMPANY_SITES", "getSites", true);
     return client;
