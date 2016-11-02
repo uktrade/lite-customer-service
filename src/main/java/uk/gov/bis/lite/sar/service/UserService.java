@@ -51,7 +51,7 @@ public class UserService {
     return editUserRolesClient.sendRequest(request);
   }
 
-  public Users getSarAdministratorUserDetailsById(String customerId) {
+  public Users getCustomerAdminUsers(String customerId) {
     SpireRequest request = userDetailClient.createRequest();
     request.addChild("sarRef", customerId);
     List<SpireUserDetail> spireUserDetails = userDetailClient.sendRequest(request);

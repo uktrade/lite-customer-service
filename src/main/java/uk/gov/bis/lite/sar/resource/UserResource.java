@@ -33,7 +33,7 @@ public class UserResource {
   @GET
   @Path("/customer-admins/{customerId}")
   public Users getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId) {
-    return userService.getSarAdministratorUserDetailsById(customerId);
+    return userService.getCustomerAdminUsers(customerId);
   }
 
   @POST
