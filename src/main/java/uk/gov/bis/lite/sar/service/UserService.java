@@ -41,12 +41,12 @@ public class UserService {
     this.userDetailClient = userDetailClient;
   }
 
-  public String userRoleUpdate(UserRoleItem item) {
+  public String userRoleUpdate(UserRoleItem item, String userId, String siteRef) {
     SpireRequest request = editUserRolesClient.createRequest();
     request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_1);
     request.addChild(SpireName.ADMIN_WUA_ID, item.getAdminUserId());
-    request.addChild(SpireName.USER_WUA_ID, item.getUserId());
-    request.addChild(SpireName.SITE_REF, item.getSiteRef());
+    request.addChild(SpireName.USER_WUA_ID, userId);
+    request.addChild(SpireName.SITE_REF, siteRef);
     request.addChild(SpireName.ROLE_TYPE, item.getRoleType());
     return editUserRolesClient.getResult(request);
   }

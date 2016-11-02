@@ -41,9 +41,11 @@ public class UserResource {
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
   @Produces({MediaType.APPLICATION_JSON})
-  @Path("/userRole")
-  public Response userRole(UserRoleItem item) {
-    String completed = userService.userRoleUpdate(item);
+  @Path("/user-roles/user/{userId}/site/{siteRef}")
+  public Response userRole(@NotNull @PathParam("userId") String userId,
+                           @NotNull @PathParam("siteRef") String siteRef,
+                           UserRoleItem item) {
+    String completed = userService.userRoleUpdate(item, userId, siteRef);
     if (completed.equals(UserService.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
       return goodResponse(completed);
     }
