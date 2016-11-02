@@ -4,11 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.model.UserDetail;
+import uk.gov.bis.lite.sar.model.Users;
 import uk.gov.bis.lite.sar.model.item.UserRoleItem;
 import uk.gov.bis.lite.sar.service.UserService;
-
-import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -34,7 +32,7 @@ public class UserResource {
 
   @GET
   @Path("/customer-admins/{customerId}")
-  public List<UserDetail> getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId) {
+  public Users getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId) {
     return userService.getSarAdministratorUserDetailsById(customerId);
   }
 

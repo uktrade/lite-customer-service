@@ -6,11 +6,11 @@ import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.UserDetail;
+import uk.gov.bis.lite.sar.model.Users;
 import uk.gov.bis.lite.sar.model.item.UserRoleItem;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.spire.SpireUserDetailClient;
 import uk.gov.bis.lite.sar.spire.model.SpireUserDetail;
-import uk.gov.bis.lite.spire.client.SpireName;
 import uk.gov.bis.lite.spire.client.SpireRequest;
 
 import java.util.List;
@@ -43,21 +43,22 @@ public class UserService {
 
   public String userRoleUpdate(UserRoleItem item, String userId, String siteRef) {
     SpireRequest request = editUserRolesClient.createRequest();
-    request.addChild(SpireName.VERSION_NO, SpireName.VERSION_1_1);
-    request.addChild(SpireName.ADMIN_WUA_ID, item.getAdminUserId());
-    request.addChild(SpireName.USER_WUA_ID, userId);
-    request.addChild(SpireName.SITE_REF, siteRef);
-    request.addChild(SpireName.ROLE_TYPE, item.getRoleType());
-    return editUserRolesClient.getResult(request);
+    request.addChild("VERSION_NO", "1.1");
+    request.addChild("ADMIN_WUA_ID", item.getAdminUserId());
+    request.addChild("USER_WUA_ID", userId);
+    request.addChild("SITE_REF", siteRef);
+    request.addChild("ROLE_TYPE", item.getRoleType());
+    return editUserRolesClient.sendRequest(request);
   }
 
-  public List<UserDetail> getSarAdministratorUserDetailsById(String customerId) {
+  public Users getSarAdministratorUserDetailsById(String customerId) {
     SpireRequest request = userDetailClient.createRequest();
-    request.addChild(SpireName.sarRef, customerId);
-    List<SpireUserDetail> spireUserDetails = userDetailClient.getResult(request);
-    return spireUserDetails.stream()
+    request.addChild("sarRef", customerId);
+    List<SpireUserDetail> spireUserDetails = userDetailClient.sendRequest(request);
+    List<UserDetail> adminUserDetails = spireUserDetails.stream()
         .filter(sud -> sud.getRoleName().equals(SPIRE_ROLE_SAR_ADMINISTRATOR))
         .map(UserDetail::new)
         .collect(Collectors.toList());
+    return new Users(adminUserDetails);
   }
 }

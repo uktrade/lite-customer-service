@@ -9,11 +9,11 @@ import ru.vyarus.dropwizard.guice.module.installer.feature.jersey.ResourceInstal
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.sar.config.guice.GuiceModule;
 import uk.gov.bis.lite.sar.resource.CustomerCreateResource;
-import uk.gov.bis.lite.sar.resource.SiteCreateResource;
 import uk.gov.bis.lite.sar.resource.CustomerResource;
+import uk.gov.bis.lite.sar.resource.SiteCreateResource;
 import uk.gov.bis.lite.sar.resource.SiteResource;
 import uk.gov.bis.lite.sar.resource.UserResource;
-import uk.gov.bis.lite.spire.client.exception.SpireException;
+import uk.gov.bis.lite.spire.client.exception.SpireClientException;
 
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
 
@@ -23,7 +23,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
 
   @Override
   public void run(CustomerApplicationConfiguration configuration, Environment environment) {
-    environment.jersey().register(SpireException.ServiceExceptionMapper.class);
+    environment.jersey().register(SpireClientException.ServiceExceptionMapper.class);
   }
 
   @Override

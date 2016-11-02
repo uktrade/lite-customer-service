@@ -1,7 +1,6 @@
 package uk.gov.bis.lite.sar.model.item;
 
 import org.apache.commons.lang3.StringUtils;
-import uk.gov.bis.lite.sar.model.item.AddressItem;
 
 public class SiteItem {
 
