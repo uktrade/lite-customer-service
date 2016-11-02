@@ -8,11 +8,11 @@ import ru.vyarus.dropwizard.guice.GuiceBundle;
 import ru.vyarus.dropwizard.guice.module.installer.feature.jersey.ResourceInstaller;
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.sar.config.guice.GuiceModule;
-import uk.gov.bis.lite.sar.resource.CreateCustomerResource;
-import uk.gov.bis.lite.sar.resource.CreateSiteResource;
+import uk.gov.bis.lite.sar.resource.CustomerCreateResource;
+import uk.gov.bis.lite.sar.resource.SiteCreateResource;
 import uk.gov.bis.lite.sar.resource.CustomerResource;
 import uk.gov.bis.lite.sar.resource.SiteResource;
-import uk.gov.bis.lite.sar.resource.UserRoleResource;
+import uk.gov.bis.lite.sar.resource.UserResource;
 import uk.gov.bis.lite.spire.client.exception.SpireException;
 
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
@@ -32,7 +32,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
         GuiceBundle.<CustomerApplicationConfiguration>builder()
             .modules(new GuiceModule())
             .installers(ResourceInstaller.class)
-            .extensions(CreateCustomerResource.class, CreateSiteResource.class, UserRoleResource.class,
+            .extensions(CustomerCreateResource.class, SiteCreateResource.class, UserResource.class,
                 CustomerResource.class, SiteResource.class)
             .build(Stage.PRODUCTION);
 

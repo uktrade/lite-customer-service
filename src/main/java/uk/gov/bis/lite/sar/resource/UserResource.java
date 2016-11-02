@@ -4,26 +4,38 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.model.UserRoleItem;
-import uk.gov.bis.lite.sar.service.UserRoleService;
+import uk.gov.bis.lite.sar.model.UserDetail;
+import uk.gov.bis.lite.sar.model.item.UserRoleItem;
+import uk.gov.bis.lite.sar.service.UserService;
 
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("")
 @Produces(MediaType.APPLICATION_JSON)
-public class UserRoleResource {
+public class UserResource {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserRoleResource.class);
-  private UserRoleService userRoleService;
+  private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
+  private UserService userService;
 
   @Inject
-  public UserRoleResource(UserRoleService userRoleService) {
-    this.userRoleService = userRoleService;
+  public UserResource(UserService userService) {
+    this.userService = userService;
+  }
+
+  @GET
+  @Path("/customer-admin/{customerId}")
+  public List<UserDetail> getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId) {
+    return userService.getSarAdministratorUserDetailsById(customerId);
   }
 
   @POST
@@ -31,8 +43,8 @@ public class UserRoleResource {
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/userRole")
   public Response userRole(UserRoleItem item) {
-    String completed = userRoleService.userRoleUpdate(item);
-    if (completed.equals(UserRoleService.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
+    String completed = userService.userRoleUpdate(item);
+    if (completed.equals(UserService.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
       return goodResponse(completed);
     }
     return badRequest("Could not update userRole");

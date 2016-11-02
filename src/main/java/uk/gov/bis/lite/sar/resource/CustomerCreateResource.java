@@ -3,8 +3,8 @@ package uk.gov.bis.lite.sar.resource;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.model.SiteItem;
-import uk.gov.bis.lite.sar.service.SiteService;
+import uk.gov.bis.lite.sar.model.item.CustomerItem;
+import uk.gov.bis.lite.sar.service.CustomerService;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -14,23 +14,22 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("")
-@Produces(MediaType.APPLICATION_JSON)
-public class CreateSiteResource {
+public class CustomerCreateResource {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CreateSiteResource.class);
-  private SiteService siteService;
+  private static final Logger LOGGER = LoggerFactory.getLogger(CustomerCreateResource.class);
+  private CustomerService customerService;
 
   @Inject
-  public CreateSiteResource(SiteService siteService) {
-    this.siteService = siteService;
+  public CustomerCreateResource(CustomerService customerService) {
+    this.customerService = customerService;
   }
 
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
   @Produces({MediaType.APPLICATION_JSON})
-  @Path("/create-site")
-  public Response createSite(SiteItem item) {
-    return goodResponse(siteService.createSite(item));
+  @Path("/create-customer")
+  public Response createCustomer(CustomerItem item) {
+    return goodResponse(customerService.createCustomer(item));
   }
 
   private Response goodResponse(String value) {

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.model.AddressItem;
+import uk.gov.bis.lite.sar.model.item.AddressItem;
 
 public class Util {
 

@@ -9,8 +9,10 @@ import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.sar.spire.SpireCompanyClient;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.spire.SpireSiteClient;
+import uk.gov.bis.lite.sar.spire.SpireUserDetailClient;
 import uk.gov.bis.lite.sar.spire.parsers.CompanyParser;
 import uk.gov.bis.lite.sar.spire.parsers.SiteParser;
+import uk.gov.bis.lite.sar.spire.parsers.UserDetailParser;
 import uk.gov.bis.lite.spire.client.parser.ReferenceParser;
 
 public class GuiceModule extends AbstractModule {
@@ -63,6 +65,16 @@ public class GuiceModule extends AbstractModule {
     client.setConfig("SPIRE_COMPANY_SITES", "getSites", true);
     return client;
   }
+
+  @Provides
+  @Singleton
+  SpireUserDetailClient provideUserDetail(Environment env, CustomerApplicationConfiguration config) {
+    SpireUserDetailClient client = new SpireUserDetailClient(new UserDetailParser());
+    client.setSpireConfig(config.getSpireClientUserName(), config.getSpireClientPassword(), config.getSpireClientUrl());
+    client.setConfig("SPIRE_SAR_USER_DETAILS", "getDetails", true);
+    return client;
+  }
+
 
   @Override
   protected void configure() {

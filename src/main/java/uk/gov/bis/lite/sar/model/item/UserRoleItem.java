@@ -1,4 +1,4 @@
-package uk.gov.bis.lite.sar.model;
+package uk.gov.bis.lite.sar.model.item;
 
 public class UserRoleItem {
 

@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.Site;
-import uk.gov.bis.lite.sar.model.SiteItem;
+import uk.gov.bis.lite.sar.model.item.SiteItem;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.spire.SpireSiteClient;
 import uk.gov.bis.lite.sar.util.Util;
