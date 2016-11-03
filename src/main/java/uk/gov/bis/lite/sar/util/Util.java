@@ -25,7 +25,8 @@ public class Util {
     try {
       json = mapper.writeValueAsString(address).trim();
     } catch (JsonProcessingException e) {
-      LOGGER.error("JsonProcessingException", e);
+      throw new RuntimeException("JsonProcessingException on AddressItem", e);
+
     }
     return json;
   }
