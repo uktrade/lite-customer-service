@@ -13,7 +13,7 @@ import uk.gov.bis.lite.sar.resource.CustomerResource;
 import uk.gov.bis.lite.sar.resource.SiteCreateResource;
 import uk.gov.bis.lite.sar.resource.SiteResource;
 import uk.gov.bis.lite.sar.resource.UserResource;
-import uk.gov.bis.lite.spire.client.exception.SpireClientException;
+import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
 
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
 
