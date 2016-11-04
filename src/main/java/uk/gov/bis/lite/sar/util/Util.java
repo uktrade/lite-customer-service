@@ -4,8 +4,10 @@ package uk.gov.bis.lite.sar.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.sar.model.item.AddressItem;
 
 public class Util {
@@ -29,5 +31,16 @@ public class Util {
 
     }
     return json;
+  }
+
+  public static boolean addChild(SpireRequest request, String elementName, String elementContent) {
+    boolean added = false;
+    if(!StringUtils.isBlank(elementContent)) {
+      request.addChild(elementName, elementContent);
+      added = true;
+    } else {
+      LOGGER.warn("No content found for element: " + elementName + " - not including this element in Spire request");
+    }
+    return added;
   }
 }

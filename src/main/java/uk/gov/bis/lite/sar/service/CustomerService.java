@@ -36,14 +36,14 @@ public class CustomerService {
     // Allow if we have a userId and address TODO check this is correct
     if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
       SpireRequest request = createLiteSarReferenceClient.createRequest();
-      request.addChild("VERSION_NO", "1.1");
-      request.addChild("WUA_ID", item.getUserId());
-      request.addChild("CUSTOMER_NAME", item.getCustomerName());
-      request.addChild("CUSTOMER_TYPE", item.getCustomerType());
-      request.addChild("LITE_ADDRESS", Util.getAddressItemJson(item.getAddressItem()));
-      request.addChild("ADDRESS", Util.getFriendlyAddress(item.getAddressItem()));
-      request.addChild("COUNTRY_REF", item.getAddressItem().getCountry());
-      request.addChild("WEBSITE", item.getWebsite());
+      Util.addChild(request, "VERSION_NO", "1.1");
+      Util.addChild(request, "WUA_ID", item.getUserId());
+      Util.addChild(request, "CUSTOMER_NAME", item.getCustomerName());
+      Util.addChild(request, "CUSTOMER_TYPE", item.getCustomerType());
+      Util.addChild(request, "LITE_ADDRESS", Util.getAddressItemJson(item.getAddressItem()));
+      Util.addChild(request, "ADDRESS", Util.getFriendlyAddress(item.getAddressItem()));
+      Util.addChild(request, "COUNTRY_REF", item.getAddressItem().getCountry());
+      Util.addChild(request, "WEBSITE", item.getWebsite());
       String companiesHouseNumber = item.getCompaniesHouseNumber();
       if (!StringUtils.isBlank(companiesHouseNumber)) {
         request.addChild("COMPANIES_HOUSE_NUMBER", companiesHouseNumber);
@@ -59,6 +59,8 @@ public class CustomerService {
       throw new SpireClientException("Mandatory fields missing: userId and/or address");
     }
   }
+
+
 
   public List<Customer> getCustomersBySearch(String postcode) {
     SpireRequest request = companyClient.createRequest();

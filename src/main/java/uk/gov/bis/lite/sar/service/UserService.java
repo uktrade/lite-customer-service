@@ -12,6 +12,7 @@ import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.spire.SpireUserDetailClient;
 import uk.gov.bis.lite.sar.spire.model.SpireUserDetail;
 import uk.gov.bis.lite.common.spire.client.SpireRequest;
+import uk.gov.bis.lite.sar.util.Util;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,17 +44,17 @@ public class UserService {
 
   public String userRoleUpdate(UserRoleItem item, String userId, String siteRef) {
     SpireRequest request = editUserRolesClient.createRequest();
-    request.addChild("VERSION_NO", "1.1");
-    request.addChild("ADMIN_WUA_ID", item.getAdminUserId());
-    request.addChild("USER_WUA_ID", userId);
-    request.addChild("SITE_REF", siteRef);
-    request.addChild("ROLE_TYPE", item.getRoleType());
+    Util.addChild(request, "VERSION_NO", "1.1");
+    Util.addChild(request, "ADMIN_WUA_ID", item.getAdminUserId());
+    Util.addChild(request, "USER_WUA_ID", userId);
+    Util.addChild(request, "SITE_REF", siteRef);
+    Util.addChild(request, "ROLE_TYPE", item.getRoleType());
     return editUserRolesClient.sendRequest(request);
   }
 
   public Users getCustomerAdminUsers(String customerId) {
     SpireRequest request = userDetailClient.createRequest();
-    request.addChild("sarRef", customerId);
+    Util.addChild(request, "sarRef", customerId);
     List<SpireUserDetail> spireUserDetails = userDetailClient.sendRequest(request);
     List<UserDetail> adminUserDetails = spireUserDetails.stream()
         .filter(sud -> sud.getRoleName().equals(SPIRE_ROLE_SAR_ADMINISTRATOR))
