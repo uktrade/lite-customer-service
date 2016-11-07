@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.sar.model.Users;
 import uk.gov.bis.lite.sar.model.item.UserRoleItem;
 import uk.gov.bis.lite.sar.service.UserService;
+import uk.gov.bis.lite.sar.service.UserServiceImpl;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -44,7 +45,7 @@ public class UserResource {
                            @NotNull @PathParam("siteRef") String siteRef,
                            UserRoleItem item) {
     String completed = userService.userRoleUpdate(item, userId, siteRef);
-    if (completed.equals(UserService.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
+    if (completed.equals(UserServiceImpl.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
       return goodResponse(completed);
     }
     return badRequest("Could not update userRole");

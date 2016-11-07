@@ -5,6 +5,9 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import io.dropwizard.setup.Environment;
+import uk.gov.bis.lite.common.spire.client.SpireClientConfig;
+import uk.gov.bis.lite.common.spire.client.SpireRequestConfig;
+import uk.gov.bis.lite.common.spire.client.parser.ReferenceParser;
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.sar.spire.SpireCompanyClient;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
@@ -13,9 +16,6 @@ import uk.gov.bis.lite.sar.spire.SpireUserDetailClient;
 import uk.gov.bis.lite.sar.spire.parsers.CompanyParser;
 import uk.gov.bis.lite.sar.spire.parsers.SiteParser;
 import uk.gov.bis.lite.sar.spire.parsers.UserDetailParser;
-import uk.gov.bis.lite.common.spire.client.SpireClientConfig;
-import uk.gov.bis.lite.common.spire.client.SpireRequestConfig;
-import uk.gov.bis.lite.common.spire.client.parser.ReferenceParser;
 
 public class GuiceModule extends AbstractModule {
 

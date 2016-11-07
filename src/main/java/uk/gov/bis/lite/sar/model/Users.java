@@ -6,6 +6,9 @@ public class Users {
 
   private List<UserDetail> administrators;
 
+  public Users() {
+  }
+
   public Users(List<UserDetail> administrators) {
     this.administrators = administrators;
   }

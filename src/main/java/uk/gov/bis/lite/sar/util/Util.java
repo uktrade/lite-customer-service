@@ -35,7 +35,7 @@ public class Util {
 
   public static boolean addChild(SpireRequest request, String elementName, String elementContent) {
     boolean added = false;
-    if(!StringUtils.isBlank(elementContent)) {
+    if (!StringUtils.isBlank(elementContent)) {
       request.addChild(elementName, elementContent);
       added = true;
     } else {

@@ -6,6 +6,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
 import ru.vyarus.dropwizard.guice.module.installer.feature.jersey.ResourceInstaller;
+import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.sar.config.guice.GuiceModule;
 import uk.gov.bis.lite.sar.resource.CustomerCreateResource;
@@ -13,7 +14,6 @@ import uk.gov.bis.lite.sar.resource.CustomerResource;
 import uk.gov.bis.lite.sar.resource.SiteCreateResource;
 import uk.gov.bis.lite.sar.resource.SiteResource;
 import uk.gov.bis.lite.sar.resource.UserResource;
-import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
 
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
 

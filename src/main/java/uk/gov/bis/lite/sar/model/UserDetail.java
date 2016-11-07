@@ -9,6 +9,10 @@ public class UserDetail {
 
   private SpireUserDetail userDetail;
 
+  public UserDetail() {
+
+  }
+
   public UserDetail(SpireUserDetail userDetail) {
     this.userDetail = userDetail;
   }

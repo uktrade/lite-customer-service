@@ -29,6 +29,7 @@ public class CustomerCreateResource {
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/create-customer")
   public Response createCustomer(CustomerItem item) {
+
     return goodResponse(customerService.createCustomer(item));
   }
 

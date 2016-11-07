@@ -1,6 +1,9 @@
 package uk.gov.bis.lite.sar.model.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerItem {
 
   private String userId;
@@ -13,12 +16,14 @@ public class CustomerItem {
   private String eoriNumber;
   private Boolean eoriValidated;
 
+  @JsonIgnore
   public String getEoriValidatedStr() {
-    return eoriValidated ? "true" : "false";
+    return eoriValidated == null ? "false" : eoriValidated ? "true" : "false";
   }
 
+  @JsonIgnore
   public String getCompaniesHouseValidatedStr() {
-    return companiesHouseValidated ? "true" : "false";
+    return companiesHouseValidated == null ? "false" : companiesHouseValidated ? "true" : "false";
   }
 
   public String getUserId() {
