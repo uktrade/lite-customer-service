@@ -13,16 +13,15 @@ public class CustomerServiceMock implements CustomerService {
   private List<Customer> mockCustomers = new ArrayList<>();
   private String mockCustomerId = "id1";
 
-  public CustomerServiceMock(String mockCustomerId, int numberOfCustomers) {
+  public CustomerServiceMock(String mockCustomerId, int numberOfCustomers, String sarRefTag) {
     this.mockCustomerId = mockCustomerId;
-    initCustomers(numberOfCustomers);
+    initCustomers(numberOfCustomers, sarRefTag);
   }
 
-  private void initCustomers(int numberOfCustomers) {
-    for (int i = 0; i < numberOfCustomers; i++) {
+  private void initCustomers(int numberOfCustomers, String sarRefTag) {
+    for (int i = 1; i < numberOfCustomers + 1; i++) {
       SpireCompany company = new SpireCompany();
-      company.setSarRef("sarRef" + i);
-      company.setName("Name" + i);
+      company.setSarRef(sarRefTag + i);
       mockCustomers.add(new Customer(company));
     }
   }
@@ -44,6 +43,10 @@ public class CustomerServiceMock implements CustomerService {
   }
 
   public List<Customer> getCustomersById(String customerId) {
+    return mockCustomers;
+  }
+
+  public List<Customer> getCustomersByCompanyNumber(String companyNumber) {
     return mockCustomers;
   }
 

@@ -27,6 +27,10 @@ public class Util {
     return customers.size();
   }
 
+  public static uk.gov.bis.lite.sar.model.item.Customer getCustomerResponse(Response response) {
+    return response.readEntity(uk.gov.bis.lite.sar.model.item.Customer.class);
+  }
+
   public static int getUsersUserDetailsSize(Response response) {
     Users users = getUsersFromResponse(response);
     return users.getAdministrators().size();

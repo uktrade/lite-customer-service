@@ -26,8 +26,9 @@ public class CustomerResourcesTest {
 
   // CustomerServiceMock setup
   private static final int MOCK_CUSTOMERS_NUMBER = 1;
+  private static final String MOCK_CUSTOMERS_SAR_REF_TAG = "REF";
   private static final String MOCK_CUSTOMER_ID = "id1";
-  private static final CustomerServiceMock mockService = new CustomerServiceMock(MOCK_CUSTOMER_ID, MOCK_CUSTOMERS_NUMBER);
+  private static final CustomerServiceMock mockService = new CustomerServiceMock(MOCK_CUSTOMER_ID, MOCK_CUSTOMERS_NUMBER, MOCK_CUSTOMERS_SAR_REF_TAG);
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
@@ -79,6 +80,14 @@ public class CustomerResourcesTest {
         .queryParam("eori", "eori").request().get();
     assertThat(status(response)).isEqualTo(OK);
     assertThat(Util.getCustomersSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
+  }
+
+  @Test
+  public void searchCustomersByCompanyNumber() {
+    Response response = request("/search-customers/registered-number/1").get();
+    assertThat(status(response)).isEqualTo(OK);
+    uk.gov.bis.lite.sar.model.item.Customer customer = Util.getCustomerResponse(response);
+    assertThat(customer.getSarRef()).isEqualTo(MOCK_CUSTOMERS_SAR_REF_TAG + "1");
   }
 
   /**
