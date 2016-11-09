@@ -9,6 +9,12 @@ import uk.gov.bis.lite.common.spire.client.SpireClientConfig;
 import uk.gov.bis.lite.common.spire.client.SpireRequestConfig;
 import uk.gov.bis.lite.common.spire.client.parser.ReferenceParser;
 import uk.gov.bis.lite.sar.config.CustomerApplicationConfiguration;
+import uk.gov.bis.lite.sar.service.CustomerService;
+import uk.gov.bis.lite.sar.service.CustomerServiceImpl;
+import uk.gov.bis.lite.sar.service.SiteService;
+import uk.gov.bis.lite.sar.service.SiteServiceImpl;
+import uk.gov.bis.lite.sar.service.UserService;
+import uk.gov.bis.lite.sar.service.UserServiceImpl;
 import uk.gov.bis.lite.sar.spire.SpireCompanyClient;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.spire.SpireSiteClient;
@@ -73,6 +79,9 @@ public class GuiceModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    bind(CustomerService.class).to(CustomerServiceImpl.class);
+    bind(SiteService.class).to(SiteServiceImpl.class);
+    bind(UserService.class).to(UserServiceImpl.class);
   }
 
 }
