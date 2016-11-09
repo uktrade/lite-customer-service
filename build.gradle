@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
   compile 'io.dropwizard:dropwizard-core:1.0.3'
-  compile 'uk.gov.bis.lite:spire-client:1.0'
+  compile 'uk.gov.bis.lite:spire-client:1.1'
   compile 'ru.vyarus:dropwizard-guicey:3.2.0'
   compile 'io.dropwizard:dropwizard-testing:1.0.3'
 

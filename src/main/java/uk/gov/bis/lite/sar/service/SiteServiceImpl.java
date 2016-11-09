@@ -35,13 +35,13 @@ public class SiteServiceImpl implements SiteService {
   public String createSite(SiteItem item) {
     if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
       SpireRequest request = createSiteForSarReferenceClient.createRequest();
-      Util.addChild(request, "VERSION_NO", "1.0");
-      Util.addChild(request, "WUA_ID", item.getUserId());
-      Util.addChild(request, "SAR_REF", item.getSarRef());
-      Util.addChild(request, "DIVISION", item.getSiteName());
-      Util.addChild(request, "LITE_ADDRESS", Util.getAddressItemJson(item.getAddressItem()));
-      Util.addChild(request, "ADDRESS", Util.getFriendlyAddress(item.getAddressItem()));
-      Util.addChild(request, "COUNTRY_REF", item.getAddressItem().getCountry());
+      request.addChild("VERSION_NO", "1.0");
+      request.addChild("WUA_ID", item.getUserId());
+      request.addChild("SAR_REF", item.getSarRef());
+      request.addChild("DIVISION", item.getSiteName());
+      request.addChild("LITE_ADDRESS", Util.getAddressItemJson(item.getAddressItem()));
+      request.addChild("ADDRESS", Util.getFriendlyAddress(item.getAddressItem()));
+      request.addChild("COUNTRY_REF", item.getAddressItem().getCountry());
       return createSiteForSarReferenceClient.sendRequest(request);
     } else {
       throw new SpireClientException("Mandatory fields missing: userId and/or address");
@@ -50,8 +50,8 @@ public class SiteServiceImpl implements SiteService {
 
   public List<Site> getSites(String customerId, String userId) {
     SpireRequest request = siteClient.createRequest();
-    Util.addChild(request, "userId", userId);
-    Util.addChild(request, "sarRef", customerId);
+    request.addChild("userId", userId);
+    request.addChild("sarRef", customerId);
     return siteClient.sendRequest(request).stream().map(Site::new).collect(Collectors.toList());
   }
 }

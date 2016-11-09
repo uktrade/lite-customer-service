@@ -32,15 +32,4 @@ public class Util {
     }
     return json;
   }
-
-  public static boolean addChild(SpireRequest request, String elementName, String elementContent) {
-    boolean added = false;
-    if (!StringUtils.isBlank(elementContent)) {
-      request.addChild(elementName, elementContent);
-      added = true;
-    } else {
-      LOGGER.warn("No content found for element: " + elementName + " - not including this element in Spire request");
-    }
-    return added;
-  }
 }
