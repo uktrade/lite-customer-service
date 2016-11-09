@@ -85,4 +85,10 @@ public class CustomerServiceImpl implements CustomerService {
     request.addChild("sarRef", customerId);
     return companyClient.sendRequest(request).stream().map(Customer::new).collect(Collectors.toList());
   }
+
+  public List<Customer> getCustomersByCompanyNumber(String companyNumber) {
+    SpireRequest request = companyClient.createRequest();
+    request.addChild("companyNumber", companyNumber);
+    return companyClient.sendRequest(request).stream().map(Customer::new).collect(Collectors.toList());
+  }
 }

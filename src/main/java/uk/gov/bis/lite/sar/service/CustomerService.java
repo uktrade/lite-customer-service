@@ -16,4 +16,6 @@ public interface CustomerService {
   List<Customer> getCustomersByUserId(String userId);
 
   List<Customer> getCustomersById(String customerId);
+
+  List<Customer> getCustomersByCompanyNumber(String companyNumber);
 }

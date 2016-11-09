@@ -48,12 +48,35 @@ public class CustomerResource {
   public List<Customer> getSearchCustomers(@QueryParam("postcode") String postcode,
                                            @QueryParam("eori") String eori) {
     if (StringUtils.isBlank(postcode)) {
-      throw new WebApplicationException("postcode is a mandatory parameter", Response.Status.BAD_REQUEST);
+      exception("postcode is a mandatory parameter", Response.Status.BAD_REQUEST);
     }
     if (StringUtils.isBlank(eori)) {
       return customerService.getCustomersBySearch(postcode);
     } else {
       return customerService.getCustomersBySearch(postcode, eori);
     }
+  }
+
+  @GET
+  @Path("/search-customers/registered-number/{chNumber}")
+  public Customer getSearchCustomersByCompanyNumber(@PathParam("chNumber") String chNumber) {
+    Customer customer = null;
+    if (!StringUtils.isBlank(chNumber)) {
+      List<Customer> customers = customerService.getCustomersByCompanyNumber(chNumber);
+      if(customers.size() == 1) {
+        customer = customers.get(0);
+      } else if(customers.size() == 0) {
+        exception("No Customer found for company number: " + chNumber, Response.Status.NOT_FOUND);
+      } else {
+        exception("Multiple Customers found for company number: " + chNumber, Response.Status.INTERNAL_SERVER_ERROR);
+      }
+    } else {
+      exception("Company Number blank. No Customer found.", Response.Status.NOT_FOUND);
+    }
+    return customer;
+  }
+
+  private void exception(String message, Response.Status status) {
+    throw new WebApplicationException(message, status);
   }
 }

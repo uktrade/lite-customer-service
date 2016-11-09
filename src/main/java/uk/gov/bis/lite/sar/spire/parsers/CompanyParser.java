@@ -1,6 +1,8 @@
 package uk.gov.bis.lite.sar.spire.parsers;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import uk.gov.bis.lite.sar.spire.model.SpireCompany;
 import uk.gov.bis.lite.sar.spire.model.SpireOrganisationType;
@@ -10,12 +12,25 @@ import uk.gov.bis.lite.common.spire.client.parser.SpireParser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CompanyParser implements SpireParser<List<SpireCompany>> {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(CompanyParser.class);
+
   @Override
   public List<SpireCompany> parseResponse(SpireResponse spireResponse) {
-    return getCompaniesFromNodes(spireResponse.getElementChildNodesForList("//COMPANIES_LIST"));
+
+    // It is possible to receive error nodes back from Spire, for example:
+    // <COMPANIES_LIST>
+    //    <ERROR>Company for provided companyNumber not found.</ERROR>
+    // </COMPANIES_LIST>
+    // So we remove any ERROR node from result
+
+    List<Node> nodes = spireResponse.getElementChildNodesForList("//COMPANIES_LIST")
+        .stream().filter(n -> !n.getNodeName().equals("ERROR")).collect(Collectors.toList());
+    return getCompaniesFromNodes(nodes);
   }
 
   private List<SpireCompany> getCompaniesFromNodes(List<Node> nodes) {
