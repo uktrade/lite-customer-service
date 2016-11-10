@@ -1,10 +1,15 @@
-package uk.gov.bis.lite.sar.util;
+package uk.gov.bis.lite.sar.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import uk.gov.bis.lite.sar.model.Customer;
+import io.dropwizard.testing.junit.ResourceTestRule;
+import org.junit.ClassRule;
+import uk.gov.bis.lite.sar.mocks.CustomerServiceMock;
+import uk.gov.bis.lite.sar.mocks.SiteServiceMock;
+import uk.gov.bis.lite.sar.mocks.UserServiceMock;
 import uk.gov.bis.lite.sar.model.Users;
 import uk.gov.bis.lite.sar.model.item.AddressItem;
+import uk.gov.bis.lite.sar.model.item.Customer;
 import uk.gov.bis.lite.sar.model.item.CustomerItem;
 import uk.gov.bis.lite.sar.model.item.CustomerServiceResponseItem;
 import uk.gov.bis.lite.sar.model.item.SiteItem;
@@ -12,31 +17,75 @@ import uk.gov.bis.lite.sar.model.item.UserRoleItem;
 
 import java.util.List;
 
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-public class Util {
+public class SpireResourceTest {
 
   private static ObjectMapper mapper = new ObjectMapper();
+  final int OK = Response.Status.OK.getStatusCode();
 
-  public static String getResponseString(Response response) {
+  // CustomerServiceMock setup
+  static int MOCK_CUSTOMERS_NUMBER = 1;
+  static String MOCK_CUSTOMERS_SAR_REF_TAG = "REF";
+  static String MOCK_CUSTOMER_ID = "id1";
+  private static CustomerServiceMock mockCustomerService = new CustomerServiceMock(MOCK_CUSTOMER_ID, MOCK_CUSTOMERS_NUMBER, MOCK_CUSTOMERS_SAR_REF_TAG);
+
+  // SiteServiceMock setup
+  static int MOCK_SITES_NUMBER = 1;
+  static String MOCK_SITE_ID = "id1";
+  private static SiteServiceMock mockSiteService = new SiteServiceMock(MOCK_SITE_ID, MOCK_SITES_NUMBER);
+
+  // UserServiceMock setup
+  static int MOCK_USERS_USER_DETAIL_NUMBER = 3;
+  static String MOCK_COMPLETE = "COMPLETE";
+  private static UserServiceMock mockUserService = new UserServiceMock(MOCK_COMPLETE, MOCK_USERS_USER_DETAIL_NUMBER);
+
+  @ClassRule
+  public static final ResourceTestRule resources = ResourceTestRule.builder()
+      .addResource(new CustomerResource(mockCustomerService))
+      .addResource(new CustomerCreateResource(mockCustomerService))
+      .addResource(new SiteResource(mockSiteService))
+      .addResource(new SiteCreateResource(mockSiteService))
+      .addResource(new UserResource(mockUserService)).build();
+
+
+  Invocation.Builder request(String url, String mediaType) {
+    return target(url).request(mediaType);
+  }
+
+  Invocation.Builder request(String url) {
+    return target(url).request();
+  }
+
+  WebTarget target(String url) {
+    return resources.client().target(url);
+  }
+
+  int status(Response response) {
+    return response.getStatus();
+  }
+
+  String getResponseString(Response response) {
     return getCustomerServiceResponseItem(response).getResponse();
   }
 
-  public static int getCustomersSize(Response response) {
+  int getCustomersSize(Response response) {
     List<Customer> customers = getCustomersFromResponse(response);
     return customers.size();
   }
 
-  public static uk.gov.bis.lite.sar.model.item.Customer getCustomerResponse(Response response) {
-    return response.readEntity(uk.gov.bis.lite.sar.model.item.Customer.class);
+  Customer getCustomerResponse(Response response) {
+    return response.readEntity(Customer.class);
   }
 
-  public static int getUsersUserDetailsSize(Response response) {
+  int getUsersUserDetailsSize(Response response) {
     Users users = getUsersFromResponse(response);
     return users.getAdministrators().size();
   }
 
-  public static String getUserRoleItemJson() {
+  String getUserRoleItemJson() {
     String json = "";
     try {
       json = mapper.writeValueAsString(getUserRoleItem());
@@ -46,7 +95,7 @@ public class Util {
     return json;
   }
 
-  public static String getSiteItemJson() {
+  String getSiteItemJson() {
     String json = "";
     try {
       json = mapper.writeValueAsString(getSiteItem());
@@ -56,7 +105,7 @@ public class Util {
     return json;
   }
 
-  public static String getCustomerItemJson() {
+  String getCustomerItemJson() {
     String json = "";
     try {
       json = mapper.writeValueAsString(getCustomerItem());
@@ -66,19 +115,19 @@ public class Util {
     return json;
   }
 
-  private static CustomerServiceResponseItem getCustomerServiceResponseItem(Response response) {
+  private CustomerServiceResponseItem getCustomerServiceResponseItem(Response response) {
     return response.readEntity(CustomerServiceResponseItem.class);
   }
 
-  private static List<Customer> getCustomersFromResponse(Response response) {
+  private List<Customer> getCustomersFromResponse(Response response) {
     return (List<Customer>) response.readEntity(List.class);
   }
 
-  private static Users getUsersFromResponse(Response response) {
+  private Users getUsersFromResponse(Response response) {
     return response.readEntity(Users.class);
   }
 
-  private static CustomerItem getCustomerItem() {
+  private CustomerItem getCustomerItem() {
     AddressItem address = new AddressItem();
     address.setLine1("line1");
     address.setLine2("line2");
@@ -99,7 +148,7 @@ public class Util {
     return customer;
   }
 
-  private static SiteItem getSiteItem() {
+  private SiteItem getSiteItem() {
     AddressItem address = new AddressItem();
     address.setLine1("line1");
     address.setLine2("line2");
@@ -115,11 +164,10 @@ public class Util {
     return site;
   }
 
-  private static UserRoleItem getUserRoleItem() {
+  private UserRoleItem getUserRoleItem() {
     UserRoleItem item = new UserRoleItem();
     item.setAdminUserId("adminUserId");
     item.setRoleType("roleType");
     return item;
   }
-
 }

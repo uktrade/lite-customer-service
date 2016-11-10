@@ -22,9 +22,7 @@ public class UserServiceMock implements UserService {
   private void initUsers(int numberOfUserDetails) {
     List<UserDetail> userDetails = new ArrayList<>();
     for (int i = 0; i < numberOfUserDetails; i++) {
-      SpireUserDetail spireDetail = new SpireUserDetail();
-      spireDetail.setUserId("userId" + i);
-      userDetails.add(new UserDetail(spireDetail));
+      userDetails.add(new UserDetail(new SpireUserDetail()));
     }
     this.mockUsers = new Users(userDetails);
   }
