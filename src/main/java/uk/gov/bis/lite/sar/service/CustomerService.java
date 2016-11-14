@@ -4,6 +4,7 @@ import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.item.CustomerItem;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
 
@@ -15,7 +16,7 @@ public interface CustomerService {
 
   List<Customer> getCustomersByUserId(String userId);
 
-  List<Customer> getCustomersById(String customerId);
+  Optional<Customer> getCustomerById(String customerId);
 
   List<Customer> getCustomersByCompanyNumber(String companyNumber);
 }

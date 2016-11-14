@@ -20,7 +20,7 @@ public class ResourceSiteTest extends SpireResourceTest {
 
   @Test
   public void userSites() {
-    Response response = request("/user-sites/customer/1?userId=1").get();
+    Response response = request("/user-sites/customer/1/user/1").get();
     assertThat(status(response)).isEqualTo(OK);
     assertThat(getCustomersSize(response)).isEqualTo(MOCK_SITES_NUMBER);
   }

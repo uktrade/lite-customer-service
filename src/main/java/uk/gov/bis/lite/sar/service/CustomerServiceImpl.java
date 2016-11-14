@@ -12,9 +12,13 @@ import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.model.item.CustomerItem;
 import uk.gov.bis.lite.sar.spire.SpireCompanyClient;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
+import uk.gov.bis.lite.sar.spire.model.SpireCompany;
+import uk.gov.bis.lite.sar.spire.model.SpireSite;
 import uk.gov.bis.lite.sar.util.Util;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -80,10 +84,15 @@ public class CustomerServiceImpl implements CustomerService {
     return companyClient.sendRequest(request).stream().map(Customer::new).collect(Collectors.toList());
   }
 
-  public List<Customer> getCustomersById(String customerId) {
+  public Optional<Customer> getCustomerById(String customerId) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("sarRef", customerId);
-    return companyClient.sendRequest(request).stream().map(Customer::new).collect(Collectors.toList());
+    List<SpireCompany> spireCompanies = companyClient.sendRequest(request);
+    if (spireCompanies.size() > 0) {
+      LOGGER.info("Found " + spireCompanies.size() + " spire companies for sarRef: " + customerId);
+      return Optional.of(customerFunction.apply(spireCompanies.get(0)));
+    }
+    return Optional.empty();
   }
 
   public List<Customer> getCustomersByCompanyNumber(String companyNumber) {
@@ -91,4 +100,9 @@ public class CustomerServiceImpl implements CustomerService {
     request.addChild("companyNumber", companyNumber);
     return companyClient.sendRequest(request).stream().map(Customer::new).collect(Collectors.toList());
   }
+
+  /**
+   * Maps SpireCompany to Customer
+   */
+  private Function<SpireCompany, Customer> customerFunction = Customer::new;
 }

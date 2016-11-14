@@ -7,10 +7,12 @@ import uk.gov.bis.lite.sar.spire.model.SpireCompany;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CustomerServiceMock implements CustomerService {
 
   private List<Customer> mockCustomers = new ArrayList<>();
+  private Customer mockCustomer = new Customer(new SpireCompany());
   private String mockCustomerId = "id1";
 
   public CustomerServiceMock(String mockCustomerId, int numberOfCustomers, String sarRefTag) {
@@ -42,8 +44,8 @@ public class CustomerServiceMock implements CustomerService {
     return mockCustomers;
   }
 
-  public List<Customer> getCustomersById(String customerId) {
-    return mockCustomers;
+  public Optional<Customer> getCustomerById(String customerId) {
+    return Optional.of(mockCustomer);
   }
 
   public List<Customer> getCustomersByCompanyNumber(String companyNumber) {

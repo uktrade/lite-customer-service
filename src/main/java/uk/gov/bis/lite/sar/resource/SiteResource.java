@@ -32,9 +32,9 @@ public class SiteResource {
   }
 
   @GET
-  @Path("/user-sites/customer/{customerId}")
+  @Path("/user-sites/customer/{customerId}/user/{userId}")
   public List<SiteOut> getSites(@NotNull @PathParam("customerId") String customerId,
-                                @NotNull @QueryParam("userId") String userId) {
+                                @NotNull @PathParam("userId") String userId) {
     return siteService.getSites(customerId, userId);
   }
 

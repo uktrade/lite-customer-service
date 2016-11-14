@@ -4,10 +4,12 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.item.out.SiteOut;
 import uk.gov.bis.lite.sar.model.Customer;
 import uk.gov.bis.lite.sar.service.CustomerService;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
@@ -33,8 +35,15 @@ public class CustomerResource {
 
   @GET
   @Path("/customers/{customerId}")
-  public List<Customer> getCustomers(@NotNull @PathParam("customerId") String customerId) {
-    return customerService.getCustomersById(customerId);
+  public Customer getCustomers(@NotNull @PathParam("customerId") String customerId) {
+    Customer customer = null;
+    Optional<Customer> optSite = customerService.getCustomerById(customerId);
+    if (!optSite.isPresent()) {
+      throwException("No Site found.", Response.Status.NOT_FOUND);
+    } else {
+      customer = optSite.get();
+    }
+    return customer;
   }
 
   @GET
@@ -48,7 +57,7 @@ public class CustomerResource {
   public List<Customer> getSearchCustomers(@QueryParam("postcode") String postcode,
                                            @QueryParam("eori") String eori) {
     if (StringUtils.isBlank(postcode)) {
-      exception("postcode is a mandatory parameter", Response.Status.BAD_REQUEST);
+      throwException("postcode is a mandatory parameter", Response.Status.BAD_REQUEST);
     }
     if (StringUtils.isBlank(eori)) {
       return customerService.getCustomersBySearch(postcode);
@@ -66,17 +75,17 @@ public class CustomerResource {
       if (customers.size() == 1) {
         customer = customers.get(0);
       } else if (customers.size() == 0) {
-        exception("No Customer found for company number: " + chNumber, Response.Status.NOT_FOUND);
+        throwException("No Customer found for company number: " + chNumber, Response.Status.NOT_FOUND);
       } else {
-        exception("Multiple Customers found for company number: " + chNumber, Response.Status.INTERNAL_SERVER_ERROR);
+        throwException("Multiple Customers found for company number: " + chNumber, Response.Status.INTERNAL_SERVER_ERROR);
       }
     } else {
-      exception("Company Number blank. No Customer found.", Response.Status.NOT_FOUND);
+      throwException("Company Number blank. No Customer found.", Response.Status.NOT_FOUND);
     }
     return customer;
   }
 
-  private void exception(String message, Response.Status status) {
+  private void throwException(String message, Response.Status status) {
     throw new WebApplicationException(message, status);
   }
 }
