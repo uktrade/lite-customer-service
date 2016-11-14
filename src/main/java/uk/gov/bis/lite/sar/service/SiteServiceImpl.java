@@ -74,7 +74,7 @@ public class SiteServiceImpl implements SiteService {
   /**
    * Maps SpireSite to SiteOut
    */
-  private Function<SpireSite, SiteOut> siteOutFunction = spireSite -> {
+  private static final Function<SpireSite, SiteOut> siteOutFunction = spireSite -> {
 
     SiteOut siteOut = new SiteOut();
     siteOut.setCustomerId(spireSite.getSarRef());

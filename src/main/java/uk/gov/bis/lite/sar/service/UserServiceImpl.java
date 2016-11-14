@@ -5,15 +5,16 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.item.in.UserRoleIn;
+import uk.gov.bis.lite.common.item.out.UserOut;
+import uk.gov.bis.lite.common.item.out.UsersOut;
 import uk.gov.bis.lite.common.spire.client.SpireRequest;
-import uk.gov.bis.lite.sar.model.UserDetail;
-import uk.gov.bis.lite.sar.model.Users;
-import uk.gov.bis.lite.sar.model.item.UserRoleItem;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.spire.SpireUserDetailClient;
 import uk.gov.bis.lite.sar.spire.model.SpireUserDetail;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
     this.userDetailClient = userDetailClient;
   }
 
-  public String userRoleUpdate(UserRoleItem item, String userId, String siteRef) {
+  public String userRoleUpdate(UserRoleIn item, String userId, String siteRef) {
     SpireRequest request = editUserRolesClient.createRequest();
     request.addChild("VERSION_NO", "1.1");
     request.addChild("ADMIN_WUA_ID", item.getAdminUserId());
@@ -51,14 +52,30 @@ public class UserServiceImpl implements UserService {
     return editUserRolesClient.sendRequest(request);
   }
 
-  public Users getCustomerAdminUsers(String customerId) {
+  public UsersOut getCustomerAdminUsers(String customerId) {
     SpireRequest request = userDetailClient.createRequest();
     request.addChild("sarRef", customerId);
     List<SpireUserDetail> spireUserDetails = userDetailClient.sendRequest(request);
-    List<UserDetail> adminUserDetails = spireUserDetails.stream()
+    List<UserOut> adminUserDetails = spireUserDetails.stream()
         .filter(sud -> sud.getRoleName().equals(SPIRE_ROLE_SAR_ADMINISTRATOR))
-        .map(UserDetail::new)
+        .map(siteOutFunction)
         .collect(Collectors.toList());
-    return new Users(adminUserDetails);
+
+    LOGGER.info("adminUserDetails: " + adminUserDetails.size());
+    return new UsersOut(adminUserDetails);
   }
+
+  /**
+   * Maps SpireUserDetail to UserOut
+   */
+  private static final Function<SpireUserDetail, UserOut> siteOutFunction = spireUserDetail -> {
+    UserOut userOut = new UserOut();
+    userOut.setEmailAddress(spireUserDetail.getEmailAddress());
+    userOut.setUserId(spireUserDetail.getUserId());
+    userOut.setForename(spireUserDetail.getForename());
+    userOut.setFullName(spireUserDetail.getFullName());
+    userOut.setRoleName(spireUserDetail.getRoleName());
+    return userOut;
+  };
+
 }

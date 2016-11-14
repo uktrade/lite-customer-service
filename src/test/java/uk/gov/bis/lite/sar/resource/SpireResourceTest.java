@@ -5,16 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
 import uk.gov.bis.lite.common.item.AddressItem;
+import uk.gov.bis.lite.common.item.in.CustomerIn;
 import uk.gov.bis.lite.common.item.in.SiteIn;
+import uk.gov.bis.lite.common.item.in.UserRoleIn;
+import uk.gov.bis.lite.common.item.out.CustomerOut;
+import uk.gov.bis.lite.common.item.out.CustomerServiceOut;
 import uk.gov.bis.lite.common.item.out.SiteOut;
+import uk.gov.bis.lite.common.item.out.UsersOut;
 import uk.gov.bis.lite.sar.mocks.CustomerServiceMock;
 import uk.gov.bis.lite.sar.mocks.SiteServiceMock;
 import uk.gov.bis.lite.sar.mocks.UserServiceMock;
-import uk.gov.bis.lite.sar.model.Users;
-import uk.gov.bis.lite.sar.model.item.Customer;
-import uk.gov.bis.lite.sar.model.item.CustomerItem;
-import uk.gov.bis.lite.sar.model.item.CustomerServiceResponseItem;
-import uk.gov.bis.lite.sar.model.item.UserRoleItem;
 
 import java.util.List;
 
@@ -73,12 +73,12 @@ public class SpireResourceTest {
   }
 
   int getCustomersSize(Response response) {
-    List<Customer> customers = getCustomersFromResponse(response);
+    List<CustomerOut> customers = getCustomersFromResponse(response);
     return customers.size();
   }
 
-  Customer getCustomerResponse(Response response) {
-    return response.readEntity(Customer.class);
+  CustomerOut getCustomerResponse(Response response) {
+    return response.readEntity(CustomerOut.class);
   }
 
 
@@ -87,14 +87,14 @@ public class SpireResourceTest {
   }
 
   int getUsersUserDetailsSize(Response response) {
-    Users users = getUsersFromResponse(response);
+    UsersOut users = getUsersFromResponse(response);
     return users.getAdministrators().size();
   }
 
-  String getUserRoleItemJson() {
+  String getUserRoleInJson() {
     String json = "";
     try {
-      json = mapper.writeValueAsString(getUserRoleItem());
+      json = mapper.writeValueAsString(getUserRoleIn());
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
@@ -121,19 +121,19 @@ public class SpireResourceTest {
     return json;
   }
 
-  private CustomerServiceResponseItem getCustomerServiceResponseItem(Response response) {
-    return response.readEntity(CustomerServiceResponseItem.class);
+  private CustomerServiceOut getCustomerServiceResponseItem(Response response) {
+    return response.readEntity(CustomerServiceOut.class);
   }
 
-  private List<Customer> getCustomersFromResponse(Response response) {
-    return (List<Customer>) response.readEntity(List.class);
+  private List<CustomerOut> getCustomersFromResponse(Response response) {
+    return (List<CustomerOut>) response.readEntity(List.class);
   }
 
-  private Users getUsersFromResponse(Response response) {
-    return response.readEntity(Users.class);
+  private UsersOut getUsersFromResponse(Response response) {
+    return response.readEntity(UsersOut.class);
   }
 
-  private CustomerItem getCustomerItem() {
+  private CustomerIn getCustomerItem() {
     AddressItem address = new AddressItem();
     address.setLine1("line1");
     address.setLine2("line2");
@@ -141,7 +141,7 @@ public class SpireResourceTest {
     address.setPostcode("postcode");
     address.setCountry("country");
 
-    CustomerItem customer = new CustomerItem();
+    CustomerIn customer = new CustomerIn();
     customer.setUserId("userId");
     customer.setCustomerName("userId");
     customer.setCustomerType("userId");
@@ -185,8 +185,8 @@ public class SpireResourceTest {
     return site;
   }*/
 
-  private UserRoleItem getUserRoleItem() {
-    UserRoleItem item = new UserRoleItem();
+  private UserRoleIn getUserRoleIn() {
+    UserRoleIn item = new UserRoleIn();
     item.setAdminUserId("adminUserId");
     item.setRoleType("roleType");
     return item;

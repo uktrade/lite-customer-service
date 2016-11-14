@@ -1,9 +1,8 @@
 package uk.gov.bis.lite.sar.mocks;
 
-import uk.gov.bis.lite.sar.model.Customer;
-import uk.gov.bis.lite.sar.model.item.CustomerItem;
+import uk.gov.bis.lite.common.item.in.CustomerIn;
+import uk.gov.bis.lite.common.item.out.CustomerOut;
 import uk.gov.bis.lite.sar.service.CustomerService;
-import uk.gov.bis.lite.sar.spire.model.SpireCompany;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +10,8 @@ import java.util.Optional;
 
 public class CustomerServiceMock implements CustomerService {
 
-  private List<Customer> mockCustomers = new ArrayList<>();
-  private Customer mockCustomer = new Customer(new SpireCompany());
+  private List<CustomerOut> mockCustomers = new ArrayList<>();
+  private CustomerOut mockCustomer = new CustomerOut();
   private String mockCustomerId = "id1";
 
   public CustomerServiceMock(String mockCustomerId, int numberOfCustomers, String sarRefTag) {
@@ -22,38 +21,38 @@ public class CustomerServiceMock implements CustomerService {
 
   private void initCustomers(int numberOfCustomers, String sarRefTag) {
     for (int i = 1; i < numberOfCustomers + 1; i++) {
-      SpireCompany company = new SpireCompany();
-      company.setSarRef(sarRefTag + i);
-      mockCustomers.add(new Customer(company));
+      CustomerOut out = new CustomerOut();
+      out.setSarRef(sarRefTag + i);
+      mockCustomers.add(out);
     }
   }
 
-  public String createCustomer(CustomerItem item) {
+  public String createCustomer(CustomerIn item) {
     return mockCustomerId;
   }
 
-  public List<Customer> getCustomersBySearch(String postcode) {
+  public List<CustomerOut> getCustomersBySearch(String postcode) {
     return mockCustomers;
   }
 
-  public List<Customer> getCustomersBySearch(String postcode, String eoriNumber) {
+  public List<CustomerOut> getCustomersBySearch(String postcode, String eoriNumber) {
     return mockCustomers;
   }
 
-  public List<Customer> getCustomersByUserId(String userId) {
+  public List<CustomerOut> getCustomersByUserId(String userId) {
     return mockCustomers;
   }
 
-  public Optional<Customer> getCustomerById(String customerId) {
+  public Optional<CustomerOut> getCustomerById(String customerId) {
     return Optional.of(mockCustomer);
   }
 
-  public List<Customer> getCustomersByCompanyNumber(String companyNumber) {
+  public List<CustomerOut> getCustomersByCompanyNumber(String companyNumber) {
     return mockCustomers;
   }
 
-  public static CustomerItem getCustomerItem() {
-    CustomerItem item = new CustomerItem();
+  public static CustomerIn getCustomerItem() {
+    CustomerIn item = new CustomerIn();
     item.setUserId("userId");
     return item;
   }

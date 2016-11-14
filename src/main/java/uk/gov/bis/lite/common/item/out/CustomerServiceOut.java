@@ -1,6 +1,6 @@
-package uk.gov.bis.lite.sar.model.item;
+package uk.gov.bis.lite.common.item.out;
 
-public class CustomerServiceResponseItem {
+public class CustomerServiceOut {
 
   private String response;
 

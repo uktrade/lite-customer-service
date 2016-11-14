@@ -1,17 +1,21 @@
 package uk.gov.bis.lite.sar.mocks;
 
-import uk.gov.bis.lite.sar.model.UserDetail;
-import uk.gov.bis.lite.sar.model.Users;
-import uk.gov.bis.lite.sar.model.item.UserRoleItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.item.in.UserRoleIn;
+import uk.gov.bis.lite.common.item.out.UserOut;
+import uk.gov.bis.lite.common.item.out.UsersOut;
 import uk.gov.bis.lite.sar.service.UserService;
-import uk.gov.bis.lite.sar.spire.model.SpireUserDetail;
+import uk.gov.bis.lite.sar.service.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceMock implements UserService {
 
-  private Users mockUsers;
+  private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
+  private UsersOut mockUsers;
   private String mockRef;
 
   public UserServiceMock(String mockRef, int numberOfUserDetails) {
@@ -20,18 +24,20 @@ public class UserServiceMock implements UserService {
   }
 
   private void initUsers(int numberOfUserDetails) {
-    List<UserDetail> userDetails = new ArrayList<>();
+    List<UserOut> userOuts = new ArrayList<>();
     for (int i = 0; i < numberOfUserDetails; i++) {
-      userDetails.add(new UserDetail(new SpireUserDetail()));
+      UserOut userOut = new UserOut();
+      userOuts.add(userOut);
     }
-    this.mockUsers = new Users(userDetails);
+    this.mockUsers = new UsersOut(userOuts);
   }
 
-  public String userRoleUpdate(UserRoleItem item, String userId, String siteRef) {
+  public String userRoleUpdate(UserRoleIn item, String userId, String siteRef) {
     return mockRef;
   }
 
-  public Users getCustomerAdminUsers(String customerId) {
+  public UsersOut getCustomerAdminUsers(String customerId) {
+    LOGGER.info("mockUsers: " + mockUsers.getAdministrators().size());
     return mockUsers;
   }
 }

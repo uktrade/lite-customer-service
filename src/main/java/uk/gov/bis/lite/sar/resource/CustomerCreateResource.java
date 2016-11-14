@@ -3,7 +3,7 @@ package uk.gov.bis.lite.sar.resource;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.sar.model.item.CustomerItem;
+import uk.gov.bis.lite.common.item.in.CustomerIn;
 import uk.gov.bis.lite.sar.service.CustomerService;
 
 import javax.ws.rs.Consumes;
@@ -28,7 +28,7 @@ public class CustomerCreateResource {
   @Consumes({MediaType.APPLICATION_JSON})
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/create-customer")
-  public Response createCustomer(CustomerItem item) {
+  public Response createCustomer(CustomerIn item) {
 
     return goodResponse(customerService.createCustomer(item));
   }

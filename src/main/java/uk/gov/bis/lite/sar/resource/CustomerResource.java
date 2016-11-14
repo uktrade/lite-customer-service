@@ -4,8 +4,7 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.common.item.out.SiteOut;
-import uk.gov.bis.lite.sar.model.Customer;
+import uk.gov.bis.lite.common.item.out.CustomerOut;
 import uk.gov.bis.lite.sar.service.CustomerService;
 
 import java.util.List;
@@ -35,27 +34,27 @@ public class CustomerResource {
 
   @GET
   @Path("/customers/{customerId}")
-  public Customer getCustomers(@NotNull @PathParam("customerId") String customerId) {
-    Customer customer = null;
-    Optional<Customer> optSite = customerService.getCustomerById(customerId);
-    if (!optSite.isPresent()) {
-      throwException("No Site found.", Response.Status.NOT_FOUND);
+  public CustomerOut getCustomers(@NotNull @PathParam("customerId") String customerId) {
+    CustomerOut customer = null;
+    Optional<CustomerOut> optCustomer = customerService.getCustomerById(customerId);
+    if (!optCustomer.isPresent()) {
+      throwException("No Customer found.", Response.Status.NOT_FOUND);
     } else {
-      customer = optSite.get();
+      customer = optCustomer.get();
     }
     return customer;
   }
 
   @GET
   @Path("/user-customers/user/{userId}")
-  public List<Customer> getUserCustomers(@NotNull @PathParam("userId") String userId) {
+  public List<CustomerOut> getUserCustomers(@NotNull @PathParam("userId") String userId) {
     return customerService.getCustomersByUserId(userId);
   }
 
   @GET
   @Path("/search-customers/org-info")
-  public List<Customer> getSearchCustomers(@QueryParam("postcode") String postcode,
-                                           @QueryParam("eori") String eori) {
+  public List<CustomerOut> getSearchCustomers(@QueryParam("postcode") String postcode,
+                                              @QueryParam("eori") String eori) {
     if (StringUtils.isBlank(postcode)) {
       throwException("postcode is a mandatory parameter", Response.Status.BAD_REQUEST);
     }
@@ -68,10 +67,10 @@ public class CustomerResource {
 
   @GET
   @Path("/search-customers/registered-number/{chNumber}")
-  public Customer getSearchCustomersByCompanyNumber(@PathParam("chNumber") String chNumber) {
-    Customer customer = null;
+  public CustomerOut getSearchCustomersByCompanyNumber(@PathParam("chNumber") String chNumber) {
+    CustomerOut customer = null;
     if (!StringUtils.isBlank(chNumber)) {
-      List<Customer> customers = customerService.getCustomersByCompanyNumber(chNumber);
+      List<CustomerOut> customers = customerService.getCustomersByCompanyNumber(chNumber);
       if (customers.size() == 1) {
         customer = customers.get(0);
       } else if (customers.size() == 0) {

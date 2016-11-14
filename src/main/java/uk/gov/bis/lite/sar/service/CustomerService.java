@@ -1,22 +1,22 @@
 package uk.gov.bis.lite.sar.service;
 
-import uk.gov.bis.lite.sar.model.Customer;
-import uk.gov.bis.lite.sar.model.item.CustomerItem;
+import uk.gov.bis.lite.common.item.in.CustomerIn;
+import uk.gov.bis.lite.common.item.out.CustomerOut;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
 
-  String createCustomer(CustomerItem item);
+  String createCustomer(CustomerIn item);
 
-  List<Customer> getCustomersBySearch(String postcode);
+  List<CustomerOut> getCustomersBySearch(String postcode);
 
-  List<Customer> getCustomersBySearch(String postcode, String eoriNumber);
+  List<CustomerOut> getCustomersBySearch(String postcode, String eoriNumber);
 
-  List<Customer> getCustomersByUserId(String userId);
+  List<CustomerOut> getCustomersByUserId(String userId);
 
-  Optional<Customer> getCustomerById(String customerId);
+  Optional<CustomerOut> getCustomerById(String customerId);
 
-  List<Customer> getCustomersByCompanyNumber(String companyNumber);
+  List<CustomerOut> getCustomersByCompanyNumber(String companyNumber);
 }

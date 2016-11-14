@@ -1,6 +1,6 @@
-package uk.gov.bis.lite.sar.model.item;
+package uk.gov.bis.lite.common.item.in;
 
-public class UserRoleItem {
+public class UserRoleIn {
 
   private String adminUserId;
   private String roleType;
