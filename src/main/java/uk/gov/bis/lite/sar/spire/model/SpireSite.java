@@ -9,6 +9,7 @@ public class SpireSite {
   private String companyName;
   private String occupancyStatus;
   private String applicantType;
+  private String countryRef;
 
   public String getSiteRef() {
     return siteRef;
@@ -64,5 +65,13 @@ public class SpireSite {
 
   public void setApplicantType(String applicantType) {
     this.applicantType = applicantType;
+  }
+
+  public String getCountryRef() {
+    return countryRef;
+  }
+
+  public void setCountryRef(String countryRef) {
+    this.countryRef = countryRef;
   }
 }

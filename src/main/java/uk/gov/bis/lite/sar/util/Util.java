@@ -4,11 +4,9 @@ package uk.gov.bis.lite.sar.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.common.spire.client.SpireRequest;
-import uk.gov.bis.lite.sar.model.item.AddressItem;
+import uk.gov.bis.lite.common.item.AddressItem;
 
 public class Util {
 

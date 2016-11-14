@@ -4,15 +4,14 @@ package uk.gov.bis.lite.sar.spire.parsers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
+import uk.gov.bis.lite.common.spire.client.SpireResponse;
+import uk.gov.bis.lite.common.spire.client.parser.SpireParser;
 import uk.gov.bis.lite.sar.spire.model.SpireCompany;
 import uk.gov.bis.lite.sar.spire.model.SpireOrganisationType;
 import uk.gov.bis.lite.sar.spire.model.SpireWebsite;
-import uk.gov.bis.lite.common.spire.client.SpireResponse;
-import uk.gov.bis.lite.common.spire.client.parser.SpireParser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CompanyParser implements SpireParser<List<SpireCompany>> {

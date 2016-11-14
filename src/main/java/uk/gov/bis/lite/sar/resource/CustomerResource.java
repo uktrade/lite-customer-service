@@ -63,9 +63,9 @@ public class CustomerResource {
     Customer customer = null;
     if (!StringUtils.isBlank(chNumber)) {
       List<Customer> customers = customerService.getCustomersByCompanyNumber(chNumber);
-      if(customers.size() == 1) {
+      if (customers.size() == 1) {
         customer = customers.get(0);
-      } else if(customers.size() == 0) {
+      } else if (customers.size() == 0) {
         exception("No Customer found for company number: " + chNumber, Response.Status.NOT_FOUND);
       } else {
         exception("Multiple Customers found for company number: " + chNumber, Response.Status.INTERNAL_SERVER_ERROR);

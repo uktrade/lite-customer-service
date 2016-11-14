@@ -12,7 +12,6 @@ import uk.gov.bis.lite.sar.model.item.UserRoleItem;
 import uk.gov.bis.lite.sar.spire.SpireReferenceClient;
 import uk.gov.bis.lite.sar.spire.SpireUserDetailClient;
 import uk.gov.bis.lite.sar.spire.model.SpireUserDetail;
-import uk.gov.bis.lite.sar.util.Util;
 
 import java.util.List;
 import java.util.stream.Collectors;

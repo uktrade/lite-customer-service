@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   public String createCustomer(CustomerItem item) {
-    // Allow if we have a userId and address TODO check this is correct
+
     if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
       SpireRequest request = createLiteSarReferenceClient.createRequest();
       request.addChild("VERSION_NO", "1.1");

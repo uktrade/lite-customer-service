@@ -12,17 +12,24 @@ public class ResourceSiteTest extends SpireResourceTest {
 
   @Test
   public void createSite() {
-    Response response = request("/create-site", MediaType.APPLICATION_JSON)
-        .post(Entity.entity(getSiteItemJson(), MediaType.APPLICATION_JSON));
+    Response response = request("/customer-sites/1?userId=1", MediaType.APPLICATION_JSON)
+        .post(Entity.entity(getSiteItemInJson(), MediaType.APPLICATION_JSON));
     assertThat(status(response)).isEqualTo(OK);
     assertThat(getResponseString(response)).isEqualTo(MOCK_SITE_ID);
   }
 
   @Test
   public void userSites() {
-    Response response = request("/user-sites/customer/customerId/user/userId").get();
+    Response response = request("/user-sites/customer/1?userId=1").get();
     assertThat(status(response)).isEqualTo(OK);
     assertThat(getCustomersSize(response)).isEqualTo(MOCK_SITES_NUMBER);
+  }
+
+  @Test
+  public void userSite() {
+    Response response = request("/sites/1").get();
+    assertThat(status(response)).isEqualTo(OK);
+    assertThat(getSiteItemOutResponse(response).getSiteId()).isEqualTo(MOCK_SITE_ID);
   }
 
 }

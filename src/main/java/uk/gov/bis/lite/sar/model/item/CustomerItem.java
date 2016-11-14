@@ -2,6 +2,7 @@ package uk.gov.bis.lite.sar.model.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import uk.gov.bis.lite.common.item.AddressItem;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerItem {

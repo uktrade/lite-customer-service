@@ -1,4 +1,4 @@
-package uk.gov.bis.lite.sar.model.item;
+package uk.gov.bis.lite.common.item;
 
 public class AddressItem {
 

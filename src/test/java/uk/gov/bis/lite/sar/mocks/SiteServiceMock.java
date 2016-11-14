@@ -1,17 +1,17 @@
 package uk.gov.bis.lite.sar.mocks;
 
-
-import uk.gov.bis.lite.sar.model.Site;
-import uk.gov.bis.lite.sar.model.item.SiteItem;
+import uk.gov.bis.lite.common.item.in.SiteIn;
+import uk.gov.bis.lite.common.item.out.SiteOut;
 import uk.gov.bis.lite.sar.service.SiteService;
-import uk.gov.bis.lite.sar.spire.model.SpireSite;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SiteServiceMock implements SiteService {
 
-  private List<Site> mockSites = new ArrayList<>();
+  private SiteOut mockSite = null;
+  private List<SiteOut> mockSites = new ArrayList<>();
   private String mockSiteId = "id1";
 
   public SiteServiceMock(String mockSiteId, int numberOfSites) {
@@ -20,21 +20,27 @@ public class SiteServiceMock implements SiteService {
   }
 
   private void initSites(int numberOfSites) {
+
+    mockSite = new SiteOut();
+    mockSite.setSiteId(mockSiteId);
     for (int i = 0; i < numberOfSites; i++) {
-      SpireSite spireSite = new SpireSite();
-      spireSite.setSiteRef("siteRef" + i);
-      spireSite.setCompanyName("companyName" + i);
-      mockSites.add(new Site(spireSite));
+      SiteOut site = new SiteOut();
+      site.setCustomerId("site" + i);
+      mockSites.add(site);
     }
   }
 
-  public String createSite(SiteItem item) {
+  public String createSite(SiteIn siteItemIn, String customerId, String userId) {
     return mockSiteId;
   }
 
 
-  public List<Site> getSites(String customerId, String userId) {
+  public List<SiteOut> getSites(String customerId, String userId) {
     return mockSites;
+  }
+
+  public Optional<SiteOut> getSite(String siteId) {
+    return Optional.of(mockSite);
   }
 
 

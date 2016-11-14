@@ -4,15 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
+import uk.gov.bis.lite.common.item.AddressItem;
+import uk.gov.bis.lite.common.item.in.SiteIn;
+import uk.gov.bis.lite.common.item.out.SiteOut;
 import uk.gov.bis.lite.sar.mocks.CustomerServiceMock;
 import uk.gov.bis.lite.sar.mocks.SiteServiceMock;
 import uk.gov.bis.lite.sar.mocks.UserServiceMock;
 import uk.gov.bis.lite.sar.model.Users;
-import uk.gov.bis.lite.sar.model.item.AddressItem;
 import uk.gov.bis.lite.sar.model.item.Customer;
 import uk.gov.bis.lite.sar.model.item.CustomerItem;
 import uk.gov.bis.lite.sar.model.item.CustomerServiceResponseItem;
-import uk.gov.bis.lite.sar.model.item.SiteItem;
 import uk.gov.bis.lite.sar.model.item.UserRoleItem;
 
 import java.util.List;
@@ -80,6 +81,11 @@ public class SpireResourceTest {
     return response.readEntity(Customer.class);
   }
 
+
+  SiteOut getSiteItemOutResponse(Response response) {
+    return response.readEntity(SiteOut.class);
+  }
+
   int getUsersUserDetailsSize(Response response) {
     Users users = getUsersFromResponse(response);
     return users.getAdministrators().size();
@@ -95,10 +101,10 @@ public class SpireResourceTest {
     return json;
   }
 
-  String getSiteItemJson() {
+  String getSiteItemInJson() {
     String json = "";
     try {
-      json = mapper.writeValueAsString(getSiteItem());
+      json = mapper.writeValueAsString(getSiteItemIn());
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
@@ -148,6 +154,21 @@ public class SpireResourceTest {
     return customer;
   }
 
+  private SiteIn getSiteItemIn() {
+    AddressItem address = new AddressItem();
+    address.setLine1("line1");
+    address.setLine2("line2");
+    address.setCounty("county");
+    address.setPostcode("postcode");
+    address.setCountry("country");
+
+    SiteIn site = new SiteIn();
+    site.setSiteName("siteName");
+    site.setAddress(address);
+    return site;
+  }
+
+  /*
   private SiteItem getSiteItem() {
     AddressItem address = new AddressItem();
     address.setLine1("line1");
@@ -162,7 +183,7 @@ public class SpireResourceTest {
     site.setUserId("userId");
     site.setAddressItem(address);
     return site;
-  }
+  }*/
 
   private UserRoleItem getUserRoleItem() {
     UserRoleItem item = new UserRoleItem();

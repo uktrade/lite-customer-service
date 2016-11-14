@@ -1,9 +1,9 @@
 package uk.gov.bis.lite.sar.spire.parsers;
 
 import org.w3c.dom.Node;
-import uk.gov.bis.lite.sar.spire.model.SpireUserDetail;
 import uk.gov.bis.lite.common.spire.client.SpireResponse;
 import uk.gov.bis.lite.common.spire.client.parser.SpireParser;
+import uk.gov.bis.lite.sar.spire.model.SpireUserDetail;
 
 import java.util.ArrayList;
 import java.util.List;

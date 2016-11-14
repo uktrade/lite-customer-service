@@ -1,9 +1,9 @@
 package uk.gov.bis.lite.sar.spire.parsers;
 
 import org.w3c.dom.Node;
-import uk.gov.bis.lite.sar.spire.model.SpireSite;
 import uk.gov.bis.lite.common.spire.client.SpireResponse;
 import uk.gov.bis.lite.common.spire.client.parser.SpireParser;
+import uk.gov.bis.lite.sar.spire.model.SpireSite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,7 @@ public class SiteParser implements SpireParser<List<SpireSite>> {
       SpireResponse.getNodeValue(node, "ADDRESS").ifPresent(site::setAddress);
       SpireResponse.getNodeValue(node, "DIVISION").ifPresent(site::setDivision);
       SpireResponse.getNodeValue(node, "OCCUPANCY_STATUS").ifPresent(site::setOccupancyStatus);
+      SpireResponse.getNodeValue(node, "COUNTRY_REF").ifPresent(site::setCountryRef);
       sites.add(site);
     }
     return sites;
