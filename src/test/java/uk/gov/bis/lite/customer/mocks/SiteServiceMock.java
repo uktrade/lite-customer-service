@@ -10,19 +10,19 @@ import java.util.Optional;
 
 public class SiteServiceMock implements SiteService {
 
-  private SiteView mockSite = null;
   private List<SiteView> mockSites = new ArrayList<>();
-  private String mockSiteId = "id1";
+  private Optional<SiteView> mockSiteView;
 
   public SiteServiceMock(String mockSiteId, int numberOfSites) {
-    this.mockSiteId = mockSiteId;
-    initSites(numberOfSites);
+    initSites(mockSiteId, numberOfSites);
   }
 
-  private void initSites(int numberOfSites) {
+  private void initSites(String mockSiteId, int numberOfSites) {
 
-    mockSite = new SiteView();
-    mockSite.setSiteId(mockSiteId);
+    SiteView siteView = new SiteView();
+    siteView.setSiteId(mockSiteId);
+    mockSiteView = Optional.of(siteView);
+
     for (int i = 0; i < numberOfSites; i++) {
       SiteView site = new SiteView();
       site.setCustomerId("site" + i);
@@ -30,17 +30,16 @@ public class SiteServiceMock implements SiteService {
     }
   }
 
-  public String createSite(SiteParam siteItemIn, String customerId, String userId) {
-    return mockSiteId;
+  public Optional<SiteView> createSite(SiteParam param, String customerId, String userId) {
+    return mockSiteView;
   }
-
 
   public List<SiteView> getSites(String customerId, String userId) {
     return mockSites;
   }
 
   public Optional<SiteView> getSite(String siteId) {
-    return Optional.of(mockSite);
+    return mockSiteView;
   }
 
 

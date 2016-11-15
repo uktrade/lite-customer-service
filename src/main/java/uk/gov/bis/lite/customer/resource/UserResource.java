@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.customer.api.param.UserRoleParam;
 import uk.gov.bis.lite.customer.api.UsersResponse;
+import uk.gov.bis.lite.customer.api.param.UserRoleParam;
 import uk.gov.bis.lite.customer.service.UserService;
 import uk.gov.bis.lite.customer.service.UserServiceImpl;
 
@@ -44,16 +44,12 @@ public class UserResource {
   @Path("/user-roles/user/{userId}/site/{siteRef}")
   public Response userRole(@NotNull @PathParam("userId") String userId,
                            @NotNull @PathParam("siteRef") String siteRef,
-                           UserRoleParam item) {
-    String completed = userService.userRoleUpdate(item, userId, siteRef);
+                           UserRoleParam param) {
+    String completed = userService.userRoleUpdate(param, userId, siteRef);
     if (completed.equals(UserServiceImpl.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
-      return goodResponse(completed);
+      return Response.ok().build();
     }
     return badRequest("Could not update userRole");
-  }
-
-  private Response goodResponse(String value) {
-    return Response.ok("{\"response\": \"" + value + "\"}", MediaType.APPLICATION_JSON).build();
   }
 
   private Response badRequest(String message) {

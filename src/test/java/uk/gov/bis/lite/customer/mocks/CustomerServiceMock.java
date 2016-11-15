@@ -12,14 +12,18 @@ public class CustomerServiceMock implements CustomerService {
 
   private List<CustomerView> mockCustomers = new ArrayList<>();
   private CustomerView mockCustomer = new CustomerView();
-  private String mockCustomerId = "id1";
+  private Optional<CustomerView> mockCustomerView;
 
   public CustomerServiceMock(String mockCustomerId, int numberOfCustomers, String sarRefTag) {
-    this.mockCustomerId = mockCustomerId;
-    initCustomers(numberOfCustomers, sarRefTag);
+    initCustomers(mockCustomerId, numberOfCustomers, sarRefTag);
   }
 
-  private void initCustomers(int numberOfCustomers, String sarRefTag) {
+  private void initCustomers(String mockCustomerId, int numberOfCustomers, String sarRefTag) {
+
+    CustomerView view = new CustomerView();
+    view.setCustomerId(mockCustomerId);
+    mockCustomerView = Optional.of(view);
+
     for (int i = 1; i < numberOfCustomers + 1; i++) {
       CustomerView out = new CustomerView();
       out.setCustomerId(sarRefTag + i);
@@ -27,8 +31,8 @@ public class CustomerServiceMock implements CustomerService {
     }
   }
 
-  public String createCustomer(CustomerParam item) {
-    return mockCustomerId;
+  public Optional<CustomerView> createCustomer(CustomerParam param) {
+    return mockCustomerView;
   }
 
   public List<CustomerView> getCustomersBySearch(String postcode) {
@@ -49,12 +53,6 @@ public class CustomerServiceMock implements CustomerService {
 
   public List<CustomerView> getCustomersByCompanyNumber(String companyNumber) {
     return mockCustomers;
-  }
-
-  public static CustomerParam getCustomerItem() {
-    CustomerParam item = new CustomerParam();
-    item.setUserId("userId");
-    return item;
   }
 
 }

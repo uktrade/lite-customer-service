@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CustomerService {
 
-  String createCustomer(CustomerParam item);
+  Optional<CustomerView> createCustomer(CustomerParam param);
 
   List<CustomerView> getCustomersBySearch(String postcode);
 

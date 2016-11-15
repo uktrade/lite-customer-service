@@ -1,17 +1,14 @@
 package uk.gov.bis.lite.customer.resource;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
+import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.api.param.AddressParam;
 import uk.gov.bis.lite.customer.api.param.CustomerParam;
 import uk.gov.bis.lite.customer.api.param.SiteParam;
 import uk.gov.bis.lite.customer.api.param.UserRoleParam;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
-import uk.gov.bis.lite.customer.api.ApiResponse;
 import uk.gov.bis.lite.customer.api.view.SiteView;
-import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.mocks.CustomerServiceMock;
 import uk.gov.bis.lite.customer.mocks.SiteServiceMock;
 import uk.gov.bis.lite.customer.mocks.UserServiceMock;
@@ -24,7 +21,6 @@ import javax.ws.rs.core.Response;
 
 public class SpireResourceTest {
 
-  private static ObjectMapper mapper = new ObjectMapper();
   final int OK = Response.Status.OK.getStatusCode();
 
   // CustomerServiceMock setup
@@ -40,8 +36,7 @@ public class SpireResourceTest {
 
   // UserServiceMock setup
   static int MOCK_USERS_USER_DETAIL_NUMBER = 3;
-  static String MOCK_COMPLETE = "COMPLETE";
-  private static UserServiceMock mockUserService = new UserServiceMock(MOCK_COMPLETE, MOCK_USERS_USER_DETAIL_NUMBER);
+  private static UserServiceMock mockUserService = new UserServiceMock(MOCK_USERS_USER_DETAIL_NUMBER);
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
@@ -68,21 +63,12 @@ public class SpireResourceTest {
     return response.getStatus();
   }
 
-  String getResponseString(Response response) {
-    return getCustomerServiceResponseItem(response).getResponse();
-  }
-
-  int getCustomersSize(Response response) {
-    List<CustomerView> customers = getCustomersFromResponse(response);
-    return customers.size();
+  int getCustomerViewsSize(Response response) {
+    return getCustomerViewsFromResponse(response).size();
   }
 
   CustomerView getCustomerResponse(Response response) {
     return response.readEntity(CustomerView.class);
-  }
-
-  SiteView getSiteItemOutResponse(Response response) {
-    return response.readEntity(SiteView.class);
   }
 
   int getUsersUserDetailsSize(Response response) {
@@ -90,41 +76,15 @@ public class SpireResourceTest {
     return users.getAdministrators().size();
   }
 
-  String getUserRoleInJson() {
-    String json = "";
-    try {
-      json = mapper.writeValueAsString(getUserRoleIn());
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-    return json;
+  SiteView getResponseSiteView(Response response) {
+    return response.readEntity(SiteView.class);
   }
 
-  String getSiteItemInJson() {
-    String json = "";
-    try {
-      json = mapper.writeValueAsString(getSiteItemIn());
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-    return json;
+  CustomerView getResponseCustomerView(Response response) {
+    return response.readEntity(CustomerView.class);
   }
 
-  String getCustomerItemJson() {
-    String json = "";
-    try {
-      json = mapper.writeValueAsString(getCustomerItem());
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-    return json;
-  }
-
-  private ApiResponse getCustomerServiceResponseItem(Response response) {
-    return response.readEntity(ApiResponse.class);
-  }
-
-  private List<CustomerView> getCustomersFromResponse(Response response) {
+  private List<CustomerView> getCustomerViewsFromResponse(Response response) {
     return (List<CustomerView>) response.readEntity(List.class);
   }
 
@@ -132,7 +92,7 @@ public class SpireResourceTest {
     return response.readEntity(UsersResponse.class);
   }
 
-  private CustomerParam getCustomerItem() {
+  CustomerParam getCustomerParam() {
     AddressParam addressParam = new AddressParam();
     addressParam.setLine1("line1");
     addressParam.setLine2("line2");
@@ -140,20 +100,20 @@ public class SpireResourceTest {
     addressParam.setPostcode("postcode");
     addressParam.setCountry("country");
 
-    CustomerParam customer = new CustomerParam();
-    customer.setUserId("userId");
-    customer.setCustomerName("userId");
-    customer.setCustomerType("userId");
-    customer.setAddressParam(addressParam);
-    customer.setWebsite("userId");
-    customer.setCompaniesHouseNumber("userId");
-    customer.setCompaniesHouseValidated(false);
-    customer.setEoriNumber("userId");
-    customer.setEoriValidated(false);
-    return customer;
+    CustomerParam customerParam = new CustomerParam();
+    customerParam.setUserId("userId");
+    customerParam.setCustomerName("userId");
+    customerParam.setCustomerType("userId");
+    customerParam.setAddressParam(addressParam);
+    customerParam.setWebsite("userId");
+    customerParam.setCompaniesHouseNumber("userId");
+    customerParam.setCompaniesHouseValidated(false);
+    customerParam.setEoriNumber("userId");
+    customerParam.setEoriValidated(false);
+    return customerParam;
   }
 
-  private SiteParam getSiteItemIn() {
+  SiteParam getSiteParam() {
     AddressParam addressParam = new AddressParam();
     addressParam.setLine1("line1");
     addressParam.setLine2("line2");
@@ -167,10 +127,10 @@ public class SpireResourceTest {
     return site;
   }
 
-  private UserRoleParam getUserRoleIn() {
-    UserRoleParam item = new UserRoleParam();
-    item.setAdminUserId("adminUserId");
-    item.setRoleType(UserRoleParam.RoleType.ADMIN);
-    return item;
+  UserRoleParam getUserRoleParam() {
+    UserRoleParam param = new UserRoleParam();
+    param.setAdminUserId("adminUserId");
+    param.setRoleType(UserRoleParam.RoleType.ADMIN);
+    return param;
   }
 }

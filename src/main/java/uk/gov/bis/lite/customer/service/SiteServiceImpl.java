@@ -6,10 +6,10 @@ import com.google.inject.name.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.customer.api.param.SiteParam;
-import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
+import uk.gov.bis.lite.customer.api.param.SiteParam;
+import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.customer.spire.SpireReferenceClient;
 import uk.gov.bis.lite.customer.spire.SpireSiteClient;
 import uk.gov.bis.lite.customer.spire.model.SpireSite;
@@ -34,18 +34,19 @@ public class SiteServiceImpl implements SiteService {
     this.siteClient = siteClient;
   }
 
-  public String createSite(SiteParam siteIn, String customerId, String userId) {
+  public Optional<SiteView> createSite(SiteParam param, String customerId, String userId) {
 
-    if (!StringUtils.isBlank(userId) && siteIn.getAddressParam() != null) {
+    if (!StringUtils.isBlank(userId) && param.getAddressParam() != null) {
       SpireRequest request = createSiteForSarReferenceClient.createRequest();
       request.addChild("VERSION_NO", "1.0");
       request.addChild("WUA_ID", userId);
       request.addChild("SAR_REF", customerId);
-      request.addChild("DIVISION", siteIn.getSiteName());
-      request.addChild("LITE_ADDRESS", Util.getAddressItemJson(siteIn.getAddressParam()));
-      request.addChild("ADDRESS", Util.getFriendlyAddress(siteIn.getAddressParam()));
-      request.addChild("COUNTRY_REF", siteIn.getAddressParam().getCountry());
-      return createSiteForSarReferenceClient.sendRequest(request);
+      request.addChild("DIVISION", param.getSiteName());
+      request.addChild("LITE_ADDRESS", Util.getAddressParamJson(param.getAddressParam()));
+      request.addChild("ADDRESS", Util.getFriendlyAddress(param.getAddressParam()));
+      request.addChild("COUNTRY_REF", param.getAddressParam().getCountry());
+
+      return getSite(createSiteForSarReferenceClient.sendRequest(request));
     } else {
       throw new SpireClientException("Mandatory fields missing: userId and/or address");
     }

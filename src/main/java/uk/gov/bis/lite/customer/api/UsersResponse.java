@@ -10,7 +10,8 @@ public class UsersResponse {
 
   private List<UserView> administrators;
 
-  public UsersResponse() {}
+  public UsersResponse() {
+  }
 
   public UsersResponse(List<UserView> administrators) {
     this.administrators = administrators;

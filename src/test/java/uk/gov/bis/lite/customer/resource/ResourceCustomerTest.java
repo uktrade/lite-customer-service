@@ -20,9 +20,9 @@ public class ResourceCustomerTest extends SpireResourceTest {
   @Test
   public void createCustomer() {
     Response response = request("/create-customer", MediaType.APPLICATION_JSON)
-        .post(Entity.entity(getCustomerItemJson(), MediaType.APPLICATION_JSON));
+        .post(Entity.entity(getCustomerParam(), MediaType.APPLICATION_JSON));
     assertThat(status(response)).isEqualTo(OK);
-    assertThat(getResponseString(response)).isEqualTo(MOCK_CUSTOMER_ID);
+    assertThat(getResponseCustomerView(response).getCustomerId()).isEqualTo(MOCK_CUSTOMER_ID);
   }
 
   @Test
@@ -36,7 +36,7 @@ public class ResourceCustomerTest extends SpireResourceTest {
   public void userCustomers() {
     Response response = request("/user-customers/user/1").get();
     assertThat(status(response)).isEqualTo(OK);
-    assertThat(getCustomersSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
+    assertThat(getCustomerViewsSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
   }
 
   @Test
@@ -51,7 +51,7 @@ public class ResourceCustomerTest extends SpireResourceTest {
     // With postcode param
     response = target(url).queryParam("postcode", "postcode").request().get();
     assertThat(status(response)).isEqualTo(OK);
-    assertThat(getCustomersSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
+    assertThat(getCustomerViewsSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
 
     // With eori param
     response = target(url).queryParam("eori", "eori").request().get();
@@ -61,7 +61,7 @@ public class ResourceCustomerTest extends SpireResourceTest {
     response = target(url).queryParam("postcode", "postcode")
         .queryParam("eori", "eori").request().get();
     assertThat(status(response)).isEqualTo(OK);
-    assertThat(getCustomersSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
+    assertThat(getCustomerViewsSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
   }
 
   @Test

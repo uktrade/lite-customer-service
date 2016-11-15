@@ -8,10 +8,11 @@ import java.util.Optional;
 
 public interface SiteService {
 
-  String createSite(SiteParam siteItemIn, String customerId, String userId);
+  Optional<SiteView> createSite(SiteParam param, String customerId, String userId);
+
+  Optional<SiteView> getSite(String siteId);
 
   List<SiteView> getSites(String customerId, String userId);
 
-  Optional<SiteView> getSite(String siteId);
 }
 

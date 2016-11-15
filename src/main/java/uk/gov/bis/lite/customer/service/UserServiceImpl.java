@@ -5,10 +5,10 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.spire.client.SpireRequest;
+import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.api.param.UserRoleParam;
 import uk.gov.bis.lite.customer.api.view.UserView;
-import uk.gov.bis.lite.customer.api.UsersResponse;
-import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.customer.spire.SpireReferenceClient;
 import uk.gov.bis.lite.customer.spire.SpireUserDetailClient;
 import uk.gov.bis.lite.customer.spire.model.SpireUserDetail;
@@ -41,13 +41,13 @@ public class UserServiceImpl implements UserService {
     this.userDetailClient = userDetailClient;
   }
 
-  public String userRoleUpdate(UserRoleParam item, String userId, String siteRef) {
+  public String userRoleUpdate(UserRoleParam param, String userId, String siteRef) {
     SpireRequest request = editUserRolesClient.createRequest();
     request.addChild("VERSION_NO", "1.1");
-    request.addChild("ADMIN_WUA_ID", item.getAdminUserId());
+    request.addChild("ADMIN_WUA_ID", param.getAdminUserId());
     request.addChild("USER_WUA_ID", userId);
     request.addChild("SITE_REF", siteRef);
-    request.addChild("ROLE_TYPE", item.getRoleType().name());
+    request.addChild("ROLE_TYPE", param.getRoleType().name());
     return editUserRolesClient.sendRequest(request);
   }
 
@@ -72,5 +72,7 @@ public class UserServiceImpl implements UserService {
     userView.setFullName(spireUserDetail.getFullName());
     userView.setRoleName(spireUserDetail.getRoleName());
     return userView;
-  };
+  }
+
+  ;
 }

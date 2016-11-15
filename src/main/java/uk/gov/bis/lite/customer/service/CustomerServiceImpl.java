@@ -6,10 +6,10 @@ import com.google.inject.name.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.customer.api.param.CustomerParam;
-import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
+import uk.gov.bis.lite.customer.api.param.CustomerParam;
+import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.spire.SpireCompanyClient;
 import uk.gov.bis.lite.customer.spire.SpireReferenceClient;
 import uk.gov.bis.lite.customer.spire.model.SpireCompany;
@@ -35,29 +35,30 @@ public class CustomerServiceImpl implements CustomerService {
     this.companyClient = companyClient;
   }
 
-  public String createCustomer(CustomerParam item) {
+  public Optional<CustomerView> createCustomer(CustomerParam param) {
 
-    if (!StringUtils.isBlank(item.getUserId()) && item.getAddressParam() != null) {
+    if (!StringUtils.isBlank(param.getUserId()) && param.getAddressParam() != null) {
       SpireRequest request = createLiteSarReferenceClient.createRequest();
       request.addChild("VERSION_NO", "1.1");
-      request.addChild("WUA_ID", item.getUserId());
-      request.addChild("CUSTOMER_NAME", item.getCustomerName());
-      request.addChild("CUSTOMER_TYPE", item.getCustomerType());
-      request.addChild("LITE_ADDRESS", Util.getAddressItemJson(item.getAddressParam()));
-      request.addChild("ADDRESS", Util.getFriendlyAddress(item.getAddressParam()));
-      request.addChild("COUNTRY_REF", item.getAddressParam().getCountry());
-      request.addChild("WEBSITE", item.getWebsite());
-      String companiesHouseNumber = item.getCompaniesHouseNumber();
+      request.addChild("WUA_ID", param.getUserId());
+      request.addChild("CUSTOMER_NAME", param.getCustomerName());
+      request.addChild("CUSTOMER_TYPE", param.getCustomerType());
+      request.addChild("LITE_ADDRESS", Util.getAddressParamJson(param.getAddressParam()));
+      request.addChild("ADDRESS", Util.getFriendlyAddress(param.getAddressParam()));
+      request.addChild("COUNTRY_REF", param.getAddressParam().getCountry());
+      request.addChild("WEBSITE", param.getWebsite());
+      String companiesHouseNumber = param.getCompaniesHouseNumber();
       if (!StringUtils.isBlank(companiesHouseNumber)) {
         request.addChild("COMPANIES_HOUSE_NUMBER", companiesHouseNumber);
-        request.addChild("COMPANIES_HOUSE_VALIDATED", Util.getBooleanValue(item.getCompaniesHouseValidated()));
+        request.addChild("COMPANIES_HOUSE_VALIDATED", Util.getBooleanValue(param.getCompaniesHouseValidated()));
       }
-      String eoriNumber = item.getEoriNumber();
+      String eoriNumber = param.getEoriNumber();
       if (!StringUtils.isBlank(eoriNumber)) {
         request.addChild("EORI_NUMBER", eoriNumber);
-        request.addChild("EORI_VALIDATED", Util.getBooleanValue(item.getEoriValidated()));
+        request.addChild("EORI_VALIDATED", Util.getBooleanValue(param.getEoriValidated()));
       }
-      return createLiteSarReferenceClient.sendRequest(request);
+
+      return getCustomerById(createLiteSarReferenceClient.sendRequest(request));
     } else {
       throw new SpireClientException("Mandatory fields missing: userId and/or address");
     }

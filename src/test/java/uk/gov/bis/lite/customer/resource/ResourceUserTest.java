@@ -14,9 +14,8 @@ public class ResourceUserTest extends SpireResourceTest {
   @Test
   public void userRole() {
     Response response = request("/user-roles/user/userId/site/siteRef", MediaType.APPLICATION_JSON)
-        .post(Entity.entity(getUserRoleInJson(), MediaType.APPLICATION_JSON));
+        .post(Entity.entity(getUserRoleParam(), MediaType.APPLICATION_JSON));
     assertThat(status(response)).isEqualTo(OK);
-    assertThat(getResponseString(response)).isEqualTo(MOCK_COMPLETE);
   }
 
 

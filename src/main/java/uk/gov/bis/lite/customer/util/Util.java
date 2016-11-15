@@ -18,16 +18,16 @@ public class Util {
     return arg == null ? "false" : arg ? "true" : "false";
   }
 
-  public static String getFriendlyAddress(AddressParam addressParam) {
+  public static String getFriendlyAddress(AddressParam param) {
     return Joiner.on("\n").skipNulls()
-        .join(addressParam.getLine1(), addressParam.getLine2(), addressParam.getTown(),
-            addressParam.getPostcode(), addressParam.getCounty(), addressParam.getCountry());
+        .join(param.getLine1(), param.getLine2(), param.getTown(),
+            param.getPostcode(), param.getCounty(), param.getCountry());
   }
 
-  public static String getAddressItemJson(AddressParam addressParam) {
+  public static String getAddressParamJson(AddressParam param) {
     String json = "";
     try {
-      json = mapper.writeValueAsString(addressParam).trim();
+      json = mapper.writeValueAsString(param).trim();
     } catch (JsonProcessingException e) {
       throw new RuntimeException("JsonProcessingException on AddressParam", e);
 

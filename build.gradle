@@ -49,7 +49,7 @@ publishing {
     api(MavenPublication) {
       groupId 'uk.gov.bis.lite'
       artifactId 'lite-customer-service-api'
-      version '1.0'
+      version '1.1-SNAPSHOT'
       artifact liteCustomerServiceApiJar
     }
   }
