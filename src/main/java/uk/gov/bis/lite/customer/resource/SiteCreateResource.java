@@ -3,7 +3,7 @@ package uk.gov.bis.lite.customer.resource;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.customer.api.item.in.SiteIn;
+import uk.gov.bis.lite.customer.api.param.SiteParam;
 import uk.gov.bis.lite.customer.service.SiteService;
 
 import javax.validation.constraints.NotNull;
@@ -32,7 +32,7 @@ public class SiteCreateResource {
   @Consumes({MediaType.APPLICATION_JSON})
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/customer-sites/{customerId}")
-  public Response createSite(SiteIn siteItemIn, @NotNull @PathParam("customerId") String customerId,
+  public Response createSite(SiteParam siteItemIn, @NotNull @PathParam("customerId") String customerId,
                              @NotNull @QueryParam("userId") String userId) {
     return goodResponse(siteService.createSite(siteItemIn, customerId, userId));
   }

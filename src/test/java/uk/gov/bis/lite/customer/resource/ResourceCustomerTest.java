@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import uk.gov.bis.lite.customer.api.item.out.CustomerOut;
+import uk.gov.bis.lite.customer.api.view.CustomerView;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -68,7 +68,7 @@ public class ResourceCustomerTest extends SpireResourceTest {
   public void searchCustomersByCompanyNumber() {
     Response response = request("/search-customers/registered-number/1").get();
     assertThat(status(response)).isEqualTo(OK);
-    CustomerOut customer = getCustomerResponse(response);
+    CustomerView customer = getCustomerResponse(response);
     assertThat(customer.getCustomerId()).isEqualTo(MOCK_CUSTOMERS_SAR_REF_TAG + "1");
   }
 

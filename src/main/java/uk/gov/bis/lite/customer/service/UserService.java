@@ -1,11 +1,11 @@
 package uk.gov.bis.lite.customer.service;
 
-import uk.gov.bis.lite.customer.api.item.in.UserRoleIn;
-import uk.gov.bis.lite.customer.api.item.out.UsersOut;
+import uk.gov.bis.lite.customer.api.param.UserRoleParam;
+import uk.gov.bis.lite.customer.api.UsersResponse;
 
 public interface UserService {
 
-  String userRoleUpdate(UserRoleIn item, String userId, String siteRef);
+  String userRoleUpdate(UserRoleParam item, String userId, String siteRef);
 
-  UsersOut getCustomerAdminUsers(String customerId);
+  UsersResponse getCustomerAdminUsers(String customerId);
 }

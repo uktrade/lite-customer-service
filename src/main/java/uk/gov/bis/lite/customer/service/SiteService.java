@@ -1,17 +1,17 @@
 package uk.gov.bis.lite.customer.service;
 
-import uk.gov.bis.lite.customer.api.item.in.SiteIn;
-import uk.gov.bis.lite.customer.api.item.out.SiteOut;
+import uk.gov.bis.lite.customer.api.param.SiteParam;
+import uk.gov.bis.lite.customer.api.view.SiteView;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SiteService {
 
-  String createSite(SiteIn siteItemIn, String customerId, String userId);
+  String createSite(SiteParam siteItemIn, String customerId, String userId);
 
-  List<SiteOut> getSites(String customerId, String userId);
+  List<SiteView> getSites(String customerId, String userId);
 
-  Optional<SiteOut> getSite(String siteId);
+  Optional<SiteView> getSite(String siteId);
 }
 

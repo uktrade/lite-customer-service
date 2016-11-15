@@ -3,7 +3,7 @@ package uk.gov.bis.lite.customer.resource;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.customer.api.item.out.SiteOut;
+import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.customer.service.SiteService;
 
 import java.util.List;
@@ -32,16 +32,16 @@ public class SiteResource {
 
   @GET
   @Path("/user-sites/customer/{customerId}/user/{userId}")
-  public List<SiteOut> getSites(@NotNull @PathParam("customerId") String customerId,
-                                @NotNull @PathParam("userId") String userId) {
+  public List<SiteView> getSites(@NotNull @PathParam("customerId") String customerId,
+                                 @NotNull @PathParam("userId") String userId) {
     return siteService.getSites(customerId, userId);
   }
 
   @GET
   @Path("/sites/{siteId}")
-  public SiteOut getSite(@NotNull @PathParam("siteId") String siteId) {
-    SiteOut out = null;
-    Optional<SiteOut> optSite = siteService.getSite(siteId);
+  public SiteView getSite(@NotNull @PathParam("siteId") String siteId) {
+    SiteView out = null;
+    Optional<SiteView> optSite = siteService.getSite(siteId);
     if (!optSite.isPresent()) {
       throwException("No Site found.", Response.Status.NOT_FOUND);
     } else {

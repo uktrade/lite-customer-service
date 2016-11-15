@@ -1,6 +1,9 @@
-package uk.gov.bis.lite.customer.api.item.out;
+package uk.gov.bis.lite.customer.api.view;
 
-public class UserOut {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserView {
 
   private String userId;
   private String forename;

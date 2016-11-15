@@ -1,6 +1,9 @@
-package uk.gov.bis.lite.customer.api.item.in;
+package uk.gov.bis.lite.customer.api.param;
 
-public class UserRoleIn {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserRoleParam {
 
   private String adminUserId;
   private RoleType roleType;

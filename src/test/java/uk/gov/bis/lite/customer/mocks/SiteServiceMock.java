@@ -1,7 +1,7 @@
 package uk.gov.bis.lite.customer.mocks;
 
-import uk.gov.bis.lite.customer.api.item.in.SiteIn;
-import uk.gov.bis.lite.customer.api.item.out.SiteOut;
+import uk.gov.bis.lite.customer.api.param.SiteParam;
+import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.customer.service.SiteService;
 
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public class SiteServiceMock implements SiteService {
 
-  private SiteOut mockSite = null;
-  private List<SiteOut> mockSites = new ArrayList<>();
+  private SiteView mockSite = null;
+  private List<SiteView> mockSites = new ArrayList<>();
   private String mockSiteId = "id1";
 
   public SiteServiceMock(String mockSiteId, int numberOfSites) {
@@ -21,25 +21,25 @@ public class SiteServiceMock implements SiteService {
 
   private void initSites(int numberOfSites) {
 
-    mockSite = new SiteOut();
+    mockSite = new SiteView();
     mockSite.setSiteId(mockSiteId);
     for (int i = 0; i < numberOfSites; i++) {
-      SiteOut site = new SiteOut();
+      SiteView site = new SiteView();
       site.setCustomerId("site" + i);
       mockSites.add(site);
     }
   }
 
-  public String createSite(SiteIn siteItemIn, String customerId, String userId) {
+  public String createSite(SiteParam siteItemIn, String customerId, String userId) {
     return mockSiteId;
   }
 
 
-  public List<SiteOut> getSites(String customerId, String userId) {
+  public List<SiteView> getSites(String customerId, String userId) {
     return mockSites;
   }
 
-  public Optional<SiteOut> getSite(String siteId) {
+  public Optional<SiteView> getSite(String siteId) {
     return Optional.of(mockSite);
   }
 

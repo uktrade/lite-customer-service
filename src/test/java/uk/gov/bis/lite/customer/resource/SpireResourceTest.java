@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
-import uk.gov.bis.lite.customer.api.item.AddressItem;
-import uk.gov.bis.lite.customer.api.item.in.CustomerIn;
-import uk.gov.bis.lite.customer.api.item.in.SiteIn;
-import uk.gov.bis.lite.customer.api.item.in.UserRoleIn;
-import uk.gov.bis.lite.customer.api.item.out.CustomerOut;
-import uk.gov.bis.lite.customer.api.item.out.CustomerServiceOut;
-import uk.gov.bis.lite.customer.api.item.out.SiteOut;
-import uk.gov.bis.lite.customer.api.item.out.UsersOut;
+import uk.gov.bis.lite.customer.api.param.AddressParam;
+import uk.gov.bis.lite.customer.api.param.CustomerParam;
+import uk.gov.bis.lite.customer.api.param.SiteParam;
+import uk.gov.bis.lite.customer.api.param.UserRoleParam;
+import uk.gov.bis.lite.customer.api.view.CustomerView;
+import uk.gov.bis.lite.customer.api.ApiResponse;
+import uk.gov.bis.lite.customer.api.view.SiteView;
+import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.mocks.CustomerServiceMock;
 import uk.gov.bis.lite.customer.mocks.SiteServiceMock;
 import uk.gov.bis.lite.customer.mocks.UserServiceMock;
@@ -73,20 +73,20 @@ public class SpireResourceTest {
   }
 
   int getCustomersSize(Response response) {
-    List<CustomerOut> customers = getCustomersFromResponse(response);
+    List<CustomerView> customers = getCustomersFromResponse(response);
     return customers.size();
   }
 
-  CustomerOut getCustomerResponse(Response response) {
-    return response.readEntity(CustomerOut.class);
+  CustomerView getCustomerResponse(Response response) {
+    return response.readEntity(CustomerView.class);
   }
 
-  SiteOut getSiteItemOutResponse(Response response) {
-    return response.readEntity(SiteOut.class);
+  SiteView getSiteItemOutResponse(Response response) {
+    return response.readEntity(SiteView.class);
   }
 
   int getUsersUserDetailsSize(Response response) {
-    UsersOut users = getUsersFromResponse(response);
+    UsersResponse users = getUsersFromResponse(response);
     return users.getAdministrators().size();
   }
 
@@ -120,31 +120,31 @@ public class SpireResourceTest {
     return json;
   }
 
-  private CustomerServiceOut getCustomerServiceResponseItem(Response response) {
-    return response.readEntity(CustomerServiceOut.class);
+  private ApiResponse getCustomerServiceResponseItem(Response response) {
+    return response.readEntity(ApiResponse.class);
   }
 
-  private List<CustomerOut> getCustomersFromResponse(Response response) {
-    return (List<CustomerOut>) response.readEntity(List.class);
+  private List<CustomerView> getCustomersFromResponse(Response response) {
+    return (List<CustomerView>) response.readEntity(List.class);
   }
 
-  private UsersOut getUsersFromResponse(Response response) {
-    return response.readEntity(UsersOut.class);
+  private UsersResponse getUsersFromResponse(Response response) {
+    return response.readEntity(UsersResponse.class);
   }
 
-  private CustomerIn getCustomerItem() {
-    AddressItem address = new AddressItem();
-    address.setLine1("line1");
-    address.setLine2("line2");
-    address.setCounty("county");
-    address.setPostcode("postcode");
-    address.setCountry("country");
+  private CustomerParam getCustomerItem() {
+    AddressParam addressParam = new AddressParam();
+    addressParam.setLine1("line1");
+    addressParam.setLine2("line2");
+    addressParam.setCounty("county");
+    addressParam.setPostcode("postcode");
+    addressParam.setCountry("country");
 
-    CustomerIn customer = new CustomerIn();
+    CustomerParam customer = new CustomerParam();
     customer.setUserId("userId");
     customer.setCustomerName("userId");
     customer.setCustomerType("userId");
-    customer.setAddressItem(address);
+    customer.setAddressParam(addressParam);
     customer.setWebsite("userId");
     customer.setCompaniesHouseNumber("userId");
     customer.setCompaniesHouseValidated(false);
@@ -153,24 +153,24 @@ public class SpireResourceTest {
     return customer;
   }
 
-  private SiteIn getSiteItemIn() {
-    AddressItem address = new AddressItem();
-    address.setLine1("line1");
-    address.setLine2("line2");
-    address.setCounty("county");
-    address.setPostcode("postcode");
-    address.setCountry("country");
+  private SiteParam getSiteItemIn() {
+    AddressParam addressParam = new AddressParam();
+    addressParam.setLine1("line1");
+    addressParam.setLine2("line2");
+    addressParam.setCounty("county");
+    addressParam.setPostcode("postcode");
+    addressParam.setCountry("country");
 
-    SiteIn site = new SiteIn();
+    SiteParam site = new SiteParam();
     site.setSiteName("siteName");
-    site.setAddress(address);
+    site.setAddressParam(addressParam);
     return site;
   }
 
-  private UserRoleIn getUserRoleIn() {
-    UserRoleIn item = new UserRoleIn();
+  private UserRoleParam getUserRoleIn() {
+    UserRoleParam item = new UserRoleParam();
     item.setAdminUserId("adminUserId");
-    item.setRoleType(UserRoleIn.RoleType.ADMIN);
+    item.setRoleType(UserRoleParam.RoleType.ADMIN);
     return item;
   }
 }

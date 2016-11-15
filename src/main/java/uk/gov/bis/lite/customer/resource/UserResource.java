@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.customer.api.item.in.UserRoleIn;
-import uk.gov.bis.lite.customer.api.item.out.UsersOut;
+import uk.gov.bis.lite.customer.api.param.UserRoleParam;
+import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.service.UserService;
 import uk.gov.bis.lite.customer.service.UserServiceImpl;
 
@@ -34,7 +34,7 @@ public class UserResource {
   @GET
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/customer-admins/{customerId}")
-  public UsersOut getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId) {
+  public UsersResponse getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId) {
     return userService.getCustomerAdminUsers(customerId);
   }
 
@@ -44,7 +44,7 @@ public class UserResource {
   @Path("/user-roles/user/{userId}/site/{siteRef}")
   public Response userRole(@NotNull @PathParam("userId") String userId,
                            @NotNull @PathParam("siteRef") String siteRef,
-                           UserRoleIn item) {
+                           UserRoleParam item) {
     String completed = userService.userRoleUpdate(item, userId, siteRef);
     if (completed.equals(UserServiceImpl.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
       return goodResponse(completed);

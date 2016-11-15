@@ -1,8 +1,11 @@
-package uk.gov.bis.lite.customer.api.item.out;
+package uk.gov.bis.lite.customer.api.view;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
-public class CustomerOut {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CustomerView {
 
   private String customerId;
   private String companyName;

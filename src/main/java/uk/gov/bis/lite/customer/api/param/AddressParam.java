@@ -1,6 +1,9 @@
-package uk.gov.bis.lite.customer.api.item;
+package uk.gov.bis.lite.customer.api.param;
 
-public class AddressItem {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AddressParam {
 
   private String line1;
   private String line2;

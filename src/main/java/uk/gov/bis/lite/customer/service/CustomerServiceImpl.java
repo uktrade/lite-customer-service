@@ -6,8 +6,8 @@ import com.google.inject.name.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.customer.api.item.in.CustomerIn;
-import uk.gov.bis.lite.customer.api.item.out.CustomerOut;
+import uk.gov.bis.lite.customer.api.param.CustomerParam;
+import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
 import uk.gov.bis.lite.customer.spire.SpireCompanyClient;
@@ -35,17 +35,17 @@ public class CustomerServiceImpl implements CustomerService {
     this.companyClient = companyClient;
   }
 
-  public String createCustomer(CustomerIn item) {
+  public String createCustomer(CustomerParam item) {
 
-    if (!StringUtils.isBlank(item.getUserId()) && item.getAddressItem() != null) {
+    if (!StringUtils.isBlank(item.getUserId()) && item.getAddressParam() != null) {
       SpireRequest request = createLiteSarReferenceClient.createRequest();
       request.addChild("VERSION_NO", "1.1");
       request.addChild("WUA_ID", item.getUserId());
       request.addChild("CUSTOMER_NAME", item.getCustomerName());
       request.addChild("CUSTOMER_TYPE", item.getCustomerType());
-      request.addChild("LITE_ADDRESS", Util.getAddressItemJson(item.getAddressItem()));
-      request.addChild("ADDRESS", Util.getFriendlyAddress(item.getAddressItem()));
-      request.addChild("COUNTRY_REF", item.getAddressItem().getCountry());
+      request.addChild("LITE_ADDRESS", Util.getAddressItemJson(item.getAddressParam()));
+      request.addChild("ADDRESS", Util.getFriendlyAddress(item.getAddressParam()));
+      request.addChild("COUNTRY_REF", item.getAddressParam().getCountry());
       request.addChild("WEBSITE", item.getWebsite());
       String companiesHouseNumber = item.getCompaniesHouseNumber();
       if (!StringUtils.isBlank(companiesHouseNumber)) {
@@ -63,26 +63,26 @@ public class CustomerServiceImpl implements CustomerService {
     }
   }
 
-  public List<CustomerOut> getCustomersBySearch(String postcode) {
+  public List<CustomerView> getCustomersBySearch(String postcode) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("postCode", postcode);
     return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
-  public List<CustomerOut> getCustomersBySearch(String postcode, String eoriNumber) {
+  public List<CustomerView> getCustomersBySearch(String postcode, String eoriNumber) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("postCode", postcode);
     request.addChild("eoriNumber", eoriNumber);
     return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
-  public List<CustomerOut> getCustomersByUserId(String userId) {
+  public List<CustomerView> getCustomersByUserId(String userId) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("userId", userId);
     return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
-  public Optional<CustomerOut> getCustomerById(String customerId) {
+  public Optional<CustomerView> getCustomerById(String customerId) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("sarRef", customerId);
     List<SpireCompany> spireCompanies = companyClient.sendRequest(request);
@@ -93,14 +93,14 @@ public class CustomerServiceImpl implements CustomerService {
     return Optional.empty();
   }
 
-  public List<CustomerOut> getCustomersByCompanyNumber(String companyNumber) {
+  public List<CustomerView> getCustomersByCompanyNumber(String companyNumber) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("companyNumber", companyNumber);
     return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
-  private CustomerOut getCustomerOut(SpireCompany spireCompany) {
-    CustomerOut out = new CustomerOut();
+  private CustomerView getCustomerOut(SpireCompany spireCompany) {
+    CustomerView out = new CustomerView();
     out.setCompanyName(spireCompany.getCompanyName());
     out.setApplicantType(spireCompany.getApplicantType());
     out.setCompanyNumber(spireCompany.getCompanyNumber());

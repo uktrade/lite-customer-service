@@ -1,13 +1,14 @@
-package uk.gov.bis.lite.customer.api.item.in;
+package uk.gov.bis.lite.customer.api.param;
 
-import uk.gov.bis.lite.customer.api.item.AddressItem;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class CustomerIn {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CustomerParam {
 
   private String userId;
   private String customerName;
   private String customerType;
-  private AddressItem addressItem;
+  private AddressParam addressParam;
   private String website;
   private String companiesHouseNumber;
   private Boolean companiesHouseValidated;
@@ -38,12 +39,12 @@ public class CustomerIn {
     this.customerType = customerType;
   }
 
-  public AddressItem getAddressItem() {
-    return addressItem;
+  public AddressParam getAddressParam() {
+    return addressParam;
   }
 
-  public void setAddressItem(AddressItem addressItem) {
-    this.addressItem = addressItem;
+  public void setAddressParam(AddressParam addressParam) {
+    this.addressParam = addressParam;
   }
 
   public String getWebsite() {

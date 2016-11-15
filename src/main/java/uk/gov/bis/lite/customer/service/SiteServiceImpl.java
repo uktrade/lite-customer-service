@@ -6,9 +6,8 @@ import com.google.inject.name.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.bis.lite.customer.api.item.in.SiteIn;
-import uk.gov.bis.lite.customer.api.item.out.AddressOut;
-import uk.gov.bis.lite.customer.api.item.out.SiteOut;
+import uk.gov.bis.lite.customer.api.param.SiteParam;
+import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
 import uk.gov.bis.lite.customer.spire.SpireReferenceClient;
@@ -35,24 +34,24 @@ public class SiteServiceImpl implements SiteService {
     this.siteClient = siteClient;
   }
 
-  public String createSite(SiteIn siteIn, String customerId, String userId) {
+  public String createSite(SiteParam siteIn, String customerId, String userId) {
 
-    if (!StringUtils.isBlank(userId) && siteIn.getAddress() != null) {
+    if (!StringUtils.isBlank(userId) && siteIn.getAddressParam() != null) {
       SpireRequest request = createSiteForSarReferenceClient.createRequest();
       request.addChild("VERSION_NO", "1.0");
       request.addChild("WUA_ID", userId);
       request.addChild("SAR_REF", customerId);
       request.addChild("DIVISION", siteIn.getSiteName());
-      request.addChild("LITE_ADDRESS", Util.getAddressItemJson(siteIn.getAddress()));
-      request.addChild("ADDRESS", Util.getFriendlyAddress(siteIn.getAddress()));
-      request.addChild("COUNTRY_REF", siteIn.getAddress().getCountry());
+      request.addChild("LITE_ADDRESS", Util.getAddressItemJson(siteIn.getAddressParam()));
+      request.addChild("ADDRESS", Util.getFriendlyAddress(siteIn.getAddressParam()));
+      request.addChild("COUNTRY_REF", siteIn.getAddressParam().getCountry());
       return createSiteForSarReferenceClient.sendRequest(request);
     } else {
       throw new SpireClientException("Mandatory fields missing: userId and/or address");
     }
   }
 
-  public List<SiteOut> getSites(String customerId, String userId) {
+  public List<SiteView> getSites(String customerId, String userId) {
     SpireRequest request = siteClient.createRequest();
     request.addChild("userId", userId);
     request.addChild("sarRef", customerId);
@@ -60,7 +59,7 @@ public class SiteServiceImpl implements SiteService {
     return spireSites.stream().map(this::getSiteOut).collect(Collectors.toList());
   }
 
-  public Optional<SiteOut> getSite(String siteId) {
+  public Optional<SiteView> getSite(String siteId) {
     SpireRequest request = siteClient.createRequest();
     request.addChild("siteRef", siteId);
     List<SpireSite> spireSites = siteClient.sendRequest(request);
@@ -70,18 +69,19 @@ public class SiteServiceImpl implements SiteService {
     return Optional.empty();
   }
 
-  private SiteOut getSiteOut(SpireSite spireSite) {
-    SiteOut siteOut = new SiteOut();
-    siteOut.setCustomerId(spireSite.getSarRef());
-    siteOut.setSiteId(spireSite.getSiteRef());
+  private SiteView getSiteOut(SpireSite spireSite) {
+    SiteView siteView = new SiteView();
+    siteView.setCustomerId(spireSite.getSarRef());
+    siteView.setSiteId(spireSite.getSiteRef());
     String companyName = spireSite.getCompanyName() != null ? spireSite.getCompanyName() : "";
     String siteName = spireSite.getDivision() != null ? spireSite.getDivision() : companyName;
-    siteOut.setSiteName(siteName);
-    AddressOut address = new AddressOut();
+    siteView.setSiteName(siteName);
+
+    SiteView.SiteViewAddress address = new SiteView.SiteViewAddress();
     address.setPlainText(spireSite.getAddress());
     address.setCountry(spireSite.getCountryRef());
-    siteOut.setAddress(address);
-    return siteOut;
+    siteView.setAddress(address);
+    return siteView;
   }
 
 }
