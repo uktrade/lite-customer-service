@@ -101,9 +101,9 @@ public class CustomerServiceImpl implements CustomerService {
 
   private CustomerOut getCustomerOut(SpireCompany spireCompany) {
     CustomerOut out = new CustomerOut();
-    out.setCompanyName(spireCompany.getName());
+    out.setCompanyName(spireCompany.getCompanyName());
     out.setApplicantType(spireCompany.getApplicantType());
-    out.setCompanyNumber(spireCompany.getNumber());
+    out.setCompanyNumber(spireCompany.getCompanyNumber());
     out.setCountryOfOriginCode(spireCompany.getCountryOfOrigin());
     out.setOrganisationType(spireCompany.getSpireOrganisationType() != null ? spireCompany.getSpireOrganisationType().getTypeLongName() : null);
     out.setRegisteredAddress(spireCompany.getRegisteredAddress());

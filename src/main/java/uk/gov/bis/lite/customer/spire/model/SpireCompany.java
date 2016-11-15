@@ -6,10 +6,10 @@ import java.util.List;
 public class SpireCompany {
 
   private String sarRef;
-  private String name;
+  private String companyName;
   private String shortName;
   private SpireOrganisationType spireOrganisationType;
-  private String number;
+  private String companyNumber;
   private String registeredAddress;
   private String registrationStatus;
   private String applicantType;
@@ -25,12 +25,12 @@ public class SpireCompany {
     this.sarRef = sarRef;
   }
 
-  public String getName() {
-    return name;
+  public String getCompanyName() {
+    return companyName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setCompanyName(String companyName) {
+    this.companyName = companyName;
   }
 
   public String getShortName() {
@@ -49,12 +49,12 @@ public class SpireCompany {
     this.spireOrganisationType = spireOrganisationType;
   }
 
-  public String getNumber() {
-    return number;
+  public String getCompanyNumber() {
+    return companyNumber;
   }
 
-  public void setNumber(String number) {
-    this.number = number;
+  public void setCompanyNumber(String companyNumber) {
+    this.companyNumber = companyNumber;
   }
 
   public String getRegistrationStatus() {

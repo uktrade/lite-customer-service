@@ -37,10 +37,10 @@ public class CompanyParser implements SpireParser<List<SpireCompany>> {
     for (Node node : nodes) {
       SpireCompany company = new SpireCompany();
       SpireResponse.getNodeValue(node, "SAR_REF").ifPresent(company::setSarRef);
-      SpireResponse.getNodeValue(node, "NAME").ifPresent(company::setName);
+      SpireResponse.getNodeValue(node, "COMPANY_NAME").ifPresent(company::setCompanyName);
       SpireResponse.getNodeValue(node, "SHORT_NAME").ifPresent(company::setShortName);
       SpireResponse.getNodeValue(node, "ORGANISATION_TYPE").ifPresent(v -> company.setSpireOrganisationType(SpireOrganisationType.valueOf(v)));
-      SpireResponse.getNodeValue(node, "COMPANY_NUMBER").ifPresent(company::setNumber);
+      SpireResponse.getNodeValue(node, "COMPANY_NUMBER").ifPresent(company::setCompanyNumber);
       SpireResponse.getNodeValue(node, "REGISTRATION_STATUS").ifPresent(company::setRegistrationStatus);
       SpireResponse.getNodeValue(node, "REGISTERED_ADDRESS").ifPresent(company::setRegisteredAddress);
       SpireResponse.getNodeValue(node, "APPLICANT_TYPE").ifPresent(company::setApplicantType);
@@ -51,7 +51,7 @@ public class CompanyParser implements SpireParser<List<SpireCompany>> {
       List<Node> websiteNodes = SpireResponse.getChildrenOfChildNode(node, "WEBSITE_LIST");
       for (Node websiteNode : websiteNodes) {
         SpireWebsite website = new SpireWebsite();
-        SpireResponse.getNodeValue(websiteNode, "WEBSITE_URL").ifPresent(website::setUrl);
+        SpireResponse.getNodeValue(websiteNode, "URL").ifPresent(website::setUrl);
         webSites.add(website);
       }
       company.setWebsites(webSites);
