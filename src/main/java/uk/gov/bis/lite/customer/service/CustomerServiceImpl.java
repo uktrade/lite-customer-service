@@ -1,6 +1,5 @@
 package uk.gov.bis.lite.customer.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -19,7 +18,6 @@ import uk.gov.bis.lite.customer.util.Util;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -68,20 +66,20 @@ public class CustomerServiceImpl implements CustomerService {
   public List<CustomerOut> getCustomersBySearch(String postcode) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("postCode", postcode);
-    return companyClient.sendRequest(request).stream().map(customerOutFunction).collect(Collectors.toList());
+    return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
   public List<CustomerOut> getCustomersBySearch(String postcode, String eoriNumber) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("postCode", postcode);
     request.addChild("eoriNumber", eoriNumber);
-    return companyClient.sendRequest(request).stream().map(customerOutFunction).collect(Collectors.toList());
+    return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
   public List<CustomerOut> getCustomersByUserId(String userId) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("userId", userId);
-    return companyClient.sendRequest(request).stream().map(customerOutFunction).collect(Collectors.toList());
+    return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
   public Optional<CustomerOut> getCustomerById(String customerId) {
@@ -90,7 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
     List<SpireCompany> spireCompanies = companyClient.sendRequest(request);
     if (spireCompanies.size() > 0) {
       LOGGER.info("Found " + spireCompanies.size() + " spire companies for sarRef: " + customerId);
-      return Optional.of(customerOutFunction.apply(spireCompanies.get(0)));
+      return Optional.of(getCustomerOut(spireCompanies.get(0)));
     }
     return Optional.empty();
   }
@@ -98,18 +96,10 @@ public class CustomerServiceImpl implements CustomerService {
   public List<CustomerOut> getCustomersByCompanyNumber(String companyNumber) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("companyNumber", companyNumber);
-    return companyClient.sendRequest(request).stream().map(customerOutFunction).collect(Collectors.toList());
+    return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
-  /**
-   * Maps SpireCompany to Customer
-
-   private Function<SpireCompany, Customer> customerFunction = Customer::new;*/
-
-  /**
-   * Maps SpireCompany to CustomerOut
-   */
-  private Function<SpireCompany, CustomerOut> customerOutFunction = spireCompany -> {
+  private CustomerOut getCustomerOut(SpireCompany spireCompany) {
     CustomerOut out = new CustomerOut();
     out.setCompanyName(spireCompany.getName());
     out.setApplicantType(spireCompany.getApplicantType());
@@ -118,9 +108,9 @@ public class CustomerServiceImpl implements CustomerService {
     out.setOrganisationType(spireCompany.getSpireOrganisationType() != null ? spireCompany.getSpireOrganisationType().getTypeLongName() : null);
     out.setRegisteredAddress(spireCompany.getRegisteredAddress());
     out.setRegistrationStatus(spireCompany.getRegistrationStatus());
-    out.setSarRef(spireCompany.getSarRef());
+    out.setCustomerId(spireCompany.getSarRef());
     out.setShortName(spireCompany.getShortName());
     out.setWebsites(spireCompany.getWebsites().stream().map(SpireWebsite::getUrl).collect(Collectors.toList()));
     return out;
-  };
+  }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CustomerOut {
 
-  private String sarRef;
+  private String customerId;
   private String companyName;
   private String companyNumber;
   private String shortName;
@@ -15,12 +15,12 @@ public class CustomerOut {
   private String countryOfOriginCode;
   private List<String> websites;
 
-  public String getSarRef() {
-    return sarRef;
+  public String getCustomerId() {
+    return customerId;
   }
 
-  public void setSarRef(String sarRef) {
-    this.sarRef = sarRef;
+  public void setCustomerId(String customerId) {
+    this.customerId = customerId;
   }
 
   public String getCompanyName() {

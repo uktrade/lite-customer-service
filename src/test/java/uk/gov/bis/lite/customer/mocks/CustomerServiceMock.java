@@ -22,7 +22,7 @@ public class CustomerServiceMock implements CustomerService {
   private void initCustomers(int numberOfCustomers, String sarRefTag) {
     for (int i = 1; i < numberOfCustomers + 1; i++) {
       CustomerOut out = new CustomerOut();
-      out.setSarRef(sarRefTag + i);
+      out.setCustomerId(sarRefTag + i);
       mockCustomers.add(out);
     }
   }

@@ -36,21 +36,21 @@ dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-// gradle customerServiceApiJar
-task customerServiceApiJar(type: Jar, dependsOn: compileJava) {
+// gradle liteCustomerServiceApiJar
+task liteCustomerServiceApiJar(type: Jar, dependsOn: compileJava) {
   from sourceSets.main.output.classesDir
   include 'uk/gov/bis/lite/customer/api/**/*'
-  baseName 'customerServiceApi'
+  baseName 'liteCustomerServiceApi'
 }
 
 // gradle publish
 publishing {
   publications {
     api(MavenPublication) {
-      groupId 'lite-customer-service'
-      artifactId 'customerServiceApi'
-      version '0.9'
-      artifact customerServiceApiJar
+      groupId 'uk.gov.bis.lite'
+      artifactId 'lite-customer-service-api'
+      version '1.0'
+      artifact liteCustomerServiceApiJar
     }
   }
 

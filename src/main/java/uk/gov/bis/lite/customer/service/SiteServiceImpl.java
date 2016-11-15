@@ -18,7 +18,6 @@ import uk.gov.bis.lite.customer.util.Util;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -58,7 +57,7 @@ public class SiteServiceImpl implements SiteService {
     request.addChild("userId", userId);
     request.addChild("sarRef", customerId);
     List<SpireSite> spireSites = siteClient.sendRequest(request);
-    return spireSites.stream().map(siteOutFunction).collect(Collectors.toList());
+    return spireSites.stream().map(this::getSiteOut).collect(Collectors.toList());
   }
 
   public Optional<SiteOut> getSite(String siteId) {
@@ -66,31 +65,23 @@ public class SiteServiceImpl implements SiteService {
     request.addChild("siteRef", siteId);
     List<SpireSite> spireSites = siteClient.sendRequest(request);
     if (spireSites.size() > 0) {
-      return Optional.of(siteOutFunction.apply(spireSites.get(0)));
+      return Optional.of(getSiteOut(spireSites.get(0)));
     }
     return Optional.empty();
   }
 
-  /**
-   * Maps SpireSite to SiteOut
-   */
-  private static final Function<SpireSite, SiteOut> siteOutFunction = spireSite -> {
-
+  private SiteOut getSiteOut(SpireSite spireSite) {
     SiteOut siteOut = new SiteOut();
     siteOut.setCustomerId(spireSite.getSarRef());
     siteOut.setSiteId(spireSite.getSiteRef());
-
     String companyName = spireSite.getCompanyName() != null ? spireSite.getCompanyName() : "";
     String siteName = spireSite.getDivision() != null ? spireSite.getDivision() : companyName;
     siteOut.setSiteName(siteName);
-
     AddressOut address = new AddressOut();
     address.setPlainText(spireSite.getAddress());
     address.setCountry(spireSite.getCountryRef());
-
     siteOut.setAddress(address);
-
     return siteOut;
-  };
+  }
 
 }

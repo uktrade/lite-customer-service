@@ -69,7 +69,7 @@ public class ResourceCustomerTest extends SpireResourceTest {
     Response response = request("/search-customers/registered-number/1").get();
     assertThat(status(response)).isEqualTo(OK);
     CustomerOut customer = getCustomerResponse(response);
-    assertThat(customer.getSarRef()).isEqualTo(MOCK_CUSTOMERS_SAR_REF_TAG + "1");
+    assertThat(customer.getCustomerId()).isEqualTo(MOCK_CUSTOMERS_SAR_REF_TAG + "1");
   }
 
 }
