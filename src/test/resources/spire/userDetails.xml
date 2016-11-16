@@ -1,0 +1,42 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:ns="http://www.fivium.co.uk/fox/webservices/ispire/SPIRE_SAR_USER_DETAILS">
+  <soap:Header/>
+  <soap:Body>
+    <ns:getDetailsResponse>
+      <SAR_USER_DETAILS_LIST>
+        <SAR_USER_DETAILS>
+          <FORENAME>forename1</FORENAME>
+          <SURNAME>surname1</SURNAME>
+          <FULL_NAME>forename1 surname1</FULL_NAME>
+          <EMAIL_ADDRESS>forename1.surname1@gov.co.uk</EMAIL_ADDRESS>
+          <WUA_ID>1</WUA_ID>
+          <ROLE_NAME>SAR_ADMINISTRATOR</ROLE_NAME>
+        </SAR_USER_DETAILS>
+        <SAR_USER_DETAILS>
+          <FORENAME>forename2</FORENAME>
+          <SURNAME>surname2</SURNAME>
+          <FULL_NAME>forename2 surname2</FULL_NAME>
+          <EMAIL_ADDRESS>forename2.surname2@gov.co.uk</EMAIL_ADDRESS>
+          <WUA_ID>2</WUA_ID>
+          <ROLE_NAME>APPLICATION_PREPARER</ROLE_NAME>
+        </SAR_USER_DETAILS>
+        <SAR_USER_DETAILS>
+          <FORENAME>forename3</FORENAME>
+          <SURNAME>surname3</SURNAME>
+          <FULL_NAME>forename3 surname3</FULL_NAME>
+          <EMAIL_ADDRESS>forename3.surname3@gov.co.uk</EMAIL_ADDRESS>
+          <WUA_ID>3</WUA_ID>
+          <ROLE_NAME>APPLICATION_SUBMITTER</ROLE_NAME>
+        </SAR_USER_DETAILS>
+        <SAR_USER_DETAILS>
+          <FORENAME>forename4</FORENAME>
+          <SURNAME>surname4</SURNAME>
+          <FULL_NAME>forename4 surname4</FULL_NAME>
+          <EMAIL_ADDRESS>forename4.surname4@gov.co.uk</EMAIL_ADDRESS>
+          <WUA_ID>4</WUA_ID>
+          <ROLE_NAME>LICENCE_RETURN_CONTACT</ROLE_NAME>
+        </SAR_USER_DETAILS>
+      </SAR_USER_DETAILS_LIST>
+    </ns:getDetailsResponse>
+  </soap:Body>
+</soap:Envelope>
