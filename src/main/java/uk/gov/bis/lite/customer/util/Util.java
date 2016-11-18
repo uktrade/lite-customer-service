@@ -29,7 +29,7 @@ public class Util {
    */
   public static String getFriendlyAddress(AddressParam param) {
     List<String> addressLines = new ArrayList<>(Arrays.asList(param.getLine1(), param.getLine2(), param.getTown(),
-        param.getPostcode(), param.getCounty(), param.getCountry()));
+        param.getPostcode(), param.getCounty()));
     return Joiner.on("\n").join(Iterables.filter(addressLines, StringUtils::isNotBlank));
   }
 
