@@ -22,12 +22,19 @@ mainClassName = "uk.gov.bis.lite.customer.CustomerApplication"
 
 repositories {
   mavenCentral()
-  maven { url "http://nexus.mgmt.int.licensing.service.trade.gov.uk/repository/maven-releases/" }
+  maven {
+    name "snapshots"
+    url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/maven-snapshots/"
+  }
+  maven {
+    name "releases"
+    url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/maven-releases/"
+  }
 }
 
 dependencies {
   compile 'io.dropwizard:dropwizard-core:1.0.3'
-  compile 'uk.gov.bis.lite:spire-client:1.1'
+  compile ('uk.gov.bis.lite:spire-client:1.2-SNAPSHOT') { changing = true }
   compile 'ru.vyarus:dropwizard-guicey:3.2.0'
   compile 'io.dropwizard:dropwizard-testing:1.0.3'
   compile 'uk.gov.bis.lite:jersey-correlation-id:1.0'
@@ -58,11 +65,11 @@ publishing {
   repositories {
     maven {
       name "snapshots"
-      url "http://nexus.mgmt.int.licensing.service.trade.gov.uk/repository/maven-snapshots/"
+      url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/maven-snapshots/"
     }
     maven {
       name "releases"
-      url "http://nexus.mgmt.int.licensing.service.trade.gov.uk/repository/maven-releases/"
+      url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/maven-releases/"
     }
   }
 }
