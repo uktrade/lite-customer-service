@@ -10,7 +10,6 @@ import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
 import uk.gov.bis.lite.customer.api.param.SiteParam;
 import uk.gov.bis.lite.customer.api.view.SiteView;
-import uk.gov.bis.lite.customer.exception.SpireForbiddenException;
 import uk.gov.bis.lite.customer.spire.SpireReferenceClient;
 import uk.gov.bis.lite.customer.spire.SpireSiteClient;
 import uk.gov.bis.lite.customer.spire.model.SpireSite;
@@ -47,27 +46,9 @@ public class SiteServiceImpl implements SiteService {
       request.addChild("ADDRESS", Util.getFriendlyAddress(param.getAddressParam()));
       request.addChild("COUNTRY_REF", param.getAddressParam().getCountry());
 
-      Optional<SiteView> siteView = Optional.empty();
-      try {
-        siteView = getSite(createSiteForSarReferenceClient.sendRequest(request));
-      } catch (SpireClientException e) {
-        throwErrorMessageMappedException(e);
-      }
-      return siteView;
+      return getSite(createSiteForSarReferenceClient.sendRequest(request));
     } else {
       throw new SpireClientException("Mandatory fields missing: userId and/or address");
-    }
-  }
-
-  /**
-   * Throw different type of exception if error message mapping found, rethrow original otherwise
-   */
-  private void throwErrorMessageMappedException(SpireClientException exception) {
-    String errorMessage = exception.getMessage();
-    if (errorMessage != null && errorMessage.contains("USER_LACKS_PRIVILEGES")) {
-      throw new SpireForbiddenException("USER_LACKS_PRIVILEGES");
-    } else {
-      throw exception;
     }
   }
 
