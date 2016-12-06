@@ -15,7 +15,7 @@ import uk.gov.bis.lite.customer.service.SiteService;
 import uk.gov.bis.lite.customer.service.SiteServiceImpl;
 import uk.gov.bis.lite.customer.service.UserService;
 import uk.gov.bis.lite.customer.service.UserServiceImpl;
-import uk.gov.bis.lite.customer.spire.SiteErrorHandler;
+import uk.gov.bis.lite.customer.spire.SpireErrorNodeErrorHandler;
 import uk.gov.bis.lite.customer.spire.SpireCompanyClient;
 import uk.gov.bis.lite.customer.spire.SpireReferenceClient;
 import uk.gov.bis.lite.customer.spire.SpireSiteClient;
@@ -43,7 +43,7 @@ public class GuiceModule extends AbstractModule {
     return new SpireReferenceClient(new ReferenceParser("SITE_REF"),
         new SpireClientConfig(config.getSpireClientUserName(), config.getSpireClientPassword(), config.getSpireClientUrl()),
         new SpireRequestConfig("SPIRE_CREATE_SITE_FOR_SAR", "SITE_DETAILS", false),
-        new SiteErrorHandler());
+        new SpireErrorNodeErrorHandler());
   }
 
   @Provides
