@@ -59,11 +59,9 @@ publishing {
 
     mavenJava(MavenPublication) {
       artifactId 'lite-customer-service-api'
-      artifact apiJar {
-        classifier "api"
-      }
+      artifact apiJar
       artifact jarWithSources {
-        classifier "api-sources"
+        classifier "sources"
       }
     }
   }
