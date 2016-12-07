@@ -15,8 +15,8 @@ idea {
   }
 }
 
-group 'lite-customer-service'
-version '1.0-SNAPSHOT'
+group 'uk.gov.bis.lite'
+version '1.1'
 
 mainClassName = "uk.gov.bis.lite.customer.CustomerApplication"
 
@@ -44,24 +44,30 @@ dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-// gradle liteCustomerServiceApiJar
-task liteCustomerServiceApiJar(type: Jar, dependsOn: compileJava) {
+task apiJar(type: Jar, dependsOn: compileJava) {
   from sourceSets.main.output.classesDir
   include 'uk/gov/bis/lite/customer/api/**/*'
-  baseName 'liteCustomerServiceApi'
 }
 
-// gradle publish
+task jarWithSources(type: Jar) {
+  from sourceSets.main.allJava
+  include 'uk/gov/bis/lite/customer/api/**/*'
+}
+
 publishing {
   publications {
-    api(MavenPublication) {
-      groupId 'uk.gov.bis.lite'
+
+    mavenJava(MavenPublication) {
+      from components.java
       artifactId 'lite-customer-service-api'
-      version '1.1'
-      artifact liteCustomerServiceApiJar
+      artifact jarWithSources {
+        classifier "sources"
+      }
     }
   }
+}
 
+publishing {
   repositories {
     maven {
       name "snapshots"
