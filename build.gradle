@@ -95,5 +95,5 @@ build {
   dependsOn shadowJar
 }
 
-run { args 'server', 'example.yml' }
+run { args 'server', 'src/main/resources/config.yaml' }
 

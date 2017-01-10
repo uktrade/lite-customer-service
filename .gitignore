@@ -2,6 +2,7 @@
 .gradle
 build/*
 .idea/
+/src/main/resources/config.yaml
 build/
 lite-customer-service.iml
 lite-customer-service.ipr
