@@ -1,6 +1,6 @@
 FROM java:8
 
-ENV JAR_FILE lite-customer-service-1.0-SNAPSHOT.jar
+ENV JAR_FILE lite-customer-service-1.1.jar
 ENV CONFIG_FILE /conf/customer-service-config.yaml
 
 WORKDIR /opt/lite-customer-service
