@@ -41,7 +41,10 @@ public class UserServiceMock implements UserService {
   }
 
   public String userRoleUpdate(UserRoleParam param, String userId, String siteRef) {
-    return "COMPLETE";
+    if ("EXISTING_USER".equals(userId)) {
+      return "COMPLETE";
+    }
+    return "SOME_ERROR";
   }
 
   public Optional<UsersResponse> getCustomerAdminUsers(String customerId) {
