@@ -21,7 +21,7 @@ public class ResourceUserTest extends SpireResourceTest {
 
   @Test
   public void customerAdmins() {
-    Response response = request("/customer-admins/customerId").get();
+    Response response = request("/customer-admins/EXISTING_CUSTOMER").get();
     assertThat(status(response)).isEqualTo(OK);
     assertThat(getUsersUserDetailsSize(response)).isEqualTo(MOCK_USERS_USER_DETAIL_NUMBER);
   }

@@ -10,6 +10,7 @@ import uk.gov.bis.lite.customer.service.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserServiceMock implements UserService {
 
@@ -17,6 +18,9 @@ public class UserServiceMock implements UserService {
 
   private UsersResponse mockUsers;
 
+  public UserServiceMock() {
+    this(1);
+  }
   public UserServiceMock(int numberOfUserDetails) {
     initUsers(numberOfUserDetails);
   }
@@ -25,6 +29,12 @@ public class UserServiceMock implements UserService {
     List<UserView> userViews = new ArrayList<>();
     for (int i = 0; i < numberOfUserDetails; i++) {
       UserView userView = new UserView();
+      userView.setFullName("Admin User" + i);
+      userView.setForename("Admin");
+      userView.setSurname("User");
+      userView.setEmailAddress("admin@test.com");
+      userView.setRoleName("SAR_ADMINISTRATOR");
+      userView.setUserId("EXISTING");
       userViews.add(userView);
     }
     this.mockUsers = new UsersResponse(userViews);
@@ -34,8 +44,11 @@ public class UserServiceMock implements UserService {
     return "COMPLETE";
   }
 
-  public UsersResponse getCustomerAdminUsers(String customerId) {
-    LOGGER.info("mockUsers: " + mockUsers.getAdministrators().size());
-    return mockUsers;
+  public Optional<UsersResponse> getCustomerAdminUsers(String customerId) {
+    if ("EXISTING_CUSTOMER".equals(customerId)) {
+      LOGGER.info("mockUsers: " + mockUsers.getAdministrators().size());
+      return Optional.of(mockUsers);
+    }
+    return Optional.empty();
   }
 }

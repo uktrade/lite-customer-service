@@ -2,6 +2,7 @@ plugins {
   id "java"
   id "application"
   id 'com.github.johnrengelman.shadow' version '1.2.3'
+  id "au.com.dius.pact" version "3.2.4"
 }
 
 apply plugin: 'idea'
@@ -42,6 +43,8 @@ dependencies {
   testCompile 'io.dropwizard:dropwizard-testing:1.0.3'
   testCompile 'org.assertj:assertj-core:3.4.1'
   testCompile group: 'junit', name: 'junit', version: '4.12'
+
+  testCompile group: 'au.com.dius', name: 'pact-jvm-provider-junit_2.11', version: '3.3.6'
 }
 
 task apiJar(type: Jar, dependsOn: compileJava) {
@@ -93,6 +96,31 @@ jar {
 
 build {
   dependsOn shadowJar
+}
+
+pact {
+
+  serviceProviders {
+
+    // You can define as many as you need, but each must have a unique name
+    "lite-customer-service" {
+      // All the provider properties are optional, and have sensible defaults (shown below)
+      protocol = 'http'
+      host = 'customer-service.svc.dev.licensing.service.trade.gov.uk.test'
+      port = 80
+      path = '/'
+
+      // Again, you can define as many consumers for each provider as you need, but each must have a unique name
+      hasPactWith('lite-ogel-registration') {
+
+        // currently supports a file path using file() or a URL using url()
+        pactFile = file('/Users/Tomacpro/Projects/GitHub/lite-ogel-registration/target/pacts/lite-ogel-registration-lite-customer-service.json')
+
+      }
+    }
+
+  }
+
 }
 
 run { args 'server', 'src/main/resources/config.yaml' }

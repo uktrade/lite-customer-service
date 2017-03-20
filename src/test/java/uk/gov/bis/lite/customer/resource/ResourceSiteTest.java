@@ -27,7 +27,7 @@ public class ResourceSiteTest extends SpireResourceTest {
 
   @Test
   public void userSite() {
-    Response response = request("/sites/1").get();
+    Response response = request("/sites/EXISTING_SITE").get();
     assertThat(status(response)).isEqualTo(OK);
     assertThat(getResponseSiteView(response).getSiteId()).isEqualTo(MOCK_SITE_ID);
   }

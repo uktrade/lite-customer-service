@@ -14,6 +14,7 @@ import uk.gov.bis.lite.customer.spire.SpireUserDetailClient;
 import uk.gov.bis.lite.customer.spire.model.SpireUserDetail;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -51,17 +52,22 @@ public class UserServiceImpl implements UserService {
     return editUserRolesClient.sendRequest(request);
   }
 
-  public UsersResponse getCustomerAdminUsers(String customerId) {
+  public Optional<UsersResponse> getCustomerAdminUsers(String customerId) {
     SpireRequest request = userDetailClient.createRequest();
     request.addChild("sarRef", customerId);
     List<SpireUserDetail> spireUserDetails = userDetailClient.sendRequest(request);
-    List<UserView> adminUserDetails = spireUserDetails.stream()
+
+    if (spireUserDetails.size() > 0) {
+      List<UserView> adminUserDetails = spireUserDetails.stream()
         .filter(sud -> sud.getRoleName().equals(SPIRE_ROLE_SAR_ADMINISTRATOR))
         .map(this::getUserOut)
         .collect(Collectors.toList());
 
-    LOGGER.info("adminUserDetails: " + adminUserDetails.size());
-    return new UsersResponse(adminUserDetails);
+      LOGGER.info("adminUserDetails: " + adminUserDetails.size());
+      UsersResponse usersResponse = new UsersResponse(adminUserDetails);
+      return Optional.of(usersResponse);
+    }
+    return Optional.empty();
   }
 
   private UserView getUserOut(SpireUserDetail spireUserDetail) {
