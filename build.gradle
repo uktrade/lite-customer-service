@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
   id "java"
   id "application"
@@ -5,7 +7,6 @@ plugins {
 }
 
 apply plugin: 'idea'
-apply plugin: 'maven-publish'
 
 idea {
   module {
@@ -16,7 +17,14 @@ idea {
 }
 
 group 'uk.gov.bis.lite'
-version '1.1'
+
+if (project.hasProperty('projVersion')) {
+  project.version = project.projVersion
+} else {
+  SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMdd.HHmmss")
+  sdf.setTimeZone(new SimpleTimeZone(SimpleTimeZone.UTC_TIME, "UTC"))
+  project.version = sdf.format(new Date()) + "-SNAPSHOT"
+}
 
 mainClassName = "uk.gov.bis.lite.customer.CustomerApplication"
 
@@ -44,42 +52,6 @@ dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-task apiJar(type: Jar, dependsOn: compileJava) {
-  from sourceSets.main.output.classesDir
-  include 'uk/gov/bis/lite/customer/api/**/*'
-}
-
-task jarWithSources(type: Jar) {
-  from sourceSets.main.allJava
-  include 'uk/gov/bis/lite/customer/api/**/*'
-}
-
-publishing {
-  publications {
-
-    mavenJava(MavenPublication) {
-      artifactId 'lite-customer-service-api'
-      artifact apiJar
-      artifact jarWithSources {
-        classifier "sources"
-      }
-    }
-  }
-}
-
-publishing {
-  repositories {
-    maven {
-      name "snapshots"
-      url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/maven-snapshots/"
-    }
-    maven {
-      name "releases"
-      url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/maven-releases/"
-    }
-  }
-}
-
 shadowJar {
   classifier = ''
   mergeServiceFiles()
@@ -97,3 +69,48 @@ build {
 
 run { args 'server', 'src/main/resources/config.yaml' }
 
+apply plugin: 'maven-publish'
+
+publishing {
+  repositories {
+    maven {
+      name "snapshots"
+      url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/maven-snapshots/"
+    }
+    maven {
+      name "releases"
+      url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/maven-releases/"
+    }
+    maven {
+      name "lite-builds"
+      url "http://nexus.mgmt.licensing.service.trade.gov.uk.test/repository/lite-builds/"
+    }
+  }
+}
+
+task apiJar(type: Jar, dependsOn: compileJava) {
+  from sourceSets.main.output.classesDir
+  include 'uk/gov/bis/lite/customer/api/**/*'
+}
+
+task apiJarWithSources(type: Jar) {
+  from sourceSets.main.allJava
+  include 'uk/gov/bis/lite/customer/api/**/*'
+}
+
+publishing {
+  publications {
+    api(MavenPublication) {
+      artifactId 'lite-customer-service-api'
+      version '1.1'
+      artifact apiJar
+      artifact apiJarWithSources {
+        classifier "sources"
+      }
+    }
+    service(MavenPublication) {
+      artifactId 'customer-service'
+      from components.shadow
+    }
+  }
+}
