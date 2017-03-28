@@ -13,6 +13,6 @@ logging:
   loggers:
     uk.gov.bis.lite.common.spire.client: TRACE
 
-spireClientUserName: bisuat.api@test.com
-spireClientPassword: sp1reUAT
-spireClientUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/
+spireClientUserName: someUserName
+spireClientPassword: somePassword
+spireClientUrl: someUrl

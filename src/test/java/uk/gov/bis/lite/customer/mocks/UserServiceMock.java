@@ -18,6 +18,8 @@ public class UserServiceMock implements UserService {
 
   private UsersResponse mockUsers;
 
+  private String updateStatus;
+
   public UserServiceMock() {
     this(1);
   }
@@ -41,10 +43,7 @@ public class UserServiceMock implements UserService {
   }
 
   public String userRoleUpdate(UserRoleParam param, String userId, String siteRef) {
-    if ("EXISTING_USER".equals(userId)) {
-      return "COMPLETE";
-    }
-    return "SOME_ERROR";
+    return updateStatus;
   }
 
   public Optional<UsersResponse> getCustomerAdminUsers(String customerId) {
@@ -53,5 +52,13 @@ public class UserServiceMock implements UserService {
       return Optional.of(mockUsers);
     }
     return Optional.empty();
+  }
+
+  public void setUpExistingUserRole() {
+    updateStatus = "COMPLETE";
+  }
+
+  public void setUpFailedUserRole() {
+    updateStatus = "SOME_ERROR";
   }
 }

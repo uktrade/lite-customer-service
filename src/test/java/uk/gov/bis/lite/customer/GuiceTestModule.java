@@ -1,5 +1,6 @@
 package uk.gov.bis.lite.customer;
 
+import com.google.inject.Scopes;
 import uk.gov.bis.lite.customer.config.guice.GuiceModule;
 import uk.gov.bis.lite.customer.mocks.CustomerServiceMock;
 import uk.gov.bis.lite.customer.mocks.SiteServiceMock;
@@ -15,5 +16,6 @@ public class GuiceTestModule extends GuiceModule {
     bind(CustomerService.class).to(CustomerServiceMock.class);
     bind(SiteService.class).to(SiteServiceMock.class);
     bind(UserService.class).to(UserServiceMock.class);
+    bind(UserServiceMock.class).in(Scopes.SINGLETON);
   }
 }
