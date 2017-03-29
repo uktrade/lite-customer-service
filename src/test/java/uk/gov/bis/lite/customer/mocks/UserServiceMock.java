@@ -18,10 +18,11 @@ public class UserServiceMock implements UserService {
 
   private UsersResponse mockUsers;
 
-  private String updateStatus;
+  private String updateStatus = "COMPLETE";
 
   public UserServiceMock() {
     this(1);
+    setUpExistingUserRole();
   }
   public UserServiceMock(int numberOfUserDetails) {
     initUsers(numberOfUserDetails);
