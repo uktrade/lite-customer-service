@@ -1,5 +1,7 @@
 package uk.gov.bis.lite.customer;
 
+import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
+
 import au.com.dius.pact.provider.junit.PactRunner;
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
@@ -14,19 +16,18 @@ import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import uk.gov.bis.lite.customer.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.customer.mocks.UserServiceMock;
 
-import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
-
 @RunWith(PactRunner.class)
 @Provider("lite-customer-service")
 @PactFolder("//Users//Tomacpro//Projects//GitHub//lite-ogel-registration//target//pacts")
+//@PactFolder("/Users/dan/bit/lite-permissions-service/target/pacts")
 public class PactProvider {
 
   @ClassRule
   public static final DropwizardAppRule<CustomerApplicationConfiguration> RULE =
     new DropwizardAppRule<>(TestCustomerApplication.class, resourceFilePath("service-test.yaml"));
 
-  @TestTarget // Annotation denotes Target that will be used for tests
-  public final Target target = new HttpTarget(RULE.getLocalPort()); // Out-of-the-box implementation of Target (for more information take a look at Test Target section)
+  @TestTarget
+  public final Target target = new HttpTarget(RULE.getLocalPort());
 
 
   @State("existing user role")
