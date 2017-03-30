@@ -6,10 +6,15 @@ import uk.gov.bis.lite.customer.service.UserService;
 
 import java.util.Optional;
 
-public class MockUserService implements UserService, PermissionsPactConstants {
+import javax.inject.Singleton;
+
+@Singleton
+public class MockUserService implements UserService {
+
+  private boolean failUpdateUserRole = false;
 
   public String userRoleUpdate(UserRoleParam param, String userId, String siteRef) {
-    if(userId.equals(USER_ID_SUCCESS)) {
+    if(!failUpdateUserRole) {
       return "COMPLETE";
     }
     return "ERROR";
@@ -17,5 +22,12 @@ public class MockUserService implements UserService, PermissionsPactConstants {
 
   public Optional<UsersResponse> getCustomerAdminUsers(String customerId) {
     return Optional.empty();
+  }
+
+  /**
+   * Pact State setters
+   */
+  public void setFailUpdateUserRole(boolean failUpdateUserRole) {
+    this.failUpdateUserRole = failUpdateUserRole;
   }
 }

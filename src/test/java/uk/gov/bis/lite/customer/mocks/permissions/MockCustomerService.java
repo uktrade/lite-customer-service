@@ -3,7 +3,6 @@ package uk.gov.bis.lite.customer.mocks.permissions;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import uk.gov.bis.lite.customer.api.param.CustomerParam;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.service.CustomerService;
@@ -13,16 +12,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MockCustomerService implements CustomerService, PermissionsPactConstants {
+import javax.inject.Singleton;
+
+@Singleton
+public class MockCustomerService implements CustomerService {
 
   private List<CustomerView> mockCustomers = new ArrayList<>();
   private ObjectMapper mapper = new ObjectMapper();
 
+  private boolean failCreateCustomer = false;
+  private boolean failCustomersByCustomerNumber = false;
+
   public Optional<CustomerView> createCustomer(CustomerParam param) {
-    if(StringUtils.isBlank(param.getUserId())) {
+    if (failCreateCustomer) {
       return Optional.empty();
+    } else {
+      return Optional.of(getCustomerViewMock());
     }
-    return Optional.of(getCustomerViewMock());
+  }
+
+  public List<CustomerView> getCustomersByCompanyNumber(String companyNumber) {
+    List<CustomerView> customers = new ArrayList<>();
+    if (failCustomersByCustomerNumber) {
+      return customers;
+    } else {
+      customers.add(getCustomerViewMock());
+      return customers;
+    }
   }
 
   public List<CustomerView> getCustomersBySearch(String postcode) {
@@ -41,12 +57,15 @@ public class MockCustomerService implements CustomerService, PermissionsPactCons
     return Optional.of(getCustomerViewMock());
   }
 
-  public List<CustomerView> getCustomersByCompanyNumber(String companyNumber) {
-    List<CustomerView> mockCustomers = new ArrayList<>();
-    if(companyNumber.equals(COMPANY_NUMBER_SUCCESS)) {
-      mockCustomers.add(getCustomerViewMock());
-    }
-    return mockCustomers;
+  /**
+   * Pact State setters
+   */
+  public void setFailCreateCustomer(boolean failCreateCustomer) {
+    this.failCreateCustomer = failCreateCustomer;
+  }
+
+  public void setFailCustomersByCustomerNumber(boolean failCustomersByCustomerNumber) {
+    this.failCustomersByCustomerNumber = failCustomersByCustomerNumber;
   }
 
   private CustomerView getCustomerViewMock() {
@@ -58,5 +77,4 @@ public class MockCustomerService implements CustomerService, PermissionsPactCons
     }
     return view;
   }
-
 }

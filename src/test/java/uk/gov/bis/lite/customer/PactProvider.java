@@ -15,12 +15,16 @@ import org.junit.runner.RunWith;
 import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import uk.gov.bis.lite.customer.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.customer.mocks.UserServiceMock;
+import uk.gov.bis.lite.customer.mocks.permissions.MockCustomerService;
+import uk.gov.bis.lite.customer.mocks.permissions.MockSiteService;
+import uk.gov.bis.lite.customer.mocks.permissions.MockUserService;
 
 @RunWith(PactRunner.class)
 @Provider("lite-customer-service")
 //@PactFolder("//Users//Tomacpro//Projects//GitHub//lite-ogel-registration//target//pacts")
 //@PactFolder("/Users/dan/bit/lite-permissions-service/target/pacts")
 @PactBroker(host = "pact-broker.mgmt.licensing.service.trade.gov.uk.test", port = "80")
+//@VerificationReports({"console", "markdown"})
 public class PactProvider {
 
   @ClassRule
@@ -39,6 +43,46 @@ public class PactProvider {
   @State("failed user role")
   public void toFailedUserRoleState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(UserServiceMock.class).setUpFailedUserRole();
+  }
+
+  @State("create customer success")
+  public void createCustomerSuccessState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setFailCreateCustomer(false);
+  }
+
+  @State("create customer fail")
+  public void createCustomerFailState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setFailCreateCustomer(true);
+  }
+
+  @State("customer by company number success")
+  public void customerByCompanyNumberSuccessState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setFailCustomersByCustomerNumber(false);
+  }
+
+  @State("customer by company number fail")
+  public void customerByCompanyNumberFailState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setFailCustomersByCustomerNumber(true);
+  }
+
+  @State("create site success")
+  public void createSiteSuccessState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setFailCreateSite(false);
+  }
+
+  @State("create site fail")
+  public void createSiteFailState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setFailCreateSite(true);
+  }
+
+  @State("update user role success")
+  public void updateUserRoleSuccessState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setFailUpdateUserRole(false);
+  }
+
+  @State("update user role fail")
+  public void updateUserRoleFailState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setFailUpdateUserRole(true);
   }
 
 }
