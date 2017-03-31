@@ -1,7 +1,5 @@
 package uk.gov.bis.lite.customer;
 
-import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
-
 import au.com.dius.pact.provider.junit.PactRunner;
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
@@ -14,7 +12,6 @@ import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import uk.gov.bis.lite.customer.config.CustomerApplicationConfiguration;
-import uk.gov.bis.lite.customer.mocks.UserServiceMock;
 import uk.gov.bis.lite.customer.mocks.permissions.MockCustomerService;
 import uk.gov.bis.lite.customer.mocks.permissions.MockSiteService;
 import uk.gov.bis.lite.customer.mocks.permissions.MockUserService;
@@ -27,21 +24,10 @@ public class PactProvider {
 
   @ClassRule
   public static final DropwizardAppRule<CustomerApplicationConfiguration> RULE =
-    new DropwizardAppRule<>(TestCustomerApplication.class, resourceFilePath("service-test.yaml"));
+    new DropwizardAppRule<>(TestCustomerApplication.class, "/Users/Tomacpro/Projects/GitHub/lite-customer-service/src/test/resources/service-test.yaml");
 
   @TestTarget
   public final Target target = new HttpTarget(RULE.getLocalPort());
-
-
-  @State("existing user role")
-  public void toExistingUserRoleState() {
-    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(UserServiceMock.class).setUpExistingUserRole();
-  }
-
-  @State("failed user role")
-  public void toFailedUserRoleState() {
-    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(UserServiceMock.class).setUpFailedUserRole();
-  }
 
   @State("create customer success")
   public void createCustomerSuccessState() {
@@ -81,6 +67,16 @@ public class PactProvider {
   @State("update user role fail")
   public void updateUserRoleFailState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setFailUpdateUserRole(true);
+  }
+
+  @State("existing customer admin users")
+  public void existingCustomerAdminUsersState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setMissingCustomerAdminUsers(false);
+  }
+
+  @State("missing customer admin users")
+  public void missingCustomerAdminUsersState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setMissingCustomerAdminUsers(true);
   }
 
 }

@@ -18,12 +18,6 @@ public class UserServiceMock implements UserService {
 
   private UsersResponse mockUsers;
 
-  private String updateStatus = "COMPLETE";
-
-  public UserServiceMock() {
-    this(1);
-    setUpExistingUserRole();
-  }
   public UserServiceMock(int numberOfUserDetails) {
     initUsers(numberOfUserDetails);
   }
@@ -32,34 +26,17 @@ public class UserServiceMock implements UserService {
     List<UserView> userViews = new ArrayList<>();
     for (int i = 0; i < numberOfUserDetails; i++) {
       UserView userView = new UserView();
-      userView.setFullName("Admin User" + i);
-      userView.setForename("Admin");
-      userView.setSurname("User");
-      userView.setEmailAddress("admin@test.com");
-      userView.setRoleName("SAR_ADMINISTRATOR");
-      userView.setUserId("EXISTING");
       userViews.add(userView);
     }
     this.mockUsers = new UsersResponse(userViews);
   }
 
   public String userRoleUpdate(UserRoleParam param, String userId, String siteRef) {
-    return updateStatus;
+    return "COMPLETE";
   }
 
   public Optional<UsersResponse> getCustomerAdminUsers(String customerId) {
-    if ("EXISTING_CUSTOMER".equals(customerId)) {
-      LOGGER.info("mockUsers: " + mockUsers.getAdministrators().size());
-      return Optional.of(mockUsers);
-    }
-    return Optional.empty();
-  }
-
-  public void setUpExistingUserRole() {
-    updateStatus = "COMPLETE";
-  }
-
-  public void setUpFailedUserRole() {
-    updateStatus = "SOME_ERROR";
+    LOGGER.info("mockUsers: " + mockUsers.getAdministrators().size());
+    return Optional.of(mockUsers);
   }
 }

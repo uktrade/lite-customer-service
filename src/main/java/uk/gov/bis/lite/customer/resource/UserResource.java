@@ -37,7 +37,6 @@ public class UserResource {
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/customer-admins/{customerId}")
   public UsersResponse getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId) {
-    UsersResponse out = null;
     Optional<UsersResponse> optionalUsers = userService.getCustomerAdminUsers(customerId);
     if (!optionalUsers.isPresent()) {
       throw new WebApplicationException("No customer admins.", Response.Status.NOT_FOUND);

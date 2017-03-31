@@ -4,7 +4,7 @@ import com.google.inject.Scopes;
 import uk.gov.bis.lite.customer.config.guice.GuiceModule;
 import uk.gov.bis.lite.customer.mocks.CustomerServiceMock;
 import uk.gov.bis.lite.customer.mocks.SiteServiceMock;
-import uk.gov.bis.lite.customer.mocks.UserServiceMock;
+import uk.gov.bis.lite.customer.mocks.permissions.MockUserService;
 import uk.gov.bis.lite.customer.service.CustomerService;
 import uk.gov.bis.lite.customer.service.SiteService;
 import uk.gov.bis.lite.customer.service.UserService;
@@ -15,7 +15,7 @@ public class GuiceTestModule extends GuiceModule {
   protected void configure() {
     bind(CustomerService.class).to(CustomerServiceMock.class);
     bind(SiteService.class).to(SiteServiceMock.class);
-    bind(UserService.class).to(UserServiceMock.class);
-    bind(UserServiceMock.class).in(Scopes.SINGLETON);
+    bind(UserService.class).to(MockUserService.class);
+    bind(MockUserService.class).in(Scopes.SINGLETON);
   }
 }
