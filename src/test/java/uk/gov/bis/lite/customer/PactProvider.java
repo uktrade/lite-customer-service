@@ -21,8 +21,6 @@ import uk.gov.bis.lite.customer.mocks.permissions.MockUserService;
 
 @RunWith(PactRunner.class)
 @Provider("lite-customer-service")
-//@PactFolder("//Users//Tomacpro//Projects//GitHub//lite-ogel-registration//target//pacts")
-//@PactFolder("/Users/dan/bit/lite-permissions-service/target/pacts")
 @PactBroker(host = "pact-broker.mgmt.licensing.service.trade.gov.uk.test", port = "80")
 //@VerificationReports({"console", "markdown"})
 public class PactProvider {
