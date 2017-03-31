@@ -81,14 +81,24 @@ public class PactProvider {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setMissingCustomerAdminUsers(true);
   }
 
+  @State("existing customer")
+  public void existingCustomerState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setMissingCustomer(false);
+  }
+
+  @State("missing customer")
+  public void missingCustomerState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setMissingCustomer(true);
+  }
+
   @State("existing site")
   public void existingSiteState() {
-    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setMissingSiteState(false);
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setMissingSite(false);
   }
 
   @State("missing site")
   public void missingSiteState() {
-    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setMissingSiteState(true);
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setMissingSite(true);
   }
 
 }

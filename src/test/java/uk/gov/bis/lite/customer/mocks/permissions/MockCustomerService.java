@@ -20,8 +20,9 @@ public class MockCustomerService implements CustomerService {
   private List<CustomerView> mockCustomers = new ArrayList<>();
   private ObjectMapper mapper = new ObjectMapper();
 
-  private boolean failCreateCustomer = false;
-  private boolean failCustomersByCustomerNumber = false;
+  private boolean failCreateCustomer;
+  private boolean failCustomersByCustomerNumber;
+  private boolean missingCustomer;
 
   public Optional<CustomerView> createCustomer(CustomerParam param) {
     if (failCreateCustomer) {
@@ -54,7 +55,11 @@ public class MockCustomerService implements CustomerService {
   }
 
   public Optional<CustomerView> getCustomerById(String customerId) {
-    return Optional.of(getCustomerViewMock());
+    if (missingCustomer) {
+      return Optional.empty();
+    } else {
+      return Optional.of(getCustomerViewMock());
+    }
   }
 
   /**
@@ -68,6 +73,10 @@ public class MockCustomerService implements CustomerService {
     this.failCustomersByCustomerNumber = failCustomersByCustomerNumber;
   }
 
+  public void setMissingCustomer(boolean missingCustomer) {
+    this.missingCustomer = missingCustomer;
+  }
+
   private CustomerView getCustomerViewMock() {
     CustomerView view = null;
     try {
@@ -77,4 +86,6 @@ public class MockCustomerService implements CustomerService {
     }
     return view;
   }
+
+
 }

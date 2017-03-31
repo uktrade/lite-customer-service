@@ -50,7 +50,7 @@ public class MockSiteService implements SiteService {
     this.failCreateSite = failCreateSite;
   }
 
-  public void setMissingSiteState(boolean missingSite) {
+  public void setMissingSite(boolean missingSite) {
     this.missingSite = missingSite;
   }
 
