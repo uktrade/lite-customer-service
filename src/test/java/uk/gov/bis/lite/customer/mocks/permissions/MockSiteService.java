@@ -20,7 +20,8 @@ public class MockSiteService implements SiteService {
   private List<SiteView> mockSites = new ArrayList<>();
 
   private ObjectMapper mapper = new ObjectMapper();
-  private boolean failCreateSite = false;
+  private boolean failCreateSite;
+  private boolean missingSite;
 
   public Optional<SiteView> createSite(SiteParam param, String customerId, String userId) {
     if (failCreateSite) {
@@ -35,7 +36,11 @@ public class MockSiteService implements SiteService {
   }
 
   public Optional<SiteView> getSite(String siteId) {
-    return Optional.of(getSiteViewMock());
+    if (missingSite) {
+      return Optional.empty();
+    } else {
+      return Optional.of(getSiteViewMock());
+    }
   }
 
   /**
@@ -44,6 +49,11 @@ public class MockSiteService implements SiteService {
   public void setFailCreateSite(boolean failCreateSite) {
     this.failCreateSite = failCreateSite;
   }
+
+  public void setMissingSiteState(boolean missingSite) {
+    this.missingSite = missingSite;
+  }
+
 
   private SiteView getSiteViewMock() {
     SiteView view = null;

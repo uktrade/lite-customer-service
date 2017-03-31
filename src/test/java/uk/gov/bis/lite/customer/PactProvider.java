@@ -1,5 +1,7 @@
 package uk.gov.bis.lite.customer;
 
+import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
+
 import au.com.dius.pact.provider.junit.PactRunner;
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
@@ -24,7 +26,7 @@ public class PactProvider {
 
   @ClassRule
   public static final DropwizardAppRule<CustomerApplicationConfiguration> RULE =
-    new DropwizardAppRule<>(TestCustomerApplication.class, "/Users/Tomacpro/Projects/GitHub/lite-customer-service/src/test/resources/service-test.yaml");
+    new DropwizardAppRule<>(TestCustomerApplication.class, resourceFilePath("service-test.yaml"));
 
   @TestTarget
   public final Target target = new HttpTarget(RULE.getLocalPort());
@@ -77,6 +79,16 @@ public class PactProvider {
   @State("missing customer admin users")
   public void missingCustomerAdminUsersState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setMissingCustomerAdminUsers(true);
+  }
+
+  @State("existing site")
+  public void existingSiteState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setMissingSiteState(false);
+  }
+
+  @State("missing site")
+  public void missingSiteState() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setMissingSiteState(true);
   }
 
 }
