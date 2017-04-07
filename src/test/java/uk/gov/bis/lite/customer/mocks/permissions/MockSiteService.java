@@ -8,7 +8,7 @@ import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.customer.service.SiteService;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +17,7 @@ import javax.inject.Singleton;
 @Singleton
 public class MockSiteService implements SiteService {
 
-  private List<SiteView> mockSites = new ArrayList<>();
+  private List<SiteView> mockUserCustomerSites = Collections.emptyList();
 
   private ObjectMapper mapper = new ObjectMapper();
   private boolean failCreateSite;
@@ -32,7 +32,7 @@ public class MockSiteService implements SiteService {
   }
 
   public List<SiteView> getSites(String customerId, String userId) {
-    return mockSites;
+    return mockUserCustomerSites;
   }
 
   public Optional<SiteView> getSite(String siteId) {
@@ -63,5 +63,14 @@ public class MockSiteService implements SiteService {
       e.printStackTrace();
     }
     return view;
+  }
+
+  public void setSitesExistForUserAndCustomer(boolean hasSite) {
+    if (hasSite) {
+      mockUserCustomerSites = Collections.singletonList(getSiteViewMock());
+    } else {
+      mockUserCustomerSites = Collections.emptyList();
+    }
+
   }
 }

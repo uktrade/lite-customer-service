@@ -61,45 +61,74 @@ public class PactProvider {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setFailCreateSite(true);
   }
 
-  @State("update user role success")
+  @State("user role update request is valid")
   public void updateUserRoleSuccessState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setFailUpdateUserRole(false);
   }
 
-  @State("update user role fail")
+  @State("user role update request is invalid")
   public void updateUserRoleFailState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setFailUpdateUserRole(true);
   }
 
-  @State("existing customer admin users")
+  @State("provided customer exists and has admins")
   public void existingCustomerAdminUsersState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setMissingCustomerAdminUsers(false);
   }
 
-  @State("missing customer admin users")
+  @State("provided customer has no admins")
   public void missingCustomerAdminUsersState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockUserService.class).setMissingCustomerAdminUsers(true);
   }
 
-  @State("existing customer")
+  @State("provided customer ID exists")
   public void existingCustomerState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setMissingCustomer(false);
   }
 
-  @State("missing customer")
+  @State("provided customer ID does not exist")
   public void missingCustomerState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setMissingCustomer(true);
   }
 
-  @State("existing site")
+  @State("provided site ID exists")
   public void existingSiteState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setMissingSite(false);
   }
 
-  @State("missing site")
+  @State("provided site ID does not exist")
   public void missingSiteState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setMissingSite(true);
   }
 
+  @State("provided user is associated with at least 1 customer")
+  public void sitesForExistingUser() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setMockCustomersForUserIdSearch(true);
+  }
+
+  @State("provided user is associated with no customers")
+  public void noSitesForExistingUser() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setMockCustomersForUserIdSearch(false);
+  }
+
+  @State("sites exist for the provided customer and user")
+  public void sitesForCustomerUser() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setSitesExistForUserAndCustomer(true);
+  }
+
+  @State("no sites exist for the provided customer and user")
+  public void noSitesForCustomerUser() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setSitesExistForUserAndCustomer(false);
+  }
+
+  @State("some customers match search criteria")
+  public void customersMatchSearchCriteria() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setMockCustomersForDetailSearch(true);
+  }
+
+  @State("no customers match search criteria")
+  public void noCustomersMatchSearchCriteria() {
+    InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setMockCustomersForDetailSearch(false);
+  }
 }
 

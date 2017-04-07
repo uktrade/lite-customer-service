@@ -9,6 +9,7 @@ import uk.gov.bis.lite.customer.service.CustomerService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,9 @@ import javax.inject.Singleton;
 @Singleton
 public class MockCustomerService implements CustomerService {
 
-  private List<CustomerView> mockCustomers = new ArrayList<>();
+  //For searching by EORI/postcode
+  private List<CustomerView> mockCustomersForDetailSearch = new ArrayList<>();
+  private List<CustomerView> mockCustomersForUserIdSearch = new ArrayList<>();
   private ObjectMapper mapper = new ObjectMapper();
 
   private boolean failCreateCustomer;
@@ -43,15 +46,15 @@ public class MockCustomerService implements CustomerService {
   }
 
   public List<CustomerView> getCustomersBySearch(String postcode) {
-    return mockCustomers;
+    return mockCustomersForDetailSearch;
   }
 
   public List<CustomerView> getCustomersBySearch(String postcode, String eoriNumber) {
-    return mockCustomers;
+    return mockCustomersForDetailSearch;
   }
 
   public List<CustomerView> getCustomersByUserId(String userId) {
-    return mockCustomers;
+    return mockCustomersForUserIdSearch;
   }
 
   public Optional<CustomerView> getCustomerById(String customerId) {
@@ -85,6 +88,22 @@ public class MockCustomerService implements CustomerService {
       e.printStackTrace();
     }
     return view;
+  }
+
+  public void setMockCustomersForUserIdSearch(boolean hasCustomers) {
+    if (hasCustomers) {
+      mockCustomersForUserIdSearch = Collections.singletonList(getCustomerViewMock());
+    } else {
+      mockCustomersForUserIdSearch = Collections.emptyList();
+    }
+  }
+
+  public void setMockCustomersForDetailSearch(boolean hasCustomers) {
+    if (hasCustomers) {
+      mockCustomersForDetailSearch = Collections.singletonList(getCustomerViewMock());
+    } else {
+      mockCustomersForDetailSearch = Collections.emptyList();
+    }
   }
 
 
