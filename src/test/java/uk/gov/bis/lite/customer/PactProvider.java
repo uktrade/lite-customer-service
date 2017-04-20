@@ -21,7 +21,6 @@ import uk.gov.bis.lite.customer.mocks.permissions.MockUserService;
 @RunWith(PactRunner.class)
 @Provider("lite-customer-service")
 @PactBroker(host = "pact-broker.mgmt.licensing.service.trade.gov.uk.test", port = "80")
-//@VerificationReports({"console", "markdown"})
 public class PactProvider {
 
   @ClassRule
@@ -31,32 +30,32 @@ public class PactProvider {
   @TestTarget
   public final Target target = new HttpTarget(RULE.getLocalPort());
 
-  @State("create customer success")
+  @State("new customer is valid")
   public void createCustomerSuccessState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setFailCreateCustomer(false);
   }
 
-  @State("create customer fail")
+  @State("new customer is invalid")
   public void createCustomerFailState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setFailCreateCustomer(true);
   }
 
-  @State("customer by company number success")
+  @State("customer successfully retrieved")
   public void customerByCompanyNumberSuccessState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setFailCustomersByCustomerNumber(false);
   }
 
-  @State("customer by company number fail")
+  @State("customer not found")
   public void customerByCompanyNumberFailState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockCustomerService.class).setFailCustomersByCustomerNumber(true);
   }
 
-  @State("create site success")
+  @State("new site is valid")
   public void createSiteSuccessState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setFailCreateSite(false);
   }
 
-  @State("create site fail")
+  @State("new site is invalid")
   public void createSiteFailState() {
     InjectorLookup.getInjector(RULE.getApplication()).get().getInstance(MockSiteService.class).setFailCreateSite(true);
   }
