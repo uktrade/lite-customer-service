@@ -1,5 +1,6 @@
 package uk.gov.bis.lite.customer;
 
+import com.google.inject.Module;
 import com.google.inject.Stage;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -19,8 +20,20 @@ import uk.gov.bis.lite.customer.resource.UserResource;
 
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
 
+  private GuiceBundle<CustomerApplicationConfiguration> guiceBundle;
+  private final Module module;
+
   public static void main(String[] args) throws Exception {
-    new CustomerApplication().run(args);
+    new CustomerApplication(new GuiceModule()).run(args);
+  }
+
+  public GuiceBundle<CustomerApplicationConfiguration> getGuiceBundle() {
+    return guiceBundle;
+  }
+
+  public CustomerApplication(Module module) {
+    super();
+    this.module = module;
   }
 
   @Override
@@ -34,7 +47,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
   public void initialize(Bootstrap<CustomerApplicationConfiguration> bootstrap) {
     GuiceBundle<CustomerApplicationConfiguration> guiceBundle =
         GuiceBundle.<CustomerApplicationConfiguration>builder()
-            .modules(new GuiceModule())
+            .modules(module)
             .installers(ResourceInstaller.class)
             .extensions(CustomerCreateResource.class, SiteCreateResource.class, UserResource.class,
                 CustomerResource.class, SiteResource.class)

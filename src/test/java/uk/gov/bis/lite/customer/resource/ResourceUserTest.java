@@ -13,7 +13,7 @@ public class ResourceUserTest extends SpireResourceTest {
 
   @Test
   public void userRole() {
-    Response response = request("/user-roles/user/userId/site/siteRef", MediaType.APPLICATION_JSON)
+    Response response = request("/user-roles/user/EXISTING_USER/site/EXISTING_SITE", MediaType.APPLICATION_JSON)
         .post(Entity.entity(getUserRoleParam(), MediaType.APPLICATION_JSON));
     assertThat(status(response)).isEqualTo(OK);
   }
@@ -21,7 +21,7 @@ public class ResourceUserTest extends SpireResourceTest {
 
   @Test
   public void customerAdmins() {
-    Response response = request("/customer-admins/customerId").get();
+    Response response = request("/customer-admins/EXISTING_CUSTOMER").get();
     assertThat(status(response)).isEqualTo(OK);
     assertThat(getUsersUserDetailsSize(response)).isEqualTo(MOCK_USERS_USER_DETAIL_NUMBER);
   }

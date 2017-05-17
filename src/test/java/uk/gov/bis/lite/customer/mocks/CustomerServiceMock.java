@@ -12,7 +12,7 @@ public class CustomerServiceMock implements CustomerService {
 
   private List<CustomerView> mockCustomers = new ArrayList<>();
   private CustomerView mockCustomer = new CustomerView();
-  private Optional<CustomerView> mockCustomerView;
+  private CustomerView mockCustomerView;
 
   public CustomerServiceMock(String mockCustomerId, int numberOfCustomers, String sarRefTag) {
     initCustomers(mockCustomerId, numberOfCustomers, sarRefTag);
@@ -22,7 +22,7 @@ public class CustomerServiceMock implements CustomerService {
 
     CustomerView view = new CustomerView();
     view.setCustomerId(mockCustomerId);
-    mockCustomerView = Optional.of(view);
+    mockCustomerView = view;
 
     for (int i = 1; i < numberOfCustomers + 1; i++) {
       CustomerView out = new CustomerView();
@@ -32,7 +32,7 @@ public class CustomerServiceMock implements CustomerService {
   }
 
   public Optional<CustomerView> createCustomer(CustomerParam param) {
-    return mockCustomerView;
+    return Optional.of(mockCustomerView);
   }
 
   public List<CustomerView> getCustomersBySearch(String postcode) {

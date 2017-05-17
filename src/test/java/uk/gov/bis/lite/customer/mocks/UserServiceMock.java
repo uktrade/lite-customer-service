@@ -10,6 +10,7 @@ import uk.gov.bis.lite.customer.service.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserServiceMock implements UserService {
 
@@ -34,8 +35,8 @@ public class UserServiceMock implements UserService {
     return "COMPLETE";
   }
 
-  public UsersResponse getCustomerAdminUsers(String customerId) {
+  public Optional<UsersResponse> getCustomerAdminUsers(String customerId) {
     LOGGER.info("mockUsers: " + mockUsers.getAdministrators().size());
-    return mockUsers;
+    return Optional.of(mockUsers);
   }
 }
