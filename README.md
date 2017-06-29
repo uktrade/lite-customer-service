@@ -49,7 +49,7 @@ Gets site information for all sites a user has access to within a given customer
 
 Gets a list of users who are administrators for the given customer.
 
-`/user-roles`
+`/user-roles` (`UserResource`)
 
 Allows a users privilege level ("role") to be updated for a given site.
 
