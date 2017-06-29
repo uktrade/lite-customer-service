@@ -2,10 +2,10 @@ server:
   type: default
   applicationConnectors:
     - type: http
-      port: 8095
+      port: 8080
   adminConnectors:
     - type: http
-      port: 8096
+      port: 8081
 
       # Logging settings.
 logging:
@@ -22,6 +22,6 @@ logging:
   loggers:
     uk.gov.bis.lite.common.spire.client: TRACE
 
-spireClientUserName: bisuat.api@test.com
-spireClientPassword: sp1reUAT
+spireClientUserName: spire-user
+spireClientPassword: spire-password
 spireClientUrl: https://www.spiretest.trade.gov.uk/spireuat/fox/ispire/
