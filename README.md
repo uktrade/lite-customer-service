@@ -17,39 +17,39 @@ implemented elsewhere.
 
 ## Endpoint summary
 
-`/create-customer` (`CustomerCreateResource`)
+* `/create-customer` (`CustomerCreateResource`)
 
 Creates a new customer record.
 
-`/customers` (`CustomerResource`)
+* `/customers` (`CustomerResource`)
 
 Retrieves customer information based on a customer ID.
 
-`/user-customers` (`CustomerResource`)
+* `/user-customers` (`CustomerResource`)
 
 Gets customer information for all customers a user has access to.
 
-`/search-customers` (`CustomerResource`)
+* `/search-customers` (`CustomerResource`)
 
 Searches for customers by postcode, EORI number or Companies House registered number.
 
-`/customer-sites` (`SiteCreateResource`)
+* `/customer-sites` (`SiteCreateResource`)
 
 Creates a new site record for a given customer.
 
-`/sites/{siteId}` (`SiteResource`)
+* `/sites/{siteId}` (`SiteResource`)
 
 Retrieves site information based on a customer ID.
 
-`/user-sites` (`SiteResource`)
+* `/user-sites` (`SiteResource`)
 
 Gets site information for all sites a user has access to within a given customer.
 
-`/customer-admins` (`UserResource`)
+* `/customer-admins` (`UserResource`)
 
 Gets a list of users who are administrators for the given customer.
 
-`/user-roles` (`UserResource`)
+* `/user-roles` (`UserResource`)
 
 Allows a users privilege level ("role") to be updated for a given site.
 
