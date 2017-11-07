@@ -1,8 +1,12 @@
 package uk.gov.bis.lite.customer.resource;
 
+import static uk.gov.bis.lite.customer.resource.ResourceUtil.validateUserIdToJwt;
+
 import com.google.inject.Inject;
+import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.customer.service.SiteService;
 
@@ -33,13 +37,15 @@ public class SiteResource {
   @GET
   @Path("/user-sites/customer/{customerId}/user/{userId}")
   public List<SiteView> getSites(@NotNull @PathParam("customerId") String customerId,
-                                 @NotNull @PathParam("userId") String userId) {
+                                 @NotNull @PathParam("userId") String userId,
+                                 @Auth LiteJwtUser user) {
+    validateUserIdToJwt(userId, user);
     return siteService.getSites(customerId, userId);
   }
 
   @GET
   @Path("/sites/{siteId}")
-  public SiteView getSite(@NotNull @PathParam("siteId") String siteId) {
+  public SiteView getSite(@NotNull @PathParam("siteId") String siteId, @Auth LiteJwtUser user) {
     SiteView out = null;
     Optional<SiteView> optSite = siteService.getSite(siteId);
     if (!optSite.isPresent()) {
