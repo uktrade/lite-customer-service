@@ -2,12 +2,16 @@ package uk.gov.bis.lite.customer.resource;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.api.param.UserRoleParam;
 import uk.gov.bis.lite.customer.service.UserService;
 import uk.gov.bis.lite.customer.service.UserServiceImpl;
+
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -19,7 +23,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Optional;
 
 @Path("")
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,7 +39,8 @@ public class UserResource {
   @GET
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/customer-admins/{customerId}")
-  public UsersResponse getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId) {
+  public UsersResponse getAdministratorUserDetails(@NotNull @PathParam("customerId") String customerId,
+                                                   @Auth LiteJwtUser user) {
     Optional<UsersResponse> optionalUsers = userService.getCustomerAdminUsers(customerId);
     if (!optionalUsers.isPresent()) {
       throw new WebApplicationException("No customer admins.", Response.Status.NOT_FOUND);
