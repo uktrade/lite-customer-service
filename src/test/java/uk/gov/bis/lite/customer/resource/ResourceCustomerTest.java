@@ -97,16 +97,10 @@ public class ResourceCustomerTest extends SpireResourceTest {
 
   @Test
   public void searchCustomersByCompanyNumber() {
-    Response response = request("/search-customers/registered-number/1")
-        .header("Authorization", "Bearer " + generateToken(JWT_SHARED_SECRET, "123456"))
-        .get();
+    Response response = request("/search-customers/registered-number/1").get();
     assertThat(status(response)).isEqualTo(OK);
     CustomerView customer = getCustomerResponse(response);
     assertThat(customer.getCustomerId()).isEqualTo(MOCK_CUSTOMERS_SAR_REF_TAG + "1");
-
-    // Without valid auth header
-    response = request("/search-customers/registered-number/1").get();
-    assertThat(status(response)).isEqualTo(UNAUTHORIZED);
   }
 
 }
