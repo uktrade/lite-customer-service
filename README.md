@@ -23,15 +23,15 @@ Creates a new customer record.
 
 * `/customers` (`CustomerResource`)
 
-Retrieves customer information based on a customer ID.
+Retrieves customer information based on a customer ID.  Requires JWT.
 
 * `/user-customers` (`CustomerResource`)
 
-Gets customer information for all customers a user has access to.
+Gets customer information for all customers a user has access to. Requires JWT (if `userId` is provided it must match the JWT `sub`).
 
 * `/search-customers` (`CustomerResource`)
 
-Searches for customers by postcode, EORI number or Companies House registered number.
+Searches for customers by postcode, EORI number or Companies House registered number. Requires JWT.
 
 * `/customer-sites` (`SiteCreateResource`)
 
@@ -39,21 +39,25 @@ Creates a new site record for a given customer.
 
 * `/sites/{siteId}` (`SiteResource`)
 
-Retrieves site information based on a customer ID.
+Retrieves site information based on a customer ID. Requires JWT.
 
 * `/user-sites` (`SiteResource`)
 
-Gets site information for all sites a user has access to within a given customer.
+Gets site information for all sites a user has access to within a given customer. Requires JWT (if `userId` is provided it must match the JWT `sub`).
 
 * `/customer-admins` (`UserResource`)
 
-Gets a list of users who are administrators for the given customer.
+Gets a list of users who are administrators for the given customer. Requires JWT.
 
 * `/user-roles` (`UserResource`)
 
-Allows a users privilege level ("role") to be updated for a given site.
+Allows a users privilege level ("role") to be updated for a given site. Requires JWT.
 
 ## SPIRE integration
 
 All endpoints are proxies for SPIRE SOAP endpoints. `SpireClient` implementations are used to send the SOAP messages.
 No caching is currently implemented.
+
+## JWT Authentication
+
+Some of this services endpoints require authentication with a JWT token, information on the token can be found here [lite-dropwizard-common/jwt](https://github.com/uktrade/lite-dropwizard-common/tree/master/jwt).

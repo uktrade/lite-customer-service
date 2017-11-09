@@ -2,6 +2,7 @@ package uk.gov.bis.lite.customer.resource;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.bis.lite.customer.JwtUtil.generateToken;
 
 import org.junit.Test;
 
@@ -21,9 +22,15 @@ public class ResourceUserTest extends SpireResourceTest {
 
   @Test
   public void customerAdmins() {
-    Response response = request("/customer-admins/EXISTING_CUSTOMER").get();
+    Response response = request("/customer-admins/EXISTING_CUSTOMER")
+        .header("Authorization", "Bearer " + generateToken(JWT_SHARED_SECRET, "123456"))
+        .get();
     assertThat(status(response)).isEqualTo(OK);
     assertThat(getUsersUserDetailsSize(response)).isEqualTo(MOCK_USERS_USER_DETAIL_NUMBER);
+
+    // Without valid auth header
+    response = request("/customer-admins/EXISTING_CUSTOMER").get();
+    assertThat(status(response)).isEqualTo(UNAUTHORIZED);
   }
 
 }

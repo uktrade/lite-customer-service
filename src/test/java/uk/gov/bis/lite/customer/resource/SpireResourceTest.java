@@ -1,7 +1,11 @@
 package uk.gov.bis.lite.customer.resource;
 
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
+import uk.gov.bis.lite.common.jwt.LiteJwtAuthFilterHelper;
+import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.api.param.AddressParam;
 import uk.gov.bis.lite.customer.api.param.CustomerParam;
@@ -22,6 +26,7 @@ import javax.ws.rs.core.Response;
 public class SpireResourceTest {
 
   final int OK = Response.Status.OK.getStatusCode();
+  final int UNAUTHORIZED = Response.Status.UNAUTHORIZED.getStatusCode();
 
   // CustomerServiceMock setup
   static int MOCK_CUSTOMERS_NUMBER = 1;
@@ -38,13 +43,18 @@ public class SpireResourceTest {
   static int MOCK_USERS_USER_DETAIL_NUMBER = 3;
   private static UserServiceMock mockUserService = new UserServiceMock(MOCK_USERS_USER_DETAIL_NUMBER);
 
+  public static final String JWT_SHARED_SECRET = "demo-secret-which-is-very-long-so-as-to-hit-the-byte-requirement";
+
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
+      .addProvider(new AuthDynamicFeature(LiteJwtAuthFilterHelper.buildAuthFilter(JWT_SHARED_SECRET)))
+      .addProvider(new AuthValueFactoryProvider.Binder<>(LiteJwtUser.class))
       .addResource(new CustomerResource(mockCustomerService))
       .addResource(new CustomerCreateResource(mockCustomerService))
       .addResource(new SiteResource(mockSiteService))
       .addResource(new SiteCreateResource(mockSiteService))
-      .addResource(new UserResource(mockUserService)).build();
+      .addResource(new UserResource(mockUserService))
+      .build();
 
 
   Invocation.Builder request(String url, String mediaType) {

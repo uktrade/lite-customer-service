@@ -11,7 +11,6 @@ import java.util.Optional;
 public class CustomerServiceMock implements CustomerService {
 
   private List<CustomerView> mockCustomers = new ArrayList<>();
-  private CustomerView mockCustomer = new CustomerView();
   private CustomerView mockCustomerView;
 
   public CustomerServiceMock(String mockCustomerId, int numberOfCustomers, String sarRefTag) {
@@ -48,7 +47,7 @@ public class CustomerServiceMock implements CustomerService {
   }
 
   public Optional<CustomerView> getCustomerById(String customerId) {
-    return Optional.of(mockCustomer);
+    return Optional.of(mockCustomerView);
   }
 
   public List<CustomerView> getCustomersByCompanyNumber(String companyNumber) {

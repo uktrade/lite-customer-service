@@ -1,9 +1,13 @@
 package uk.gov.bis.lite.customer.resource;
 
+import static uk.gov.bis.lite.customer.resource.ResourceUtil.validateUserIdToJwt;
+
 import com.google.inject.Inject;
+import io.dropwizard.auth.Auth;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.service.CustomerService;
 
@@ -34,7 +38,7 @@ public class CustomerResource {
 
   @GET
   @Path("/customers/{customerId}")
-  public CustomerView getCustomers(@NotNull @PathParam("customerId") String customerId) {
+  public CustomerView getCustomers(@NotNull @PathParam("customerId") String customerId, @Auth LiteJwtUser user) {
     CustomerView customer = null;
     Optional<CustomerView> optCustomer = customerService.getCustomerById(customerId);
     if (!optCustomer.isPresent()) {
@@ -47,14 +51,16 @@ public class CustomerResource {
 
   @GET
   @Path("/user-customers/user/{userId}")
-  public List<CustomerView> getUserCustomers(@NotNull @PathParam("userId") String userId) {
+  public List<CustomerView> getUserCustomers(@NotNull @PathParam("userId") String userId, @Auth LiteJwtUser user) {
+    validateUserIdToJwt(userId, user);
     return customerService.getCustomersByUserId(userId);
   }
 
   @GET
   @Path("/search-customers/org-info")
   public List<CustomerView> getSearchCustomers(@QueryParam("postcode") String postcode,
-                                               @QueryParam("eori") String eori) {
+                                               @QueryParam("eori") String eori,
+                                               @Auth LiteJwtUser user) {
     if (StringUtils.isBlank(postcode)) {
       throwException("postcode is a mandatory parameter", Response.Status.BAD_REQUEST);
     }
