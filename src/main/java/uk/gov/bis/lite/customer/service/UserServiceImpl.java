@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
     userView.setEmailAddress(spireUserDetail.getEmailAddress());
     userView.setUserId(spireUserDetail.getUserId());
     userView.setForename(spireUserDetail.getForename());
+    userView.setSurname(spireUserDetail.getSurname());
     userView.setFullName(spireUserDetail.getFullName());
     userView.setRoleName(spireUserDetail.getRoleName());
     return userView;
