@@ -1,8 +1,10 @@
 package uk.gov.bis.lite.customer.resource;
 
 import com.google.inject.Inject;
+import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.param.CustomerParam;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.service.CustomerService;
@@ -32,7 +34,7 @@ public class CustomerCreateResource {
   @Consumes({MediaType.APPLICATION_JSON})
   @Produces({MediaType.APPLICATION_JSON})
   @Path("/create-customer")
-  public CustomerView createCustomer(CustomerParam param) {
+  public CustomerView createCustomer(CustomerParam param, @Auth LiteJwtUser liteJwtUser) {
     CustomerView customer = null;
     Optional<CustomerView> optCustomer = customerService.createCustomer(param);
     if (!optCustomer.isPresent()) {

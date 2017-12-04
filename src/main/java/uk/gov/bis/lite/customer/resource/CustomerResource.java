@@ -73,7 +73,7 @@ public class CustomerResource {
 
   @GET
   @Path("/search-customers/registered-number/{chNumber}")
-  public CustomerView getSearchCustomersByCompanyNumber(@PathParam("chNumber") String chNumber) {
+  public CustomerView getSearchCustomersByCompanyNumber(@PathParam("chNumber") String chNumber, @Auth LiteJwtUser user) {
     CustomerView customer = null;
     if (!StringUtils.isBlank(chNumber)) {
       List<CustomerView> customers = customerService.getCustomersByCompanyNumber(chNumber);

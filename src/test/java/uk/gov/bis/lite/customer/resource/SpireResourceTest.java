@@ -6,6 +6,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
 import uk.gov.bis.lite.common.jwt.LiteJwtAuthFilterHelper;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
+import uk.gov.bis.lite.common.jwt.LiteJwtUserHelper;
 import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.api.param.AddressParam;
 import uk.gov.bis.lite.customer.api.param.CustomerParam;
@@ -142,5 +143,10 @@ public class SpireResourceTest {
     param.setAdminUserId("adminUserId");
     param.setRoleType(UserRoleParam.RoleType.ADMIN);
     return param;
+  }
+
+  public static String jwtAuthorizationHeader(String userId) {
+    LiteJwtUser liteJwtUser = new LiteJwtUser(userId, "test@test.com", "Mr Test");
+    return "Bearer " + LiteJwtUserHelper.generateTokenFromLiteJwtUser(JWT_SHARED_SECRET, "some-lite-service", liteJwtUser);
   }
 }
