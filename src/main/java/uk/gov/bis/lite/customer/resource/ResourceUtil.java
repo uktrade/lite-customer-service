@@ -18,8 +18,8 @@ public class ResourceUtil {
    */
   static void validateUserIdToJwt(String userId, LiteJwtUser user) {
     if (!StringUtils.equals(userId, user.getUserId())) {
-      throw new WebApplicationException("userId \"" + userId + "\" does not match value supplied in token (" +
-          user.getUserId() + ")", Response.Status.UNAUTHORIZED);
+      throw new WebApplicationException(String.format("userId %s does not match value supplied in token (%s)",
+          userId, user.getUserId()), Response.Status.UNAUTHORIZED);
     }
   }
 }
