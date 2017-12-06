@@ -1,6 +1,5 @@
 package uk.gov.bis.lite.customer.resource;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import org.slf4j.Logger;
@@ -23,6 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 @Path("")
 @Produces(MediaType.APPLICATION_JSON)
@@ -43,7 +43,7 @@ public class UserResource {
                                                    @Auth LiteJwtUser user) {
     Optional<UsersResponse> optionalUsers = userService.getCustomerAdminUsers(customerId);
     if (!optionalUsers.isPresent()) {
-      throw new WebApplicationException("No customer admins.", Response.Status.NOT_FOUND);
+      throw new WebApplicationException("No customer admins.", Status.NOT_FOUND);
     } else {
       return optionalUsers.get();
     }
@@ -51,23 +51,16 @@ public class UserResource {
 
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
-  @Produces({MediaType.APPLICATION_JSON})
   @Path("/user-roles/user/{userId}/site/{siteRef}")
   public Response userRole(@NotNull @PathParam("userId") String userId,
                            @NotNull @PathParam("siteRef") String siteRef,
                            UserRoleParam param,
-                           @Auth LiteJwtUser user) {
+                           @Auth LiteJwtUser liteJwtUser) {
     String completed = userService.userRoleUpdate(param, userId, siteRef);
-    if (completed.equals(UserServiceImpl.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
+    if (UserServiceImpl.USER_ROLE_UPDATE_STATUS_COMPLETE.equals(completed)) {
       return Response.ok().build();
+    } else {
+      throw new WebApplicationException("Could not update userRole", Status.BAD_REQUEST);
     }
-    return badRequest("Could not update userRole");
-  }
-
-  private Response badRequest(String message) {
-    return Response.status(Response.Status.BAD_REQUEST)
-        .entity(ImmutableMap.of("code", Response.Status.BAD_REQUEST, "message", message))
-        .type(MediaType.APPLICATION_JSON_TYPE)
-        .build();
   }
 }
