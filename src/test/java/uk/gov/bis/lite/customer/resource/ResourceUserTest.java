@@ -15,6 +15,7 @@ public class ResourceUserTest extends SpireResourceTest {
   @Test
   public void userRole() {
     Response response = request("/user-roles/user/EXISTING_USER/site/EXISTING_SITE", MediaType.APPLICATION_JSON)
+        .header(HttpHeaders.AUTHORIZATION, jwtAuthorizationHeader("123456"))
         .post(Entity.entity(getUserRoleParam(), MediaType.APPLICATION_JSON));
     assertThat(status(response)).isEqualTo(OK);
   }

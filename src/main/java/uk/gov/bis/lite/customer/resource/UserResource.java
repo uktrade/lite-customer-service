@@ -55,7 +55,8 @@ public class UserResource {
   @Path("/user-roles/user/{userId}/site/{siteRef}")
   public Response userRole(@NotNull @PathParam("userId") String userId,
                            @NotNull @PathParam("siteRef") String siteRef,
-                           UserRoleParam param) {
+                           UserRoleParam param,
+                           @Auth LiteJwtUser user) {
     String completed = userService.userRoleUpdate(param, userId, siteRef);
     if (completed.equals(UserServiceImpl.USER_ROLE_UPDATE_STATUS_COMPLETE)) {
       return Response.ok().build();
