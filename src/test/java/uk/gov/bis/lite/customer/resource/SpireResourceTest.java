@@ -146,7 +146,10 @@ public class SpireResourceTest {
   }
 
   public static String jwtAuthorizationHeader(String userId) {
-    LiteJwtUser liteJwtUser = new LiteJwtUser(userId, "test@test.com", "Mr Test");
+    LiteJwtUser liteJwtUser = new LiteJwtUser()
+        .setUserId(userId)
+        .setEmail("test@test.com")
+        .setFullName("Mr Test");
     return "Bearer " + LiteJwtUserHelper.generateTokenFromLiteJwtUser(JWT_SHARED_SECRET, "some-lite-service", liteJwtUser);
   }
 }
