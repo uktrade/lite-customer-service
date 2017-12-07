@@ -1,6 +1,7 @@
 package uk.gov.bis.lite.customer;
 
 import com.github.toastshaman.dropwizard.auth.jwt.JwtAuthFilter;
+import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Stage;
 import io.dropwizard.Application;
@@ -9,9 +10,11 @@ import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
+import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import ru.vyarus.dropwizard.guice.module.installer.feature.jersey.ResourceInstaller;
 import uk.gov.bis.lite.common.jersey.filter.ContainerCorrelationIdFilter;
 import uk.gov.bis.lite.common.jwt.LiteJwtAuthFilterHelper;
+import uk.gov.bis.lite.common.jwt.LiteJwtConfig;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.customer.config.guice.GuiceModule;
@@ -41,9 +44,11 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
 
   @Override
   public void run(CustomerApplicationConfiguration configuration, Environment environment) {
+    Injector injector = InjectorLookup.getInjector(this).get();
+
     environment.jersey().register(ContainerCorrelationIdFilter.class);
 
-    String jwtSharedSecret = configuration.getJwtSharedSecret();
+    String jwtSharedSecret = injector.getInstance(LiteJwtConfig.class).getKey();
 
     JwtAuthFilter<LiteJwtUser> liteJwtUserJwtAuthFilter = LiteJwtAuthFilterHelper.buildAuthFilter(jwtSharedSecret);
 

@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import io.dropwizard.setup.Environment;
+import uk.gov.bis.lite.common.jwt.LiteJwtConfig;
 import uk.gov.bis.lite.common.spire.client.SpireClientConfig;
 import uk.gov.bis.lite.common.spire.client.SpireRequestConfig;
 import uk.gov.bis.lite.common.spire.client.parser.ReferenceParser;
@@ -77,6 +78,11 @@ public class GuiceModule extends AbstractModule {
     return new SpireUserDetailClient(new UserDetailParser(),
         new SpireClientConfig(config.getSpireClientUserName(), config.getSpireClientPassword(), config.getSpireClientUrl()),
         new SpireRequestConfig("SPIRE_SAR_USER_DETAILS", "getDetails", true));
+  }
+
+  @Provides
+  LiteJwtConfig provideLiteJwtUserConfig(CustomerApplicationConfiguration config) {
+    return new LiteJwtConfig(config.getJwtSharedSecret(), "lite-customer-service");
   }
 
   @Override

@@ -5,6 +5,7 @@ import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
 import uk.gov.bis.lite.common.jwt.LiteJwtAuthFilterHelper;
+import uk.gov.bis.lite.common.jwt.LiteJwtConfig;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.common.jwt.LiteJwtUserHelper;
 import uk.gov.bis.lite.customer.api.UsersResponse;
@@ -146,10 +147,11 @@ public class SpireResourceTest {
   }
 
   public static String jwtAuthorizationHeader(String userId) {
+    LiteJwtUserHelper liteJwtUserHelper = new LiteJwtUserHelper(new LiteJwtConfig(JWT_SHARED_SECRET, "some-lite-service"));
     LiteJwtUser liteJwtUser = new LiteJwtUser()
         .setUserId(userId)
         .setEmail("test@test.com")
         .setFullName("Mr Test");
-    return "Bearer " + LiteJwtUserHelper.generateTokenFromLiteJwtUser(JWT_SHARED_SECRET, "some-lite-service", liteJwtUser);
+    return liteJwtUserHelper.generateTokenInAuthHeaderFormat(liteJwtUser);
   }
 }
