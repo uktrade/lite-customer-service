@@ -17,11 +17,7 @@ idea {
 
 group 'uk.gov.bis.lite'
 
-if (project.hasProperty('projVersion')) {
-  project.version = project.projVersion
-} else {
-  project.version = "1.0-SNAPSHOT"
-}
+project.version = project.hasProperty('projVersion') ? project.projVersion : '1.0-SNAPSHOT'
 
 mainClassName = "uk.gov.bis.lite.customer.CustomerApplication"
 
@@ -46,7 +42,7 @@ dependencies {
   compile "io.dropwizard:dropwizard-jdbi:$dropwizardVersion"
   compile "io.dropwizard:dropwizard-auth:$dropwizardVersion"
   compile "io.dropwizard:dropwizard-client:$dropwizardVersion"
-  compile 'uk.gov.bis.lite:spire-client:1.5'
+  compile 'uk.gov.bis.lite:spire-client:1.6'
   compile 'uk.gov.bis.lite:jwt:1.2'
   compile 'ru.vyarus:dropwizard-guicey:3.2.0'
   compile 'net.logstash.logback:logstash-logback-encoder:4.10'
@@ -81,19 +77,34 @@ run { args 'server', 'config.yaml' }
 
 apply plugin: 'maven-publish'
 
+def nexusUsername = project.hasProperty('nexusUsername') ? project.nexusUsername : ''
+def nexusPassword = project.hasProperty('nexusPassword') ? project.nexusPassword : ''
+
 publishing {
   repositories {
     maven {
       name "snapshots"
       url "https://nexus.ci.uktrade.io/repository/maven-snapshots/"
+      credentials {
+        username nexusUsername
+        password nexusPassword
+      }
     }
     maven {
       name "releases"
       url "https://nexus.ci.uktrade.io/repository/maven-releases/"
+      credentials {
+        username nexusUsername
+        password nexusPassword
+      }
     }
     maven {
       name "lite-builds"
       url "https://nexus.ci.uktrade.io/repository/lite-builds/"
+      credentials {
+        username nexusUsername
+        password nexusPassword
+      }
     }
   }
 }
@@ -119,7 +130,7 @@ publishing {
       }
     }
     service(MavenPublication) {
-      artifactId 'customer-service'
+      artifactId 'lite-customer-service'
       from components.shadow
     }
   }

@@ -18,7 +18,7 @@ import uk.gov.bis.lite.customer.mocks.permissions.MockUserService;
 
 @RunWith(PactRunner.class)
 @Provider("lite-customer-service")
-@PactBroker(host = "pact-broker.mgmt.licensing.service.trade.gov.uk.test", port = "80")
+@PactBroker(host = "pact-broker.ci.uktrade.io", port = "80")
 public class PactProvider {
 
   @ClassRule
