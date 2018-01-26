@@ -1,7 +1,7 @@
 plugins {
   id "java"
   id "application"
-  id 'com.github.johnrengelman.shadow' version '1.2.3'
+  id 'com.github.johnrengelman.shadow' version '2.0.2'
   id "au.com.dius.pact" version "3.3.7"
 }
 
@@ -129,9 +129,8 @@ publishing {
         classifier "sources"
       }
     }
-    service(MavenPublication) {
-      artifactId 'lite-customer-service'
-      from components.shadow
+    shadow(MavenPublication) { publication ->
+      project.shadow.component(publication)
     }
   }
 }
