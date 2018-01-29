@@ -34,7 +34,7 @@ repositories {
   }
 }
 
-ext.dropwizardVersion = '1.2.0'
+ext.dropwizardVersion = '1.2.2'
 
 dependencies {
   compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
