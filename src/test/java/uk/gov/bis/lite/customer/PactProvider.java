@@ -1,7 +1,5 @@
 package uk.gov.bis.lite.customer;
 
-import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
-
 import au.com.dius.pact.provider.junit.PactRunner;
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
@@ -20,12 +18,12 @@ import uk.gov.bis.lite.customer.mocks.permissions.MockUserService;
 
 @RunWith(PactRunner.class)
 @Provider("lite-customer-service")
-@PactBroker(host = "pact-broker.mgmt.licensing.service.trade.gov.uk.test", port = "80")
+@PactBroker(host = "pact-broker.ci.uktrade.io", port = "80")
 public class PactProvider {
 
   @ClassRule
   public static final DropwizardAppRule<CustomerApplicationConfiguration> RULE =
-    new DropwizardAppRule<>(TestCustomerApplication.class, resourceFilePath("service-test.yaml"));
+      new DropwizardAppRule<>(TestCustomerApplication.class, "service-test.yaml");
 
   @TestTarget
   public final Target target = new HttpTarget(RULE.getLocalPort());

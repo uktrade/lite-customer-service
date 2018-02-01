@@ -7,6 +7,8 @@ import com.google.inject.Stage;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
@@ -16,6 +18,7 @@ import uk.gov.bis.lite.common.jersey.filter.ContainerCorrelationIdFilter;
 import uk.gov.bis.lite.common.jwt.LiteJwtAuthFilterHelper;
 import uk.gov.bis.lite.common.jwt.LiteJwtConfig;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
+import uk.gov.bis.lite.common.paas.db.CloudFoundryEnvironmentSubstitutor;
 import uk.gov.bis.lite.customer.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.customer.config.guice.GuiceModule;
 import uk.gov.bis.lite.customer.resource.CustomerCreateResource;
@@ -58,6 +61,9 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
 
   @Override
   public void initialize(Bootstrap<CustomerApplicationConfiguration> bootstrap) {
+    bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(
+        new ResourceConfigurationSourceProvider(), new CloudFoundryEnvironmentSubstitutor()));
+
     GuiceBundle<CustomerApplicationConfiguration> guiceBundle =
         GuiceBundle.<CustomerApplicationConfiguration>builder()
             .modules(module)
@@ -68,4 +74,5 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
 
     bootstrap.addBundle(guiceBundle);
   }
+
 }

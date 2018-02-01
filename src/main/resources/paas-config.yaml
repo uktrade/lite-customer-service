@@ -1,0 +1,29 @@
+server:
+  type: default
+  applicationConnectors:
+    - type: http
+      port: ${PORT}
+  adminConnectors:
+    - type: http
+      port: 8081
+
+      # Logging settings.
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  appenders:
+    - type: console
+      includeCallerData : true
+      # logFormat: "[%mdc{corrID}] %d [%p] %marker %logger %m%n"
+      logFormat: '[%mdc{corrID}] [%d{HH:mm:ss.SSS}] [%-5level] [%class{0}:%method:%line] %msg %n'
+      target: stderr
+  loggers:
+    uk.gov.bis.lite.common.spire.client: TRACE
+
+spireClientUserName: "${SPIRE_CLIENT_USERNAME}"
+spireClientPassword: "${SPIRE_CLIENT_PASSWORD}"
+spireClientUrl: "${SPIRE_CLIENT_URL}"
+
+jwtSharedSecret: "${JWT_SHARED_SECRET}"
