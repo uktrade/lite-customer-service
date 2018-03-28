@@ -42,7 +42,7 @@ dependencies {
   compile "io.dropwizard:dropwizard-jdbi:$dropwizardVersion"
   compile "io.dropwizard:dropwizard-auth:$dropwizardVersion"
   compile "io.dropwizard:dropwizard-client:$dropwizardVersion"
-  compile 'uk.gov.bis.lite:spire-client:1.6'
+  compile 'uk.gov.bis.lite:spire-client:1.8'
   compile 'uk.gov.bis.lite:jwt:1.2'
   compile 'ru.vyarus:dropwizard-guicey:3.2.0'
   compile 'net.logstash.logback:logstash-logback-encoder:4.10'
