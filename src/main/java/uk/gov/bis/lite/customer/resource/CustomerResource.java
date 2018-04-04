@@ -11,8 +11,11 @@ import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.service.CustomerService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
@@ -88,6 +91,22 @@ public class CustomerResource {
       throwException("Company Number blank. No Customer found.", Response.Status.NOT_FOUND);
     }
     return customer;
+  }
+
+  @GET
+  @Path("/search-customers")
+  public List<CustomerView> getSearchCustomersByNameOrCompanyNumber(@QueryParam("term") String searchTerm) {
+    if (!StringUtils.isBlank(searchTerm)) {
+      List<CustomerView> customers1 = customerService.getCustomersByCompanyNumber(searchTerm);
+      List<CustomerView> customers2 = customerService.getCustomersByName(searchTerm);
+
+      return Stream.concat(customers1.stream(), customers2.stream())
+          .distinct()
+          .collect(Collectors.toList());
+    } else {
+      throwException("Company name or number is mandatory.", Response.Status.BAD_REQUEST);
+    }
+    return Collections.emptyList();
   }
 
   private void throwException(String message, Response.Status status) {
