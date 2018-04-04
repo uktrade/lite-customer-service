@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.service.CustomerService;
+import uk.gov.bis.lite.customer.api.view.wrapper.CustomerWrapper;
 
 import java.util.Collections;
 import java.util.List;
@@ -101,7 +102,9 @@ public class CustomerResource {
       List<CustomerView> customers2 = customerService.getCustomersByName(searchTerm);
 
       return Stream.concat(customers1.stream(), customers2.stream())
+          .map(CustomerWrapper::new)
           .distinct()
+          .map(CustomerWrapper::unwrap)
           .collect(Collectors.toList());
     } else {
       throwException("Company name or number is mandatory.", Response.Status.BAD_REQUEST);
