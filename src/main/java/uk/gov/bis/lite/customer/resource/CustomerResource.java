@@ -94,9 +94,10 @@ public class CustomerResource {
     return customer;
   }
 
+  //todo: add JWT validation for REGULATOR users
   @GET
   @Path("/search-customers")
-  public List<CustomerView> getSearchCustomersByNameOrCompanyNumber(@QueryParam("term") String searchTerm) {
+  public List<CustomerView> getSearchCustomersByNameOrCompanyNumber(@QueryParam("term") String searchTerm, @Auth LiteJwtUser user) {
     if (!StringUtils.isBlank(searchTerm)) {
       List<CustomerView> customers1 = customerService.getCustomersByCompanyNumber(searchTerm);
       List<CustomerView> customers2 = customerService.getCustomersByName(searchTerm);
