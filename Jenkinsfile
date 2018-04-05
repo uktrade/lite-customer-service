@@ -24,7 +24,7 @@ pipeline {
           deployer.inside {
             sh 'chmod 777 gradlew'
             try {
-              sh "./gradlew test -i"
+              sh './gradlew test -i'
             }
             finally {
               step([$class: 'JUnitResultArchiver', testResults: 'build/test-results/**/*.xml'])
@@ -43,6 +43,20 @@ pipeline {
               string(name: 'BUILD_TYPE', value: 'jar')
           ]
           env.BUILD_VERSION = buildPaasAppResult.getBuildVariables().BUILD_VERSION
+        }
+      }
+    }
+
+    stage('sonarqube') {
+      steps {
+        script {
+          deployer.inside {
+            withSonarQubeEnv('sonarqube') {
+              sh 'chmod 777 gradlew'
+              sh './gradlew compileJava compileTestJava -i'
+              sh "${env.SONAR_SCANNER_PATH}/sonar-scanner -Dsonar.projectVersion=${env.BUILD_VERSION}"
+            }
+          }
         }
       }
     }
