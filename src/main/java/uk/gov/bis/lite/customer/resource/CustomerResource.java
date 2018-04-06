@@ -1,5 +1,8 @@
 package uk.gov.bis.lite.customer.resource;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 import static uk.gov.bis.lite.customer.resource.ResourceUtil.validateUserIdToJwt;
 
 import com.google.inject.Inject;
@@ -11,8 +14,12 @@ import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.service.CustomerService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeSet;
+import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
@@ -88,6 +95,22 @@ public class CustomerResource {
       throwException("Company Number blank. No Customer found.", Response.Status.NOT_FOUND);
     }
     return customer;
+  }
+
+  //todo: add JWT validation for REGULATOR users
+  @GET
+  @Path("/search-customers")
+  public List<CustomerView> getSearchCustomersByNameOrCompanyNumber(@QueryParam("term") String searchTerm, @Auth LiteJwtUser user) {
+    if (!StringUtils.isBlank(searchTerm)) {
+      List<CustomerView> customersByNumber = customerService.getCustomersByCompanyNumber(searchTerm);
+      List<CustomerView> customersByName = customerService.getCustomersByName(searchTerm);
+
+      return Stream.concat(customersByNumber.stream(), customersByName.stream())
+          .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(CustomerView::getCustomerId))), ArrayList::new));
+    } else {
+      throwException("Company name or number is mandatory.", Response.Status.BAD_REQUEST);
+    }
+    return Collections.emptyList();
   }
 
   private void throwException(String message, Response.Status status) {

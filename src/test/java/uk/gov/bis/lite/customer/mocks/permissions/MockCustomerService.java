@@ -65,6 +65,10 @@ public class MockCustomerService implements CustomerService {
     }
   }
 
+  public List<CustomerView> getCustomersByName(String companyName) {
+    return mockCustomersForUserIdSearch;
+  }
+
   /**
    * Pact State setters
    */

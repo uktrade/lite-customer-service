@@ -54,4 +54,7 @@ public class CustomerServiceMock implements CustomerService {
     return mockCustomers;
   }
 
+  public List<CustomerView> getCustomersByName(String companyName) {
+    return mockCustomers;
+  }
 }

@@ -100,6 +100,12 @@ public class CustomerServiceImpl implements CustomerService {
     return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
+  public List<CustomerView> getCustomersByName(String companyName) {
+    SpireRequest request = companyClient.createRequest();
+    request.addChild("companyName", companyName);
+    return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
+  }
+
   private CustomerView getCustomerOut(SpireCompany spireCompany) {
     CustomerView out = new CustomerView();
     out.setCompanyName(spireCompany.getCompanyName());
