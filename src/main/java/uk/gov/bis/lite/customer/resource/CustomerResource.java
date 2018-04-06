@@ -1,5 +1,8 @@
 package uk.gov.bis.lite.customer.resource;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 import static uk.gov.bis.lite.customer.resource.ResourceUtil.validateUserIdToJwt;
 
 import com.google.inject.Inject;
@@ -10,12 +13,12 @@ import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.service.CustomerService;
-import uk.gov.bis.lite.customer.api.view.wrapper.CustomerWrapper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
@@ -99,14 +102,11 @@ public class CustomerResource {
   @Path("/search-customers")
   public List<CustomerView> getSearchCustomersByNameOrCompanyNumber(@QueryParam("term") String searchTerm, @Auth LiteJwtUser user) {
     if (!StringUtils.isBlank(searchTerm)) {
-      List<CustomerView> customers1 = customerService.getCustomersByCompanyNumber(searchTerm);
-      List<CustomerView> customers2 = customerService.getCustomersByName(searchTerm);
+      List<CustomerView> customersByNumber = customerService.getCustomersByCompanyNumber(searchTerm);
+      List<CustomerView> customersByName = customerService.getCustomersByName(searchTerm);
 
-      return Stream.concat(customers1.stream(), customers2.stream())
-          .map(CustomerWrapper::new)
-          .distinct()
-          .map(CustomerWrapper::unwrap)
-          .collect(Collectors.toList());
+      return Stream.concat(customersByNumber.stream(), customersByName.stream())
+          .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(CustomerView::getCustomerId))), ArrayList::new));
     } else {
       throwException("Company name or number is mandatory.", Response.Status.BAD_REQUEST);
     }
