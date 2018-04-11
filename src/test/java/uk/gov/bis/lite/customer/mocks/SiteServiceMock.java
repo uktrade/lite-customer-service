@@ -38,6 +38,10 @@ public class SiteServiceMock implements SiteService {
     return mockSites;
   }
 
+  public List<SiteView> getSites(String customerId) {
+    return mockSites;
+  }
+
   public Optional<SiteView> getSite(String siteId) {
     return Optional.of(mockSiteView);
   }

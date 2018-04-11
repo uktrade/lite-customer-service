@@ -35,6 +35,10 @@ public class MockSiteService implements SiteService {
     return mockUserCustomerSites;
   }
 
+  public List<SiteView> getSites(String customerId) {
+    return mockUserCustomerSites;
+  }
+
   public Optional<SiteView> getSite(String siteId) {
     if (missingSite) {
       return Optional.empty();
