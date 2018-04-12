@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
  * Testing Resources:
  * CustomerResource
  * CustomerCreateResource
+ * CustomerSiteResource
  */
 public class ResourceCustomerTest extends SpireResourceTest {
 
@@ -104,6 +105,34 @@ public class ResourceCustomerTest extends SpireResourceTest {
     assertThat(status(response)).isEqualTo(OK);
     CustomerView customer = getCustomerResponse(response);
     assertThat(customer.getCustomerId()).isEqualTo(MOCK_CUSTOMERS_SAR_REF_TAG + "1");
+  }
+
+  @Test
+  public void searchCustomersByNameOrCompanyNumber() {
+    Response response = request("/search-customers?term=1")
+        .header(HttpHeaders.AUTHORIZATION, jwtAuthorizationHeader("123456"))
+        .get();
+    assertThat(status(response)).isEqualTo(OK);
+    assertThat(getCustomerViewsSize(response)).isEqualTo(MOCK_SITES_NUMBER);
+
+    // Missing required param
+    response = request("/search-customers")
+        .header(HttpHeaders.AUTHORIZATION, jwtAuthorizationHeader("123456"))
+        .get();
+    assertEquals(400, response.getStatus());
+  }
+
+  @Test
+  public void customerSites() {
+    Response response = request("/customer-sites/1")
+        .header(HttpHeaders.AUTHORIZATION, jwtAuthorizationHeader("1"))
+        .get();
+    assertThat(status(response)).isEqualTo(OK);
+    assertThat(getCustomerViewsSize(response)).isEqualTo(MOCK_SITES_NUMBER);
+
+    // Without valid auth header
+    response = request("/customer-sites/1").get();
+    assertThat(status(response)).isEqualTo(UNAUTHORIZED);
   }
 
 }
