@@ -54,7 +54,7 @@ public class SpireResourceTest {
       .addResource(new CustomerResource(mockCustomerService))
       .addResource(new CustomerCreateResource(mockCustomerService))
       .addResource(new SiteResource(mockSiteService))
-      .addResource(new SiteCreateResource(mockSiteService))
+      .addResource(new CustomerSiteResource(mockSiteService))
       .addResource(new UserResource(mockUserService))
       .build();
 

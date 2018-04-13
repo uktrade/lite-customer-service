@@ -60,6 +60,13 @@ public class SiteServiceImpl implements SiteService {
     return spireSites.stream().map(this::getSiteOut).collect(Collectors.toList());
   }
 
+  public List<SiteView> getSites(String customerId) {
+    SpireRequest request = siteClient.createRequest();
+    request.addChild("sarRef", customerId);
+    List<SpireSite> spireSites = siteClient.sendRequest(request);
+    return spireSites.stream().map(this::getSiteOut).collect(Collectors.toList());
+  }
+
   public Optional<SiteView> getSite(String siteId) {
     SpireRequest request = siteClient.createRequest();
     request.addChild("siteRef", siteId);

@@ -23,7 +23,7 @@ import uk.gov.bis.lite.customer.config.CustomerApplicationConfiguration;
 import uk.gov.bis.lite.customer.config.guice.GuiceModule;
 import uk.gov.bis.lite.customer.resource.CustomerCreateResource;
 import uk.gov.bis.lite.customer.resource.CustomerResource;
-import uk.gov.bis.lite.customer.resource.SiteCreateResource;
+import uk.gov.bis.lite.customer.resource.CustomerSiteResource;
 import uk.gov.bis.lite.customer.resource.SiteResource;
 import uk.gov.bis.lite.customer.resource.UserResource;
 
@@ -68,7 +68,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
         GuiceBundle.<CustomerApplicationConfiguration>builder()
             .modules(module)
             .installers(ResourceInstaller.class)
-            .extensions(CustomerCreateResource.class, SiteCreateResource.class, UserResource.class,
+            .extensions(CustomerCreateResource.class, CustomerSiteResource.class, UserResource.class,
                 CustomerResource.class, SiteResource.class)
             .build(Stage.PRODUCTION);
 

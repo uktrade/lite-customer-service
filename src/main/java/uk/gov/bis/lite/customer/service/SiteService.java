@@ -14,5 +14,7 @@ public interface SiteService {
 
   List<SiteView> getSites(String customerId, String userId);
 
+  List<SiteView> getSites(String customerId);
+
 }
 
