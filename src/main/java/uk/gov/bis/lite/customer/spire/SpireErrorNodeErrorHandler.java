@@ -6,7 +6,8 @@ import uk.gov.bis.lite.customer.exception.SpireForbiddenException;
 
 public class SpireErrorNodeErrorHandler extends ErrorNodeErrorHandler {
 
-  public SpireErrorNodeErrorHandler() {}
+  public SpireErrorNodeErrorHandler() {
+  }
 
   public void handleError(String errorText) {
     if (errorText != null && errorText.contains("USER_LACKS_PRIVILEGES")) {

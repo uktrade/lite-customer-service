@@ -2,8 +2,6 @@ package uk.gov.bis.lite.customer.resource;
 
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.api.param.UserRoleParam;
@@ -28,8 +26,7 @@ import javax.ws.rs.core.Response.Status;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserResource.class);
-  private UserService userService;
+  private final UserService userService;
 
   @Inject
   public UserResource(UserService userService) {

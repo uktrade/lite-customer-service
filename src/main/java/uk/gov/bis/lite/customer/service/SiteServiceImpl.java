@@ -4,8 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.common.spire.client.exception.SpireClientException;
 import uk.gov.bis.lite.customer.api.param.SiteParam;
@@ -22,10 +20,8 @@ import java.util.stream.Collectors;
 @Singleton
 public class SiteServiceImpl implements SiteService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SiteServiceImpl.class);
-
-  private SpireReferenceClient createSiteForSarReferenceClient;
-  private SpireSiteClient siteClient;
+  private final SpireReferenceClient createSiteForSarReferenceClient;
+  private final SpireSiteClient siteClient;
 
   @Inject
   public SiteServiceImpl(@Named("SpireCreateSiteForSarClient") SpireReferenceClient createSiteForSarReferenceClient,
@@ -71,7 +67,7 @@ public class SiteServiceImpl implements SiteService {
     SpireRequest request = siteClient.createRequest();
     request.addChild("siteRef", siteId);
     List<SpireSite> spireSites = siteClient.sendRequest(request);
-    if (spireSites.size() > 0) {
+    if (!spireSites.isEmpty()) {
       return Optional.of(getSiteOut(spireSites.get(0)));
     }
     return Optional.empty();

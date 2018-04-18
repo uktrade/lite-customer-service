@@ -4,8 +4,6 @@ import static uk.gov.bis.lite.customer.resource.ResourceUtil.validateUserIdToJwt
 
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.customer.service.SiteService;
@@ -26,8 +24,7 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class SiteResource {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SiteResource.class);
-  private SiteService siteService;
+  private final SiteService siteService;
 
   @Inject
   public SiteResource(SiteService siteService) {

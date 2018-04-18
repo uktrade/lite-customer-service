@@ -12,7 +12,6 @@ import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
-import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import ru.vyarus.dropwizard.guice.module.installer.feature.jersey.ResourceInstaller;
 import uk.gov.bis.lite.common.jersey.filter.ContainerCorrelationIdFilter;
 import uk.gov.bis.lite.common.jwt.LiteJwtAuthFilterHelper;
@@ -36,10 +35,6 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
     new CustomerApplication(new GuiceModule()).run(args);
   }
 
-  public GuiceBundle<CustomerApplicationConfiguration> getGuiceBundle() {
-    return guiceBundle;
-  }
-
   public CustomerApplication(Module module) {
     super();
     this.module = module;
@@ -47,7 +42,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
 
   @Override
   public void run(CustomerApplicationConfiguration configuration, Environment environment) {
-    Injector injector = InjectorLookup.getInjector(this).get();
+    Injector injector = guiceBundle.getInjector();
 
     environment.jersey().register(ContainerCorrelationIdFilter.class);
 
@@ -64,13 +59,12 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
     bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(
         new ResourceConfigurationSourceProvider(), new CloudFoundryEnvironmentSubstitutor()));
 
-    GuiceBundle<CustomerApplicationConfiguration> guiceBundle =
-        GuiceBundle.<CustomerApplicationConfiguration>builder()
-            .modules(module)
-            .installers(ResourceInstaller.class)
-            .extensions(CustomerCreateResource.class, CustomerSiteResource.class, UserResource.class,
-                CustomerResource.class, SiteResource.class)
-            .build(Stage.PRODUCTION);
+    guiceBundle = GuiceBundle.<CustomerApplicationConfiguration>builder()
+        .modules(module)
+        .installers(ResourceInstaller.class)
+        .extensions(CustomerCreateResource.class, CustomerSiteResource.class, UserResource.class,
+            CustomerResource.class, SiteResource.class)
+        .build(Stage.PRODUCTION);
 
     bootstrap.addBundle(guiceBundle);
   }

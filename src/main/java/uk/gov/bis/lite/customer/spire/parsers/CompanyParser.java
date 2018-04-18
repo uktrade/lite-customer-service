@@ -1,8 +1,5 @@
 package uk.gov.bis.lite.customer.spire.parsers;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import uk.gov.bis.lite.common.spire.client.SpireResponse;
 import uk.gov.bis.lite.common.spire.client.parser.SpireParser;
@@ -15,8 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CompanyParser implements SpireParser<List<SpireCompany>> {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(CompanyParser.class);
 
   @Override
   public List<SpireCompany> parseResponse(SpireResponse spireResponse) {
