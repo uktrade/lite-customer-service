@@ -87,8 +87,8 @@ public class CustomerServiceImpl implements CustomerService {
     SpireRequest request = companyClient.createRequest();
     request.addChild("sarRef", customerId);
     List<SpireCompany> spireCompanies = companyClient.sendRequest(request);
-    if (spireCompanies.size() > 0) {
-      LOGGER.info("Found " + spireCompanies.size() + " spire companies for sarRef: " + customerId);
+    if (!spireCompanies.isEmpty()) {
+      LOGGER.info("Found {} spire companies for sarRef: {}", spireCompanies.size(), customerId);
       return Optional.of(getCustomerOut(spireCompanies.get(0)));
     }
     return Optional.empty();

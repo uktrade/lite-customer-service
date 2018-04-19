@@ -2,8 +2,6 @@ package uk.gov.bis.lite.customer.resource;
 
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.param.CustomerParam;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
@@ -22,8 +20,7 @@ import javax.ws.rs.core.Response;
 @Path("")
 public class CustomerCreateResource {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CustomerCreateResource.class);
-  private CustomerService customerService;
+  private final CustomerService customerService;
 
   @Inject
   public CustomerCreateResource(CustomerService customerService) {

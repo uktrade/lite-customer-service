@@ -57,13 +57,13 @@ public class UserServiceImpl implements UserService {
     request.addChild("sarRef", customerId);
     List<SpireUserDetail> spireUserDetails = userDetailClient.sendRequest(request);
 
-    if (spireUserDetails.size() > 0) {
+    if (!spireUserDetails.isEmpty()) {
       List<UserView> adminUserDetails = spireUserDetails.stream()
-        .filter(sud -> sud.getRoleName().equals(SPIRE_ROLE_SAR_ADMINISTRATOR))
-        .map(this::getUserOut)
-        .collect(Collectors.toList());
+          .filter(sud -> sud.getRoleName().equals(SPIRE_ROLE_SAR_ADMINISTRATOR))
+          .map(this::getUserOut)
+          .collect(Collectors.toList());
 
-      LOGGER.info("adminUserDetails: " + adminUserDetails.size());
+      LOGGER.info("adminUserDetails: {}", adminUserDetails.size());
       UsersResponse usersResponse = new UsersResponse(adminUserDetails);
       return Optional.of(usersResponse);
     }
@@ -81,5 +81,4 @@ public class UserServiceImpl implements UserService {
     return userView;
   }
 
-  ;
 }

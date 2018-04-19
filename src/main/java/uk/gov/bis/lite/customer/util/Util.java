@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.customer.api.param.AddressParam;
 
 import java.util.ArrayList;
@@ -16,12 +14,14 @@ import java.util.List;
 
 public class Util {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Util.class);
-
-  private static ObjectMapper mapper = new ObjectMapper();
+  private static final ObjectMapper MAPPER = new ObjectMapper();
 
   public static String getBooleanValue(Boolean arg) {
-    return arg == null ? "false" : arg ? "true" : "false";
+    if (Boolean.TRUE.equals(arg)) {
+      return "true";
+    } else {
+      return "false";
+    }
   }
 
   /**
@@ -36,7 +36,7 @@ public class Util {
   public static String getAddressParamJson(AddressParam param) {
     String json = "";
     try {
-      json = mapper.writeValueAsString(param).trim();
+      json = MAPPER.writeValueAsString(param).trim();
     } catch (JsonProcessingException e) {
       throw new RuntimeException("JsonProcessingException on AddressParam", e);
 

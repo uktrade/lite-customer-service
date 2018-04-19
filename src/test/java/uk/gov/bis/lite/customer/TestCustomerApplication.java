@@ -9,8 +9,4 @@ public class TestCustomerApplication extends CustomerApplication {
     super(Modules.override(new GuiceModule()).with(new GuiceTestModule()));
   }
 
-  public <T> T getInstance(Class<T> type) {
-    return getGuiceBundle().getInjector().getInstance(type);
-  }
-
 }

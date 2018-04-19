@@ -8,8 +8,6 @@ import static uk.gov.bis.lite.customer.resource.ResourceUtil.validateUserIdToJwt
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
 import uk.gov.bis.lite.customer.service.CustomerService;
@@ -35,8 +33,7 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class CustomerResource {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CustomerResource.class);
-  private CustomerService customerService;
+  private final CustomerService customerService;
 
   @Inject
   public CustomerResource(CustomerService customerService) {
@@ -80,13 +77,14 @@ public class CustomerResource {
 
   @GET
   @Path("/search-customers/registered-number/{chNumber}")
-  public CustomerView getSearchCustomersByCompanyNumber(@PathParam("chNumber") String chNumber, @Auth LiteJwtUser user) {
+  public CustomerView getSearchCustomersByCompanyNumber(@PathParam("chNumber") String chNumber,
+                                                        @Auth LiteJwtUser user) {
     CustomerView customer = null;
     if (!StringUtils.isBlank(chNumber)) {
       List<CustomerView> customers = customerService.getCustomersByCompanyNumber(chNumber);
       if (customers.size() == 1) {
         customer = customers.get(0);
-      } else if (customers.size() == 0) {
+      } else if (customers.isEmpty()) {
         throwException("No Customer found for company number: " + chNumber, Response.Status.NOT_FOUND);
       } else {
         throwException("Multiple Customers found for company number: " + chNumber, Response.Status.INTERNAL_SERVER_ERROR);
@@ -100,7 +98,8 @@ public class CustomerResource {
   //todo: add JWT validation for REGULATOR users
   @GET
   @Path("/search-customers")
-  public List<CustomerView> getSearchCustomersByNameOrCompanyNumber(@QueryParam("term") String searchTerm, @Auth LiteJwtUser user) {
+  public List<CustomerView> getSearchCustomersByNameOrCompanyNumber(@QueryParam("term") String searchTerm,
+                                                                    @Auth LiteJwtUser user) {
     if (!StringUtils.isBlank(searchTerm)) {
       List<CustomerView> customersByNumber = customerService.getCustomersByCompanyNumber(searchTerm);
       List<CustomerView> customersByName = customerService.getCustomersByName(searchTerm);
