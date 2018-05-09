@@ -18,6 +18,7 @@ import uk.gov.bis.lite.customer.api.view.SiteView;
 import uk.gov.bis.lite.customer.mocks.CustomerServiceMock;
 import uk.gov.bis.lite.customer.mocks.SiteServiceMock;
 import uk.gov.bis.lite.customer.mocks.UserServiceMock;
+import uk.gov.bis.lite.user.api.view.enums.AccountType;
 
 import java.util.List;
 
@@ -151,7 +152,8 @@ public class SpireResourceTest {
     LiteJwtUser liteJwtUser = new LiteJwtUser()
         .setUserId(userId)
         .setEmail("test@test.com")
-        .setFullName("Mr Test");
+        .setFullName("Mr Test")
+        .setAccountType(AccountType.EXPORTER);
     return liteJwtUserHelper.generateTokenInAuthHeaderFormat(liteJwtUser);
   }
 }
