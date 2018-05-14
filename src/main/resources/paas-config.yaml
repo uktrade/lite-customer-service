@@ -1,14 +1,16 @@
 server:
-  type: default
-  applicationConnectors:
-    - type: http
-      port: ${PORT}
-  adminConnectors:
-    - type: http
-      port: 8081
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: ${PORT}
   requestLog:
     appenders:
       - type: json-console-access
+
+login: "${BASIC_AUTH_USER}"
+password: "${BASIC_AUTH_PASSWORD}"
 
 logging:
   level: INFO
