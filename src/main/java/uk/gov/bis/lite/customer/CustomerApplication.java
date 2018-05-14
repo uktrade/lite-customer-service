@@ -1,5 +1,6 @@
 package uk.gov.bis.lite.customer;
 
+import com.codahale.metrics.servlets.AdminServlet;
 import com.github.toastshaman.dropwizard.auth.jwt.JwtAuthFilter;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -13,6 +14,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
 import ru.vyarus.dropwizard.guice.module.installer.feature.jersey.ResourceInstaller;
+import uk.gov.bis.lite.common.auth.admin.AdminConstraintSecurityHandler;
 import uk.gov.bis.lite.common.jersey.filter.ContainerCorrelationIdFilter;
 import uk.gov.bis.lite.common.jwt.LiteJwtAuthFilterHelper;
 import uk.gov.bis.lite.common.jwt.LiteJwtConfig;
@@ -52,6 +54,9 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
 
     environment.jersey().register(new AuthDynamicFeature(liteJwtUserJwtAuthFilter));
     environment.jersey().register(new AuthValueFactoryProvider.Binder<>(LiteJwtUser.class));
+
+    environment.admin().addServlet("admin", new AdminServlet()).addMapping("/admin");
+    environment.admin().setSecurityHandler(new AdminConstraintSecurityHandler(configuration.getLogin(), configuration.getPassword()));
   }
 
   @Override

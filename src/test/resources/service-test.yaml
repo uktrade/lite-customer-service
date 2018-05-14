@@ -1,3 +1,6 @@
+login: user
+password: pass
+
   # Logging settings.
 logging:
 
