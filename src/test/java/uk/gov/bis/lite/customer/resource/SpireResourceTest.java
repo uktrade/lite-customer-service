@@ -156,4 +156,14 @@ public class SpireResourceTest {
         .setAccountType(AccountType.EXPORTER);
     return liteJwtUserHelper.generateTokenInAuthHeaderFormat(liteJwtUser);
   }
+
+  public static String jwtAuthorizationHeader(String userId, AccountType accountType) {
+    LiteJwtUserHelper liteJwtUserHelper = new LiteJwtUserHelper(new LiteJwtConfig(JWT_SHARED_SECRET, "some-lite-service"));
+    LiteJwtUser liteJwtUser = new LiteJwtUser()
+        .setUserId(userId)
+        .setEmail("test@test.com")
+        .setFullName("Mr Test")
+        .setAccountType(accountType);
+    return liteJwtUserHelper.generateTokenInAuthHeaderFormat(liteJwtUser);
+  }
 }
