@@ -24,6 +24,22 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
+  private String adminLogin;
+
+  @NotEmpty
+  @JsonProperty
+  private String adminPassword;
+
+  @NotEmpty
+  @JsonProperty
+  private String serviceLogin;
+
+  @NotEmpty
+  @JsonProperty
+  private String servicePassword;
+
+  @NotEmpty
+  @JsonProperty
   private String login;
 
   @NotEmpty
@@ -44,6 +60,22 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   public String getJwtSharedSecret() {
     return jwtSharedSecret;
+  }
+
+  public String getAdminLogin() {
+    return adminLogin;
+  }
+
+  public String getAdminPassword() {
+    return adminPassword;
+  }
+
+  public String getServiceLogin() {
+    return serviceLogin;
+  }
+
+  public String getServicePassword() {
+    return servicePassword;
   }
 
   public String getLogin() {
