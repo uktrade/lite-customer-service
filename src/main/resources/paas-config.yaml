@@ -9,9 +9,6 @@ server:
     appenders:
       - type: json-console-access
 
-login: "${BASIC_AUTH_USER}"
-password: "${BASIC_AUTH_PASSWORD}"
-
 adminLogin: "${ADMIN_LOGIN}"
 adminPassword: "${ADMIN_PASSWORD}"
 

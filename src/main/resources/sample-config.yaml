@@ -1,5 +1,8 @@
-login: user
-password: pass
+adminLogin: admin
+adminPassword: adminPassword
+
+serviceLogin: service
+servicePassword: servicePassword
 
 server:
   type: simple
