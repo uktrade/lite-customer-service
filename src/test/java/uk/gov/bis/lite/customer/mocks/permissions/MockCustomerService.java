@@ -45,11 +45,11 @@ public class MockCustomerService implements CustomerService {
     }
   }
 
-  public List<CustomerView> getCustomersBySearch(String postcode) {
+  public List<CustomerView> getCustomersByPostcode(String postcode) {
     return mockCustomersForDetailSearch;
   }
 
-  public List<CustomerView> getCustomersBySearch(String postcode, String eoriNumber) {
+  public List<CustomerView> getCustomersByEoriNumber(String postcode, String eoriNumber) {
     return mockCustomersForDetailSearch;
   }
 

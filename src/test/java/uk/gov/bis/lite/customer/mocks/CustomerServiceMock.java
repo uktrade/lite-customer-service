@@ -34,11 +34,11 @@ public class CustomerServiceMock implements CustomerService {
     return Optional.of(mockCustomerView);
   }
 
-  public List<CustomerView> getCustomersBySearch(String postcode) {
+  public List<CustomerView> getCustomersByPostcode(String postcode) {
     return mockCustomers;
   }
 
-  public List<CustomerView> getCustomersBySearch(String postcode, String eoriNumber) {
+  public List<CustomerView> getCustomersByEoriNumber(String postcode, String eoriNumber) {
     return mockCustomers;
   }
 

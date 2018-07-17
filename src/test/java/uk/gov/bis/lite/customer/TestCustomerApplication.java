@@ -1,12 +1,12 @@
 package uk.gov.bis.lite.customer;
 
-import com.google.inject.util.Modules;
-import uk.gov.bis.lite.customer.config.guice.GuiceModule;
+import com.google.inject.Module;
+import uk.gov.bis.lite.customer.config.GuiceModule;
 
 public class TestCustomerApplication extends CustomerApplication {
 
   public TestCustomerApplication() {
-    super(Modules.override(new GuiceModule()).with(new GuiceTestModule()));
+    super(new Module[]{new GuiceModule(), new TestServiceModule()});
   }
 
 }

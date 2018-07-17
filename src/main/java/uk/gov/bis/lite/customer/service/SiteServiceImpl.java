@@ -48,7 +48,7 @@ public class SiteServiceImpl implements SiteService {
     }
   }
 
-  public List<SiteView> getSites(String customerId, String userId) {
+  public List<SiteView> getSitesByUserId(String customerId, String userId) {
     SpireRequest request = siteClient.createRequest();
     request.addChild("userId", userId);
     request.addChild("sarRef", customerId);
@@ -56,7 +56,7 @@ public class SiteServiceImpl implements SiteService {
     return spireSites.stream().map(this::getSiteOut).collect(Collectors.toList());
   }
 
-  public List<SiteView> getSites(String customerId) {
+  public List<SiteView> getSitesByCustomerId(String customerId) {
     SpireRequest request = siteClient.createRequest();
     request.addChild("sarRef", customerId);
     List<SpireSite> spireSites = siteClient.sendRequest(request);

@@ -3,8 +3,6 @@ package uk.gov.bis.lite.customer.service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.bis.lite.common.spire.client.SpireRequest;
 import uk.gov.bis.lite.customer.api.UsersResponse;
 import uk.gov.bis.lite.customer.api.param.UserRoleParam;
@@ -17,11 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Singleton
 public class UserServiceImpl implements UserService {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
   public static final String USER_ROLE_UPDATE_STATUS_COMPLETE = "COMPLETE";
   public static final String USER_ROLE_UPDATE_STATUS_ERROR = "Error";
@@ -63,7 +58,6 @@ public class UserServiceImpl implements UserService {
           .map(this::getUserOut)
           .collect(Collectors.toList());
 
-      LOGGER.info("adminUserDetails: {}", adminUserDetails.size());
       UsersResponse usersResponse = new UsersResponse(adminUserDetails);
       return Optional.of(usersResponse);
     }

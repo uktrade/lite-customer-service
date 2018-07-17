@@ -31,11 +31,11 @@ public class MockSiteService implements SiteService {
     }
   }
 
-  public List<SiteView> getSites(String customerId, String userId) {
+  public List<SiteView> getSitesByUserId(String customerId, String userId) {
     return mockUserCustomerSites;
   }
 
-  public List<SiteView> getSites(String customerId) {
+  public List<SiteView> getSitesByCustomerId(String customerId) {
     return mockUserCustomerSites;
   }
 

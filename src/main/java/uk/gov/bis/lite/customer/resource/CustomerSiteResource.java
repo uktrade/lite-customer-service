@@ -55,7 +55,7 @@ public class CustomerSiteResource {
   @GET
   @Path("/customer-sites/{customerId}")
   public List<SiteView> getCustomerSites(@NotNull @PathParam("customerId") String customerId, @Auth LiteJwtUser user) {
-    return siteService.getSites(customerId);
+    return siteService.getSitesByCustomerId(customerId);
   }
 
   private void throwException(String message, Response.Status status) {

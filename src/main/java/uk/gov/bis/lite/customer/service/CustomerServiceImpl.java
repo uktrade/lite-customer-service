@@ -64,13 +64,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
   }
 
-  public List<CustomerView> getCustomersBySearch(String postcode) {
+  public List<CustomerView> getCustomersByPostcode(String postcode) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("postCode", postcode);
     return companyClient.sendRequest(request).stream().map(this::getCustomerOut).collect(Collectors.toList());
   }
 
-  public List<CustomerView> getCustomersBySearch(String postcode, String eoriNumber) {
+  public List<CustomerView> getCustomersByEoriNumber(String postcode, String eoriNumber) {
     SpireRequest request = companyClient.createRequest();
     request.addChild("postCode", postcode);
     request.addChild("eoriNumber", eoriNumber);
