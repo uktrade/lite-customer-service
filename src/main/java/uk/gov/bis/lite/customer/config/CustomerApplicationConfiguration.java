@@ -24,11 +24,20 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
-  private String login;
+  private String adminLogin;
 
   @NotEmpty
   @JsonProperty
-  private String password;
+  private String adminPassword;
+
+  @NotEmpty
+  @JsonProperty
+  private String serviceLogin;
+
+  @NotEmpty
+  @JsonProperty
+  private String servicePassword;
+
 
   public String getSpireClientUserName() {
     return spireClientUserName;
@@ -46,11 +55,20 @@ public class CustomerApplicationConfiguration extends Configuration {
     return jwtSharedSecret;
   }
 
-  public String getLogin() {
-    return login;
+  public String getAdminLogin() {
+    return adminLogin;
   }
 
-  public String getPassword() {
-    return password;
+  public String getAdminPassword() {
+    return adminPassword;
   }
+
+  public String getServiceLogin() {
+    return serviceLogin;
+  }
+
+  public String getServicePassword() {
+    return servicePassword;
+  }
+
 }
