@@ -1,6 +1,3 @@
-login: ENTER_USERNAME_HERE
-password: ENTER_PASSWORD_HERE
-
 server:
   type: simple
   applicationContextPath: /
@@ -8,6 +5,9 @@ server:
   connector:
     type: http
     port: 8080
+
+login: "ENTER_USERNAME_HERE"
+password: "ENTER_PASSWORD_HERE"
 
 logging:
   level: INFO
@@ -20,8 +20,8 @@ logging:
   loggers:
     uk.gov.bis.lite.common.spire.client: TRACE
 
-spireClientUserName: ENTER_USERNAME_HERE
-spireClientPassword: ENTER_PASSWORD_HERE
-spireClientUrl: https://lite-service-mocking-dev.cloudapps.digital/spire/fox/ispire/
+spireClientUserName: "ENTER_USERNAME_HERE"
+spireClientPassword: "ENTER_PASSWORD_HERE"
+spireClientUrl: "https://lite-service-mocking-dev.cloudapps.digital/spire/fox/ispire/"
 
 jwtSharedSecret: "demo-secret-which-is-very-long-so-as-to-hit-the-byte-requirement"
