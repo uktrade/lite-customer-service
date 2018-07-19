@@ -56,7 +56,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
     environment.jersey().register(new AuthValueFactoryProvider.Binder<>(LiteJwtUser.class));
 
     environment.admin().addServlet("admin", new AdminServlet()).addMapping("/admin");
-    environment.admin().setSecurityHandler(new AdminConstraintSecurityHandler(configuration.getLogin(), configuration.getPassword()));
+    environment.admin().setSecurityHandler(new AdminConstraintSecurityHandler(configuration.getServiceLogin(), configuration.getServicePassword()));
   }
 
   @Override

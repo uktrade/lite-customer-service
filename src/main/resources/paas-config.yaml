@@ -9,8 +9,8 @@ server:
     appenders:
       - type: json-console-access
 
-login: "${BASIC_AUTH_USER}"
-password: "${BASIC_AUTH_PASSWORD}"
+serviceLogin: "${SERVICE_LOGIN}"
+servicePassword: "${SERVICE_PASSWORD}"
 
 logging:
   level: INFO
