@@ -34,11 +34,11 @@ public class SiteServiceMock implements SiteService {
     return Optional.of(mockSiteView);
   }
 
-  public List<SiteView> getSites(String customerId, String userId) {
+  public List<SiteView> getSitesByUserId(String customerId, String userId) {
     return mockSites;
   }
 
-  public List<SiteView> getSites(String customerId) {
+  public List<SiteView> getSitesByCustomerId(String customerId) {
     return mockSites;
   }
 

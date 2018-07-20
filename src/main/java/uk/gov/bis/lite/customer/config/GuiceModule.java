@@ -1,4 +1,4 @@
-package uk.gov.bis.lite.customer.config.guice;
+package uk.gov.bis.lite.customer.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -9,15 +9,8 @@ import uk.gov.bis.lite.common.jwt.LiteJwtConfig;
 import uk.gov.bis.lite.common.spire.client.SpireClientConfig;
 import uk.gov.bis.lite.common.spire.client.SpireRequestConfig;
 import uk.gov.bis.lite.common.spire.client.parser.ReferenceParser;
-import uk.gov.bis.lite.customer.config.CustomerApplicationConfiguration;
-import uk.gov.bis.lite.customer.service.CustomerService;
-import uk.gov.bis.lite.customer.service.CustomerServiceImpl;
-import uk.gov.bis.lite.customer.service.SiteService;
-import uk.gov.bis.lite.customer.service.SiteServiceImpl;
-import uk.gov.bis.lite.customer.service.UserService;
-import uk.gov.bis.lite.customer.service.UserServiceImpl;
-import uk.gov.bis.lite.customer.spire.SpireErrorNodeErrorHandler;
 import uk.gov.bis.lite.customer.spire.SpireCompanyClient;
+import uk.gov.bis.lite.customer.spire.SpireErrorNodeErrorHandler;
 import uk.gov.bis.lite.customer.spire.SpireReferenceClient;
 import uk.gov.bis.lite.customer.spire.SpireSiteClient;
 import uk.gov.bis.lite.customer.spire.SpireUserDetailClient;
@@ -83,13 +76,6 @@ public class GuiceModule extends AbstractModule {
   @Provides
   LiteJwtConfig provideLiteJwtUserConfig(CustomerApplicationConfiguration config) {
     return new LiteJwtConfig(config.getJwtSharedSecret(), "lite-customer-service");
-  }
-
-  @Override
-  protected void configure() {
-    bind(CustomerService.class).to(CustomerServiceImpl.class);
-    bind(SiteService.class).to(SiteServiceImpl.class);
-    bind(UserService.class).to(UserServiceImpl.class);
   }
 
 }

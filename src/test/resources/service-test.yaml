@@ -21,3 +21,21 @@ spireClientPassword: somePassword
 spireClientUrl: someUrl
 
 jwtSharedSecret: demo-secret-which-is-very-long-so-as-to-hit-the-byte-requirement
+
+redis:
+  host: localhost
+  password: ""
+  port: 6379
+  timeout: 2000
+  database: 0
+  ssl: false
+  poolMinIdle: 1
+  poolMaxTotal: 5
+  keyPrefix: local
+  key: "lite-customer-service"
+  ttl:
+    getCustomersByUserId: "2 minutes"
+    getCustomerById: "2 minutes"
+    getSite: "2 minutes"
+    getSitesByUserId: "2 minutes"
+    getSitesByCustomerId: "2 minutes"

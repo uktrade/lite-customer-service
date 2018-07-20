@@ -12,9 +12,9 @@ public interface SiteService {
 
   Optional<SiteView> getSite(String siteId);
 
-  List<SiteView> getSites(String customerId, String userId);
+  List<SiteView> getSitesByUserId(String customerId, String userId);
 
-  List<SiteView> getSites(String customerId);
+  List<SiteView> getSitesByCustomerId(String customerId);
 
 }
 

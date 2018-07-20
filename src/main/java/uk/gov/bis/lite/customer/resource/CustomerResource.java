@@ -69,9 +69,9 @@ public class CustomerResource {
       throwException("postcode is a mandatory parameter", Response.Status.BAD_REQUEST);
     }
     if (StringUtils.isBlank(eori)) {
-      return customerService.getCustomersBySearch(postcode);
+      return customerService.getCustomersByPostcode(postcode);
     } else {
-      return customerService.getCustomersBySearch(postcode, eori);
+      return customerService.getCustomersByEoriNumber(postcode, eori);
     }
   }
 

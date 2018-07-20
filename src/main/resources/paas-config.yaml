@@ -22,3 +22,21 @@ spireClientPassword: "${SPIRE_CLIENT_PASSWORD}"
 spireClientUrl: "${SPIRE_CLIENT_URL}"
 
 jwtSharedSecret: "${JWT_SHARED_SECRET}"
+
+redis:
+  host: "${REDIS_HOST}"
+  password: "${REDIS_PASSWORD}"
+  port: "${REDIS_PORT}"
+  timeout: "${REDIS_TIMEOUT}"
+  database: 0
+  ssl: "${REDIS_SSL}"
+  poolMinIdle: "${REDIS_POOL_MIN_IDLE}"
+  poolMaxTotal: "${REDIS_POOL_MAX_TOTAL}"
+  keyPrefix: "${REDIS_KEY_PREFIX}"
+  key: "${REDIS_KEY}"
+  ttl:
+    getCustomersByUserId: "${REDIS_TTL_GET_CUSTOMERS_BY_USER_ID}"
+    getCustomerById: "${REDIS_TTL_GET_CUSTOMERS_BY_ID}"
+    getSite: "${REDIS_TTL_GET_SITE}"
+    getSitesByUserId: "${REDIS_TTL_GET_SITES_BY_USER_ID}"
+    getSitesByCustomerId: "${REDIS_TTL_GET_SITES_BY_CUSTOMER_ID}"
