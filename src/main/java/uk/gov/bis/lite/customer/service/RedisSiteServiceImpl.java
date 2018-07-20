@@ -14,21 +14,21 @@ public class RedisSiteServiceImpl implements SiteService {
 
   private final SiteServiceImpl siteServiceImpl;
   private final RedissonCache redissonCache;
-  private final Ttl getSite;
-  private final Ttl getSitesByUserId;
-  private final Ttl getSitesByCustomerId;
+  private final Ttl getSiteTtl;
+  private final Ttl getSitesByUserIdTtl;
+  private final Ttl getSitesByCustomerIdTtl;
 
   @Inject
   public RedisSiteServiceImpl(SiteServiceImpl siteServiceImpl,
                               RedissonCache redissonCache,
-                              @Named("getSite") Ttl getSite,
-                              @Named("getSitesByUserId") Ttl getSitesByUserId,
-                              @Named("getSitesByCustomerId") Ttl getSitesByCustomerId) {
+                              @Named("getSiteTtl") Ttl getSiteTtl,
+                              @Named("getSitesByUserIdTtl") Ttl getSitesByUserIdTtl,
+                              @Named("getSitesByCustomerIdTtl") Ttl getSitesByCustomerIdTtl) {
     this.siteServiceImpl = siteServiceImpl;
     this.redissonCache = redissonCache;
-    this.getSite = getSite;
-    this.getSitesByUserId = getSitesByUserId;
-    this.getSitesByCustomerId = getSitesByCustomerId;
+    this.getSiteTtl = getSiteTtl;
+    this.getSitesByUserIdTtl = getSitesByUserIdTtl;
+    this.getSitesByCustomerIdTtl = getSitesByCustomerIdTtl;
   }
 
   @Override
@@ -40,7 +40,7 @@ public class RedisSiteServiceImpl implements SiteService {
   public Optional<SiteView> getSite(String siteId) {
     return redissonCache.getOptional(() -> siteServiceImpl.getSite(siteId),
         "getSite",
-        getSite,
+        getSiteTtl,
         siteId);
   }
 
@@ -48,7 +48,7 @@ public class RedisSiteServiceImpl implements SiteService {
   public List<SiteView> getSitesByUserId(String customerId, String userId) {
     return redissonCache.get(() -> siteServiceImpl.getSitesByUserId(customerId, userId),
         "getSitesByUserId",
-        getSitesByUserId,
+        getSitesByUserIdTtl,
         customerId, userId);
   }
 
@@ -56,7 +56,7 @@ public class RedisSiteServiceImpl implements SiteService {
   public List<SiteView> getSitesByCustomerId(String customerId) {
     return redissonCache.get(() -> siteServiceImpl.getSitesByCustomerId(customerId),
         "getSitesByCustomerId",
-        getSitesByCustomerId,
+        getSitesByCustomerIdTtl,
         customerId);
   }
 

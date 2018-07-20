@@ -16,30 +16,18 @@ public class RedisCustomerServiceImpl implements CustomerService {
 
   private final CustomerServiceImpl customerServiceImpl;
   private final RedissonCache redissonCache;
-  private final Ttl getCustomersByPostcode;
-  private final Ttl getCustomersByEoriNumber;
-  private final Ttl getCustomersByUserId;
-  private final Ttl getCustomerById;
-  private final Ttl getCustomersByCompanyNumber;
-  private final Ttl getCustomersByName;
+  private final Ttl getCustomersByUserIdTtl;
+  private final Ttl getCustomerByIdTtl;
 
   @Inject
   public RedisCustomerServiceImpl(CustomerServiceImpl customerServiceImpl,
                                   RedissonCache redissonCache,
-                                  @Named("getCustomersByPostcode") Ttl getCustomersByPostcode,
-                                  @Named("getCustomersByEoriNumber") Ttl getCustomersByEoriNumber,
-                                  @Named("getCustomersByUserId") Ttl getCustomersByUserId,
-                                  @Named("getCustomerById") Ttl getCustomerById,
-                                  @Named("getCustomersByCompanyNumber") Ttl getCustomersByCompanyNumber,
-                                  @Named("getCustomersByName") Ttl getCustomersByName) {
+                                  @Named("getCustomersByUserIdTtl") Ttl getCustomersByUserIdTtl,
+                                  @Named("getCustomerByIdTtl") Ttl getCustomerByIdTtl) {
     this.customerServiceImpl = customerServiceImpl;
     this.redissonCache = redissonCache;
-    this.getCustomersByPostcode = getCustomersByPostcode;
-    this.getCustomersByEoriNumber = getCustomersByEoriNumber;
-    this.getCustomersByUserId = getCustomersByUserId;
-    this.getCustomerById = getCustomerById;
-    this.getCustomersByCompanyNumber = getCustomersByCompanyNumber;
-    this.getCustomersByName = getCustomersByName;
+    this.getCustomersByUserIdTtl = getCustomersByUserIdTtl;
+    this.getCustomerByIdTtl = getCustomerByIdTtl;
   }
 
   @Override
@@ -49,25 +37,19 @@ public class RedisCustomerServiceImpl implements CustomerService {
 
   @Override
   public List<CustomerView> getCustomersByPostcode(String postcode) {
-    return redissonCache.get(() -> customerServiceImpl.getCustomersByPostcode(postcode),
-        "getCustomersByPostcode",
-        getCustomersByPostcode,
-        postcode);
+    return customerServiceImpl.getCustomersByPostcode(postcode);
   }
 
   @Override
   public List<CustomerView> getCustomersByEoriNumber(String postcode, String eoriNumber) {
-    return redissonCache.get(() -> customerServiceImpl.getCustomersByEoriNumber(postcode, eoriNumber),
-        "getCustomersByEoriNumber",
-        getCustomersByEoriNumber,
-        postcode, eoriNumber);
+    return customerServiceImpl.getCustomersByEoriNumber(postcode, eoriNumber);
   }
 
   @Override
   public List<CustomerView> getCustomersByUserId(String userId) {
     return redissonCache.get(() -> customerServiceImpl.getCustomersByUserId(userId),
         "getCustomersByUserId",
-        getCustomersByUserId,
+        getCustomersByUserIdTtl,
         userId);
   }
 
@@ -75,24 +57,18 @@ public class RedisCustomerServiceImpl implements CustomerService {
   public Optional<CustomerView> getCustomerById(String customerId) {
     return redissonCache.getOptional(() -> customerServiceImpl.getCustomerById(customerId),
         "getCustomerById",
-        getCustomerById,
+        getCustomerByIdTtl,
         customerId);
   }
 
   @Override
   public List<CustomerView> getCustomersByCompanyNumber(String companyNumber) {
-    return redissonCache.get(() -> customerServiceImpl.getCustomersByCompanyNumber(companyNumber),
-        "getCustomersByCompanyNumber",
-        getCustomersByCompanyNumber,
-        companyNumber);
+    return customerServiceImpl.getCustomersByCompanyNumber(companyNumber);
   }
 
   @Override
   public List<CustomerView> getCustomersByName(String companyName) {
-    return redissonCache.get(() -> customerServiceImpl.getCustomersByName(companyName),
-        "getCustomersByName",
-        getCustomersByName,
-        companyName);
+    return customerServiceImpl.getCustomersByName(companyName);
   }
 
 }

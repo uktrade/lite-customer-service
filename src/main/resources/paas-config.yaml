@@ -35,13 +35,8 @@ redis:
   keyPrefix: "${REDIS_KEY_PREFIX}"
   key: "${REDIS_KEY}"
   ttl:
-    getCustomersByPostcode: "${REDIS_TTL_GET_CUSTOMERS_BY_POSTCODE}"
-    getCustomersByEoriNumber: "${REDIS_TTL_GET_CUSTOMERS_BY_EORI_NUMBER}"
     getCustomersByUserId: "${REDIS_TTL_GET_CUSTOMERS_BY_USER_ID}"
     getCustomerById: "${REDIS_TTL_GET_CUSTOMERS_BY_ID}"
-    getCustomersByCompanyNumber: "${REDIS_TTL_GET_CUSTOMERS_BY_COMPANY_NUMBER}"
-    getCustomersByName: "${REDIS_TTL_GET_CUSTOMERS_BY_NAME}"
     getSite: "${REDIS_TTL_GET_SITE}"
     getSitesByUserId: "${REDIS_TTL_GET_SITES_BY_USER_ID}"
     getSitesByCustomerId: "${REDIS_TTL_GET_SITES_BY_CUSTOMER_ID}"
-    getCustomerAdminUsers: "${REDIS_TTL_GET_CUSTOMER_ADMIN_USERS}"

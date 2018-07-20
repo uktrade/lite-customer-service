@@ -38,13 +38,8 @@ redis:
   keyPrefix: local
   key: "lite-customer-service"
   ttl:
-    getCustomersByPostcode: "2 minutes"
-    getCustomersByEoriNumber: "2 minutes"
     getCustomersByUserId: "2 minutes"
     getCustomerById: "2 minutes"
-    getCustomersByCompanyNumber: "2 minutes"
-    getCustomersByName: "2 minutes"
     getSite: "2 minutes"
     getSitesByUserId: "2 minutes"
     getSitesByCustomerId: "2 minutes"
-    getCustomerAdminUsers: "2 minutes"
