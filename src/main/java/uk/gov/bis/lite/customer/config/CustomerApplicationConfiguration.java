@@ -3,6 +3,10 @@ package uk.gov.bis.lite.customer.config;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import org.hibernate.validator.constraints.NotEmpty;
+import uk.gov.bis.lite.common.redis.RedisConfiguration;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 public class CustomerApplicationConfiguration extends Configuration {
 
@@ -30,6 +34,11 @@ public class CustomerApplicationConfiguration extends Configuration {
   @JsonProperty
   private String servicePassword;
 
+  @NotNull
+  @Valid
+  @JsonProperty("redis")
+  private RedisConfiguration redisConfiguration;
+
   public String getSpireClientUserName() {
     return spireClientUserName;
   }
@@ -53,4 +62,9 @@ public class CustomerApplicationConfiguration extends Configuration {
   public String getServicePassword() {
     return servicePassword;
   }
+
+  public RedisConfiguration getRedisConfiguration() {
+    return redisConfiguration;
+  }
+
 }

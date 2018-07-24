@@ -21,7 +21,8 @@ import uk.gov.bis.lite.common.jwt.LiteJwtConfig;
 import uk.gov.bis.lite.common.jwt.LiteJwtUser;
 import uk.gov.bis.lite.common.paas.db.CloudFoundryEnvironmentSubstitutor;
 import uk.gov.bis.lite.customer.config.CustomerApplicationConfiguration;
-import uk.gov.bis.lite.customer.config.guice.GuiceModule;
+import uk.gov.bis.lite.customer.config.GuiceModule;
+import uk.gov.bis.lite.customer.config.RedisServiceModule;
 import uk.gov.bis.lite.customer.resource.CustomerCreateResource;
 import uk.gov.bis.lite.customer.resource.CustomerResource;
 import uk.gov.bis.lite.customer.resource.CustomerSiteResource;
@@ -31,15 +32,15 @@ import uk.gov.bis.lite.customer.resource.UserResource;
 public class CustomerApplication extends Application<CustomerApplicationConfiguration> {
 
   private GuiceBundle<CustomerApplicationConfiguration> guiceBundle;
-  private final Module module;
+  private final Module[] modules;
 
   public static void main(String[] args) throws Exception {
-    new CustomerApplication(new GuiceModule()).run(args);
+    new CustomerApplication(new Module[]{new GuiceModule(), new RedisServiceModule()}).run(args);
   }
 
-  public CustomerApplication(Module module) {
+  public CustomerApplication(Module[] modules) {
     super();
-    this.module = module;
+    this.modules = modules;
   }
 
   @Override
@@ -65,7 +66,7 @@ public class CustomerApplication extends Application<CustomerApplicationConfigur
         new ResourceConfigurationSourceProvider(), new CloudFoundryEnvironmentSubstitutor()));
 
     guiceBundle = GuiceBundle.<CustomerApplicationConfiguration>builder()
-        .modules(module)
+        .modules(modules)
         .installers(ResourceInstaller.class)
         .extensions(CustomerCreateResource.class, CustomerSiteResource.class, UserResource.class,
             CustomerResource.class, SiteResource.class)

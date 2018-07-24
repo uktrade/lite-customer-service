@@ -37,7 +37,7 @@ public class SiteResource {
                                  @NotNull @PathParam("userId") String userId,
                                  @Auth LiteJwtUser user) {
     validateUserIdToJwt(userId, user);
-    return siteService.getSites(customerId, userId);
+    return siteService.getSitesByUserId(customerId, userId);
   }
 
   @GET

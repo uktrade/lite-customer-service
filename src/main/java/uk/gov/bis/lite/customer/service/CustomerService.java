@@ -10,9 +10,9 @@ public interface CustomerService {
 
   Optional<CustomerView> createCustomer(CustomerParam param);
 
-  List<CustomerView> getCustomersBySearch(String postcode);
+  List<CustomerView> getCustomersByPostcode(String postcode);
 
-  List<CustomerView> getCustomersBySearch(String postcode, String eoriNumber);
+  List<CustomerView> getCustomersByEoriNumber(String postcode, String eoriNumber);
 
   List<CustomerView> getCustomersByUserId(String userId);
 
