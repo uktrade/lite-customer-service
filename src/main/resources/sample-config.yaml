@@ -6,6 +6,9 @@ server:
     type: http
     port: 8080
 
+adminLogin: "ENTER_USERNAME_HERE"
+adminPassword: "ENTER_PASSWORD_HERE"
+
 serviceLogin: "ENTER_USERNAME_HERE"
 servicePassword: "ENTER_PASSWORD_HERE"
 

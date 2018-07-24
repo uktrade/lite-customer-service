@@ -34,6 +34,14 @@ public class CustomerApplicationConfiguration extends Configuration {
   @JsonProperty
   private String servicePassword;
 
+  @NotEmpty
+  @JsonProperty
+  private String adminLogin;
+
+  @NotEmpty
+  @JsonProperty
+  private String adminPassword;
+
   @NotNull
   @Valid
   @JsonProperty("redis")
@@ -65,6 +73,14 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   public RedisConfiguration getRedisConfiguration() {
     return redisConfiguration;
+  }
+
+  public String getAdminLogin() {
+    return adminLogin;
+  }
+
+  public String getAdminPassword() {
+    return adminPassword;
   }
 
 }
