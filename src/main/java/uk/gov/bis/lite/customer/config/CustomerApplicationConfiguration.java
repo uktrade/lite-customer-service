@@ -28,11 +28,19 @@ public class CustomerApplicationConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
-  private String login;
+  private String serviceLogin;
 
   @NotEmpty
   @JsonProperty
-  private String password;
+  private String servicePassword;
+
+  @NotEmpty
+  @JsonProperty
+  private String adminLogin;
+
+  @NotEmpty
+  @JsonProperty
+  private String adminPassword;
 
   @NotNull
   @Valid
@@ -55,16 +63,24 @@ public class CustomerApplicationConfiguration extends Configuration {
     return jwtSharedSecret;
   }
 
-  public String getLogin() {
-    return login;
+  public String getServiceLogin() {
+    return serviceLogin;
   }
 
-  public String getPassword() {
-    return password;
+  public String getServicePassword() {
+    return servicePassword;
   }
 
   public RedisConfiguration getRedisConfiguration() {
     return redisConfiguration;
+  }
+
+  public String getAdminLogin() {
+    return adminLogin;
+  }
+
+  public String getAdminPassword() {
+    return adminPassword;
   }
 
 }
