@@ -6,8 +6,8 @@ server:
     type: http
     port: 8080
 
-login: "ENTER_USERNAME_HERE"
-password: "ENTER_PASSWORD_HERE"
+login: "username"
+password: "password"
 
 logging:
   level: INFO

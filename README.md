@@ -15,6 +15,11 @@ implemented elsewhere.
 * `cp src/main/resources/sample-config.yaml src/main/resources/config.yaml`
 * `./gradlew run`
 
+You will need to update `config.yaml` with passwords for the mocking service from Vault.
+
+You will also need to run a local Redis, e.g. `docker run -p 6379:6379 --name my-redis -d redis:latest`. If your Redis
+is not running with default settings, you will need to update connection details in `config.yaml`.
+
 ## Endpoint summary
 
 * `/create-customer` (`CustomerCreateResource`)
@@ -56,7 +61,7 @@ Allows a users privilege level ("role") to be updated for a given site. Requires
 ## SPIRE integration
 
 All endpoints are proxies for SPIRE SOAP endpoints. `SpireClient` implementations are used to send the SOAP messages.
-No caching is currently implemented.
+Some endpoint results are cached using [lite-dropwizard-common/redis-cache](https://github.com/uktrade/lite-dropwizard-common/tree/master/redis-cache). 
 
 ## JWT Authentication
 
