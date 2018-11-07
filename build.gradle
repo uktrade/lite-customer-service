@@ -35,9 +35,10 @@ repositories {
   }
 }
 
-ext.dropwizardVersion = '1.2.2'
+ext.dropwizardVersion = '1.2.9'
 
 dependencies {
+  compile "com.fasterxml.jackson.core:jackson-databind:2.9.7"
   compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
   compile "io.dropwizard:dropwizard-db:$dropwizardVersion"
   compile "io.dropwizard:dropwizard-jdbi:$dropwizardVersion"
