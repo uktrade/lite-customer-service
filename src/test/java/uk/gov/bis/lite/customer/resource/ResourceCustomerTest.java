@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import uk.gov.bis.lite.customer.api.view.CustomerView;
+import uk.gov.bis.lite.user.api.view.enums.AccountType;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
@@ -58,6 +59,21 @@ public class ResourceCustomerTest extends SpireResourceTest {
     // Without valid auth header
     response = request("/user-customers/user/1").get();
     assertThat(status(response)).isEqualTo(UNAUTHORIZED);
+
+    // AccountType REGULATOR and mismatched userId
+    response = request("/user-customers/user/1")
+        .header(HttpHeaders.AUTHORIZATION, jwtAuthorizationHeader("123456", AccountType.REGULATOR))
+        .get();
+    assertThat(status(response)).isEqualTo(OK);
+    assertThat(getCustomerViewsSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
+
+    // AccountType REGULATOR and matched userId
+    response = request("/user-customers/user/1")
+        .header(HttpHeaders.AUTHORIZATION, jwtAuthorizationHeader("1", AccountType.REGULATOR))
+        .get();
+    assertThat(status(response)).isEqualTo(OK);
+    assertThat(getCustomerViewsSize(response)).isEqualTo(MOCK_CUSTOMERS_NUMBER);
+
   }
 
   @Test
